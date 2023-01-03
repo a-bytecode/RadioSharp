@@ -24,7 +24,7 @@
             android:layout_height="match_parent">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/nameCardView"
+                android:id="@+id/nameCardView_detail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -43,7 +43,7 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/radioName"
+                        android:id="@+id/radio_name_detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -86,7 +86,7 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/iconCardView"
+                android:id="@+id/iconCardView_detail"
                 android:layout_width="93dp"
                 android:layout_height="72dp"
                 android:layout_marginTop="16dp"
@@ -96,15 +96,15 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/genreText"
                 app:layout_constraintHorizontal_bias="0.1"
-                app:layout_constraintStart_toStartOf="@+id/nameCardView"
-                app:layout_constraintTop_toBottomOf="@+id/nameCardView">
+                app:layout_constraintStart_toStartOf="@+id/nameCardView_detail"
+                app:layout_constraintTop_toBottomOf="@+id/nameCardView_detail">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/icon_image"
+                        android:id="@+id/icon_image_detail"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"

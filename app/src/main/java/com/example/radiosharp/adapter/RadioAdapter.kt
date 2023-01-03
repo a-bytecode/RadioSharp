@@ -16,10 +16,10 @@ class RadioAdapter: RecyclerView.Adapter<RadioAdapter.ItemViewHodler>() {
 
     class ItemViewHodler(view:View):RecyclerView.ViewHolder(view) {
 
-        val radioName = view.findViewById<TextView>(R.id.radioName)
+        val radioName = view.findViewById<TextView>(R.id.radio_name_detail)
         val genreName = view.findViewById<TextView>(R.id.genreText)
         val countryName = view.findViewById<TextView>(R.id.countryText)
-        val iconImage = view.findViewById<ImageView>(R.id.icon_image)
+        val iconImage = view.findViewById<ImageView>(R.id.icon_image_detail)
     }
 
 
