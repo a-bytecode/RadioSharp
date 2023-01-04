@@ -9,14 +9,14 @@ import com.example.radiosharp.model.RadioClass
 class Repository(private val api: RadioApiService.UserApi) {
 
 
-    private var _test = MutableLiveData<List<RadioClass>>()
-    val test: MutableLiveData<List<RadioClass>>
-    get() = _test
+    private var _loadRadio = MutableLiveData<List<RadioClass>>()
+    val loadRadio : MutableLiveData<List<RadioClass>>
+    get() = _loadRadio
 
 
    suspend fun getConnection(format:String,term:String){
 
-       test.value = api.retrofitService.getServerResponse(format,term)
+       loadRadio.value = api.retrofitService.getServerResponse(format,term)
    }
 }
 

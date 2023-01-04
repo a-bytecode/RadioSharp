@@ -14,6 +14,12 @@ class RadioAdapter: RecyclerView.Adapter<RadioAdapter.ItemViewHodler>() {
 
     private var dataset = listOf<RadioClass>()
 
+
+    fun submitlist(radioList:List<RadioClass>) {
+        dataset = radioList
+        notifyDataSetChanged()
+    }
+
     class ItemViewHodler(view:View):RecyclerView.ViewHolder(view) {
 
         val radioName = view.findViewById<TextView>(R.id.radio_name_detail)
@@ -32,9 +38,9 @@ class RadioAdapter: RecyclerView.Adapter<RadioAdapter.ItemViewHodler>() {
     override fun onBindViewHolder(holder: ItemViewHodler, position: Int) {
 
         val radioData : RadioClass = dataset[position]
-        holder.radioName.setText(radioData.name)
-        holder.countryName.setText(radioData.country)
-        holder.genreName.setText(radioData.tags)
+        holder.radioName.text = radioData.name
+        holder.countryName.text = radioData.country
+        holder.genreName.text = radioData.tags
         holder.iconImage.load(radioData.favicon)
 
     }
