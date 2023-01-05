@@ -5,11 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.example.radiosharp.MainViewModel
+import com.example.radiosharp.R
 import com.example.radiosharp.adapter.RadioAdapter
 import com.example.radiosharp.databinding.HomeFragmentBinding
 
@@ -33,13 +37,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-
-        val radioAdapter = RadioAdapter()
+        val radioAdapter = RadioAdapter(requireContext(),viewModel::fillText)
 
         binding.radioRecyclerView.adapter = radioAdapter
-
-//    viewModel.getConnect("json","techno")
-//        Log.d("MainViewModel","${viewModel.test.value}")
 
         viewModel.loadTheRadio.observe(viewLifecycleOwner, Observer {
             radioAdapter.submitlist(it)

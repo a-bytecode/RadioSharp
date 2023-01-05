@@ -2,9 +2,13 @@ package com.example.radiosharp
 
 import android.animation.ObjectAnimator
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -58,6 +62,28 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val animatorTwo = ObjectAnimator.ofFloat(button, View.ROTATION_X, 0f, 360f)
         animatorTwo.duration = 500
         animatorTwo.start()
+    }
+
+    fun loadText(text:TextView,context: Context) {
+
+        val searchyourRadiotext = text.toString()
+
+        if (searchyourRadiotext != "") {
+            searchRadio("json",searchyourRadiotext)
+            Log.d("MainViewModel","Test")
+        } else {
+            Toast.makeText(context, "Bitte Suchbegriff eingeben", Toast.LENGTH_SHORT)
+                .show()
+        }
+
+    }
+
+    fun fillText(text:TextView) {
+        val theText = text.text.toString()
+        if (theText == "") {
+            text.text = "Not found"
+        }
+
     }
 
 }

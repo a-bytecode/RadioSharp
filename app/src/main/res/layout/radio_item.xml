@@ -42,25 +42,15 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/info_genre"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:text="Genre:"
-                        android:textSize="8sp"
-                        app:layout_constraintBottom_toTopOf="@+id/genreText"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.502"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <TextView
                         android:id="@+id/genreText"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
                         android:layout_marginBottom="16dp"
-                        android:maxEms="50"
-                        android:maxLength="50"
-                        android:maxLines="50"
+                        android:maxEms="100"
+                        android:maxLength="100"
+                        android:maxLines="100"
                         android:text="electronica vibes"
                         android:textAlignment="center"
                         android:textSize="12sp"
@@ -70,8 +60,11 @@
 
                     <TextView
                         android:id="@+id/countryText"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:maxEms="100"
                         android:maxLength="100"
@@ -79,9 +72,10 @@
                         android:text="Greek"
                         android:textAlignment="center"
                         android:textSize="12sp"
-                        app:layout_constraintBottom_toTopOf="@+id/info_genre"
+                        app:layout_constraintBottom_toTopOf="@+id/genreText"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -92,7 +86,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                app:cardCornerRadius="10dp"
                 app:cardElevation="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -110,6 +103,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
+                        android:maxEms="100"
                         android:maxLength="100"
                         android:maxLines="100"
                         android:text="Pirate Radio GR - Electronica Vibes"
@@ -131,7 +125,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="10dp"
                 app:cardElevation="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -1,16 +1,26 @@
 package com.example.radiosharp.adapter
 
+import android.content.Context
+import android.graphics.drawable.AnimatedImageDrawable
+import android.graphics.drawable.AnimationDrawable
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.bumptech.glide.Glide
+import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
 import com.example.radiosharp.model.RadioClass
 
-class RadioAdapter: RecyclerView.Adapter<RadioAdapter.ItemViewHodler>() {
+class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Unit): RecyclerView.Adapter<RadioAdapter.ItemViewHodler>() {
+
 
     private var dataset = listOf<RadioClass>()
 
@@ -35,19 +45,58 @@ class RadioAdapter: RecyclerView.Adapter<RadioAdapter.ItemViewHodler>() {
         return ItemViewHodler(itemLayout)
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onBindViewHolder(holder: ItemViewHodler, position: Int) {
 
         val radioData : RadioClass = dataset[position]
         holder.radioName.text = radioData.name
         holder.countryName.text = radioData.country
         holder.genreName.text = radioData.tags
-        holder.iconImage.load(radioData.favicon)
+
+        val gif = ContextCompat.getDrawable(context,R.drawable.giphy) as AnimatedImageDrawable
+
+        gif.start()
+
+        Glide.with(context).load(radioData.favicon).placeholder(gif).into(holder.iconImage)
+
+
+        defaultText(holder.countryName)
+        defaultText(holder.genreName)
 
     }
 
     override fun getItemCount(): Int {
         return dataset.size
     }
+
+    //        if (radioData.favicon == "") {
+////           Glide.with(context).load(R.drawable.giphy).
+////           into(holder.iconImage)
+//            holder.iconImage.setImageResource(R.drawable.giphy)
+//        }else {
+////            Glide.with(context).clear(holder.iconImage)
+//            holder.iconImage.load(radioData.favicon)
+//        }
+
+    //        holder.iconImage.load(radioData.favicon){
+//
+//            target(
+//                onStart = { placeholder ->
+//                    if (placeholder == null) {
+//                        Glide.with(context).load(R.drawable.giphy).into(holder.iconImage)
+//                    }
+//                }, onError = { placeholder ->
+//                    if (placeholder == null) {
+//                        Glide.with(context).load(R.drawable.giphy2).into(holder.iconImage)
+//                    }
+//
+//                }, onSuccess = { result ->
+//                    Glide.with(context).clear(holder.iconImage)
+//                    holder.iconImage.setImageDrawable(result)
+//                }
+//
+//            )
+//        }
 
 
 }
