@@ -27,6 +27,10 @@ class DetailFragment: Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+
+        val serverid = requireArguments().getString("changeuuid")
+
+        viewModel.getServerid(binding.radioNameDetail,serverid)
+
     }
 }

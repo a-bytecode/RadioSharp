@@ -4,6 +4,9 @@ import com.squareup.moshi.Json
 
 data class RadioClass(
 
+    @Json(name = "changeuuid")
+    val changeuuid: String,
+
     @Json(name = "country")
     val country: String,
 

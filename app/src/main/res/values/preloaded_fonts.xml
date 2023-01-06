@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/aldrich</item>
+        <item>@font/alef</item>
+        <item>@font/allerta_stencil</item>
+        <item>@font/andika_new_basic</item>
+        <item>@font/audiowide</item>
+        <item>@font/fugaz_one</item>
+    </array>
+</resources>

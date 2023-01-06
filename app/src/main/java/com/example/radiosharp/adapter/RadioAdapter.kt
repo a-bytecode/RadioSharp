@@ -11,13 +11,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.bumptech.glide.Glide
 import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
+import com.example.radiosharp.databinding.DetailFragmentBinding
 import com.example.radiosharp.model.RadioClass
+import com.example.radiosharp.ui.HomeFragmentDirections
 
 class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Unit): RecyclerView.Adapter<RadioAdapter.ItemViewHodler>() {
 
@@ -36,6 +40,7 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
         val genreName = view.findViewById<TextView>(R.id.genreText)
         val countryName = view.findViewById<TextView>(R.id.countryText)
         val iconImage = view.findViewById<ImageView>(R.id.icon_image_detail)
+        val radioCardView = view.findViewById<CardView>(R.id.radioCardView)
     }
 
 
@@ -52,16 +57,21 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
         holder.radioName.text = radioData.name
         holder.countryName.text = radioData.country
         holder.genreName.text = radioData.tags
+        holder.radioCardView.setOnClickListener {
+            holder.itemView.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(radioData.changeuuid))
+        }
 
-        val gif = ContextCompat.getDrawable(context,R.drawable.giphy) as AnimatedImageDrawable
+
+        val gif = ContextCompat.getDrawable(context,R.drawable.giphy4) as AnimatedImageDrawable
 
         gif.start()
 
         Glide.with(context).load(radioData.favicon).placeholder(gif).into(holder.iconImage)
 
-
         defaultText(holder.countryName)
         defaultText(holder.genreName)
+
+
 
     }
 

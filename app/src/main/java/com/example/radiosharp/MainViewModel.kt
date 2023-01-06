@@ -66,7 +66,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun loadText(text:TextView,context: Context) {
 
-        val searchyourRadiotext = text.toString()
+        val searchyourRadiotext = text.text.toString()
 
         if (searchyourRadiotext != "") {
             searchRadio("json",searchyourRadiotext)
@@ -84,6 +84,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             text.text = "Not found"
         }
 
+    }
+
+    fun getServerid(text: TextView,serverid:String?) {
+        var thetext = text.text.toString()
+        if (serverid != null) {
+            thetext = serverid
+        }
     }
 
 }

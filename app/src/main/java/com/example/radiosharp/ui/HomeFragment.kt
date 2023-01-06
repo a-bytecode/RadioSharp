@@ -50,31 +50,10 @@ class HomeFragment : Fragment() {
 
                 viewModel.buttonAnimator(binding.searchButton)
 
-                val searchYourRadioText = binding.inputSearchText.text.toString()
-
-                if (searchYourRadioText != "") {
-                    viewModel.searchRadio("json",searchYourRadioText)
-
-                } else {
-                    Toast.makeText(requireContext(), "Bitte Suchbegriff eingeben", Toast.LENGTH_SHORT)
-                        .show()
-                }
-
-
-            }
-
-
-
-
-
-
-
-
-
-
-
-
+                viewModel.loadText(binding.inputSearchText,requireContext())
 
 
     }
+}
+
 }

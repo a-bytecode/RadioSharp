@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:cardCornerRadius="10dp"
@@ -22,7 +21,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_yellow_pink">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/detailtextCardView"
@@ -39,7 +39,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/gradient_white_black">
 
                     <TextView
                         android:id="@+id/genreText"
@@ -48,11 +49,13 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/aldrich"
                         android:maxEms="100"
                         android:maxLength="100"
                         android:maxLines="100"
                         android:text="electronica vibes"
                         android:textAlignment="center"
+                        android:textColor="#000000"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -66,11 +69,13 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/aldrich"
                         android:maxEms="100"
                         android:maxLength="100"
                         android:maxLines="100"
                         android:text="Greek"
                         android:textAlignment="center"
+                        android:textColor="#000000"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toTopOf="@+id/genreText"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -86,6 +91,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
+                app:cardBackgroundColor="#FFFFFF"
                 app:cardElevation="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -93,7 +99,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/gradient_white_black">
 
                     <TextView
                         android:id="@+id/radio_name_detail"
@@ -103,11 +110,13 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/aldrich"
                         android:maxEms="100"
                         android:maxLength="100"
                         android:maxLines="100"
                         android:text="Pirate Radio GR - Electronica Vibes"
                         android:textAlignment="center"
+                        android:textColor="#000000"
                         android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -138,6 +147,7 @@
                         android:id="@+id/icon_image_detail"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
+                        android:scaleType="centerCrop"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
