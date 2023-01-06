@@ -52,7 +52,6 @@ class HomeFragment : Fragment() {
 
                 viewModel.loadText(binding.inputSearchText,requireContext())
 
-
     }
 }
 

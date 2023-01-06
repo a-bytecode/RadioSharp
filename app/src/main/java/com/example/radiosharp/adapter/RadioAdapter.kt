@@ -71,8 +71,6 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
         defaultText(holder.countryName)
         defaultText(holder.genreName)
 
-
-
     }
 
     override fun getItemCount(): Int {
