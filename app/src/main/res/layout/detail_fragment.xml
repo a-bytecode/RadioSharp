@@ -11,6 +11,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <SeekBar
+            android:id="@+id/volume_seekBar"
+            style="@android:style/Widget.SeekBar"
+            android:layout_width="386dp"
+            android:layout_height="14dp"
+            android:layout_marginStart="200dp"
+            android:layout_marginTop="180dp"
+            android:layout_marginBottom="180dp"
+            android:max="100"
+            android:orientation="vertical"
+            android:progress="30"
+            android:rotation="-90"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.35000002" />
+
         <TextView
             android:id="@+id/countryText_detail"
             android:layout_width="0dp"
@@ -27,16 +44,14 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/iconCardView_detail"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="32dp"
+            android:layout_width="291dp"
+            android:layout_height="308dp"
+            android:layout_marginStart="55dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="15dp"
             app:cardElevation="5dp"
             app:layout_constraintBottom_toTopOf="@+id/genre_text_detail"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nameCardView_detail">
 
@@ -64,7 +79,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="10dp"
@@ -100,35 +115,19 @@
 
         </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/createdby_textView_detail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="8dp"
-            android:text="created by Alexander Astrachanzev"
-            android:textAlignment="center"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <Button
             android:id="@+id/stop_button"
             android:layout_width="0dp"
             android:layout_height="58dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="8dp"
             android:text="Stop"
             android:textAlignment="center"
             android:textSize="20sp"
             app:cornerRadius="15dp"
-            app:layout_constraintBottom_toTopOf="@+id/createdby_textView_detail"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button

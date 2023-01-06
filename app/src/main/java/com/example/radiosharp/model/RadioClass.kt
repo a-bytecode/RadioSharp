@@ -1,5 +1,6 @@
 package com.example.radiosharp.model
 
+import android.net.Uri
 import com.squareup.moshi.Json
 
 data class RadioClass(
@@ -14,7 +15,7 @@ data class RadioClass(
     val name: String,
 
     @Json(name = "url")
-    val url: String,
+    val playRadio: String,
 
     @Json(name = "favicon")
     val favicon: String,

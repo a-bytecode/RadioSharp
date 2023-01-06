@@ -3,6 +3,7 @@ package com.example.radiosharp
 import android.animation.ObjectAnimator
 import android.app.Application
 import android.content.Context
+import android.media.MediaPlayer
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -28,22 +29,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val loadTheRadio = repository.loadRadio
 
 
-//    private var _radioList = MutableLiveData<List<RadioClass>>()
-//    val radioList : LiveData<List<RadioClass>>
-//    get() = _radioList
-
-//    val test = repository.test
-//    fun getConnect(format:String,term:String) {
-//
-//            viewModelScope.launch {
-//                try {
-//                repository.getConnection(format,term)
-//
-//            } catch (e:Exception){
-//                    Log.d("MainViewModel","$e")
-//        }
-//
-//        }
 
         fun searchRadio(format: String, term: String) {
 
@@ -86,11 +71,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
-//    fun getServerid(text: String,serverid:String?) {
-//
-//        if (serverid != null) {
-//            text = serverid
-//        }
-//    }
 
-}
+    }
+
