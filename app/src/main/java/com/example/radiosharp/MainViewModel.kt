@@ -86,11 +86,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
-    fun getServerid(text: TextView,serverid:String?) {
-        var thetext = text.text.toString()
-        if (serverid != null) {
-            thetext = serverid
-        }
-    }
+//    fun getServerid(text: String,serverid:String?) {
+//
+//        if (serverid != null) {
+//            text = serverid
+//        }
+//    }
 
 }

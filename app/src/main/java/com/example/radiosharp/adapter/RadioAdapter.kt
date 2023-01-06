@@ -58,7 +58,7 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
         holder.countryName.text = radioData.country
         holder.genreName.text = radioData.tags
         holder.radioCardView.setOnClickListener {
-            holder.itemView.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(radioData.changeuuid))
+            holder.itemView.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(radioData.stationuuid))
         }
 
 
