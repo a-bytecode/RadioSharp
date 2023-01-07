@@ -1,32 +1,28 @@
 package com.example.radiosharp.ui
 
 import android.content.Context
-import android.graphics.ImageDecoder
 import android.graphics.drawable.AnimatedImageDrawable
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.MediaController
 import android.widget.SeekBar
-import androidx.annotation.RequiresApi
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
-import coil.load
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
 import com.example.radiosharp.databinding.DetailFragmentBinding
 import com.example.radiosharp.model.RadioClass
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class DetailFragment: Fragment() {
 
@@ -35,6 +31,8 @@ class DetailFragment: Fragment() {
     private val viewModel : MainViewModel by activityViewModels()
 
     private var mediaPlayer: MediaPlayer? = null
+
+    private lateinit var mediaController : MediaController
 
     private lateinit var audioManager: AudioManager
 
@@ -82,10 +80,12 @@ class DetailFragment: Fragment() {
                    .into(binding.iconImageDetail)
 
 
-               binding.playButton.setOnClickListener {
-                   viewModel.buttonAnimator(binding.playButton)
-                   stopPlaying()
+               binding.playImageDetail.setOnClickListener {
 
+                   binding.playImageDetail.visibility = View.GONE
+                   binding.stopImageDetail.visibility = View.VISIBLE
+
+                       resetPlaying()
                        mediaPlayer = MediaPlayer().apply {
                            setAudioAttributes(
                                AudioAttributes.Builder()
@@ -100,15 +100,34 @@ class DetailFragment: Fragment() {
                            it.start()
                        }
                }
-               binding.stopButton.setOnClickListener {
-                   viewModel.buttonAnimator(binding.stopButton)
+               binding.stopImageDetail.setOnClickListener {
+                   binding.stopImageDetail.visibility = View.GONE
+                   binding.playImageDetail.visibility = View.VISIBLE
                    stopPlaying()
                }
            } else {
-               binding.playButton.setOnClickListener {
+               binding.playImageDetail.setOnClickListener {
                }
-               binding.stopButton.setOnClickListener {
+               binding.playImageDetail.setOnClickListener {
                }
+           }
+
+           binding.skipNextImageDetail.setOnClickListener {
+
+           }
+           binding.skipPreviousImageDetail.setOnClickListener {
+
+           }
+
+           binding.favOnImageDetail.setOnClickListener {
+               binding.favOffImageDetail.visibility = View.VISIBLE
+               binding.favOnImageDetail.visibility = View.GONE
+
+           }
+           binding.favOffImageDetail.setOnClickListener {
+               binding.favOnImageDetail.visibility = View.VISIBLE
+               binding.favOffImageDetail.visibility = View.GONE
+
            }
 
        })
@@ -139,5 +158,28 @@ class DetailFragment: Fragment() {
             mediaPlayer = null
         }
 }
+    private fun resetPlaying(){
+        if(mediaPlayer != null){
+            mediaPlayer!!.reset()
+            mediaPlayer!!.release()
+            mediaPlayer = null
+        }
+    }
+    // TODO Fehler bei der Multiplen Wiedergabe beheben
+    private fun resetAllPlayers(mediaPlayer: MediaPlayer) {
+        if(mediaPlayer.isPlaying) {
+            mediaPlayer.reset()
+            mediaPlayer.release()
+        } else {
+            mediaPlayer.start()
+        }
+    }
+    //TODO previous und next sound abspielen fixen
+    private fun nextIndex(list: List<RadioClass>) {
+        for (i in list) {
+
+        }
+    }
+
 
 }

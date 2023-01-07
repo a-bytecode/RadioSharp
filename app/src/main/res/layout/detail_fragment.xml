@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/gradient_270">
 
+
         <androidx.cardview.widget.CardView
             android:id="@+id/nfo_cardView_detail"
             android:layout_width="0dp"
@@ -19,8 +20,6 @@
             android:layout_marginStart="50dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="50dp"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toTopOf="@+id/play_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iconCardView_detail">
@@ -158,32 +157,87 @@
 
         </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/stop_button"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="0dp"
             android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="16dp"
-            android:text="Stop"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:cornerRadius="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout_Fav_list"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nfo_cardView_detail">
 
-        <Button
-            android:id="@+id/play_button"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="8dp"
-            android:text="Play"
-            android:textSize="20sp"
-            app:cornerRadius="15dp"
-            app:layout_constraintBottom_toTopOf="@+id/stop_button"
-            app:layout_constraintEnd_toEndOf="@+id/stop_button"
-            app:layout_constraintStart_toStartOf="@+id/stop_button" />
+
+            <ImageView
+                android:id="@+id/skip_previous_image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_skip_previous_24" />
+
+            <ImageView
+                android:id="@+id/play_Image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_baseline_play_arrow_24" />
+
+            <ImageView
+                android:id="@+id/stop_image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_baseline_stop_24" />
+
+            <ImageView
+                android:id="@+id/skip_next_image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_skip_next_24" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout_Fav_list"
+            android:layout_width="239dp"
+            android:layout_height="42dp"
+            android:layout_marginBottom="50dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout">
+
+            <ImageView
+                android:id="@+id/favList_image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_playlist_play_24" />
+
+            <ImageView
+                android:id="@+id/fav_on_image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_baseline_favorite_24" />
+
+            <ImageView
+                android:id="@+id/fav_off_image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
