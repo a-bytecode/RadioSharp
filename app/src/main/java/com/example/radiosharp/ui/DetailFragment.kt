@@ -64,11 +64,14 @@ class DetailFragment: Fragment() {
            if(currentStation != null) {
 
                binding.radioNameDetail.text = currentStation.name
-               binding.countryTextDetail.text = currentStation.country
-               binding.genreTextDetail.text = currentStation.tags
+//               binding.countryTextDetail.text = currentStation.country
+//               binding.genreTextDetail.text = currentStation.tags
+               binding.headerTextDialogDetail.text = currentStation.name
+               binding.countryTextDialogDetail.text = currentStation.country
+               binding.genreTextDialogDetail.text = currentStation.tags
 
-               viewModel.fillText(binding.countryTextDetail)
-               viewModel.fillText(binding.genreTextDetail)
+               viewModel.fillText(binding.countryTextDialogDetail)
+               viewModel.fillText(binding.genreTextDialogDetail)
 
                //TODO Starten von animierten gifs in der Detailansicht
                val gif = ContextCompat.getDrawable(requireContext(),R.drawable.giphy3) as AnimatedImageDrawable
@@ -116,7 +119,6 @@ class DetailFragment: Fragment() {
 
            }
            binding.skipPreviousImageDetail.setOnClickListener {
-
            }
 
            binding.favOnImageDetail.setOnClickListener {
@@ -128,6 +130,13 @@ class DetailFragment: Fragment() {
                binding.favOnImageDetail.visibility = View.VISIBLE
                binding.favOffImageDetail.visibility = View.GONE
 
+           }
+
+           binding.informationImageDetail.setOnClickListener {
+               binding.informationDialogDetail.visibility = View.VISIBLE
+               binding.okButtonDialog.setOnClickListener {
+                 binding.informationDialogDetail.visibility = View.GONE
+               }
            }
 
        })
