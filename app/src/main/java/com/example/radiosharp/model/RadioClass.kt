@@ -21,6 +21,8 @@ data class RadioClass(
     val favicon: String,
 
     @Json(name = "tags")
-    val tags: String
+    val tags: String,
+
+    var favorite : Boolean = false
 
     )

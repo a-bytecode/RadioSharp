@@ -65,9 +65,7 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
         val gif = ContextCompat.getDrawable(context,R.drawable.giphy4) as AnimatedImageDrawable
 
         gif.start()
-
         Glide.with(context).load(radioData.favicon).placeholder(gif).into(holder.iconImage)
-
         defaultText(holder.countryName)
         defaultText(holder.genreName)
 

@@ -20,7 +20,7 @@
             android:layout_weight="1"
             android:background="#94000000"
             android:clickable="true"
-            android:elevation="10dp"
+            android:elevation="25dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -44,13 +44,13 @@
 
                 <ScrollView
                     android:id="@+id/dialog_scrollview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/gradient_white_black">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/gradient_white_black2">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="vertical">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,16 +64,16 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="16dp"
                                 android:layout_marginEnd="16dp"
-                                android:layout_marginBottom="16dp"
+                                android:layout_marginBottom="24dp"
                                 android:fontFamily="@font/aldrich"
                                 android:text="Pirate Radio GR - Electronica Vibes"
                                 android:textAlignment="center"
                                 android:textSize="20sp"
                                 app:layout_constraintBottom_toTopOf="@+id/country_text_dialog_detail"
                                 app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintVertical_bias="0.0" />
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
                                 android:id="@+id/country_text_dialog_detail"
@@ -81,7 +81,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginEnd="16dp"
-                                android:layout_marginBottom="32dp"
+                                android:layout_marginBottom="16dp"
                                 android:fontFamily="@font/aldrich"
                                 android:text="Greece"
                                 android:textAlignment="center"
@@ -111,7 +111,8 @@
                                 android:layout_height="0dp"
                                 android:layout_marginStart="100dp"
                                 android:layout_marginEnd="100dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginBottom="16dp"
+                                android:fontFamily="sans-serif"
                                 android:text="OK"
                                 app:cornerRadius="15dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -143,7 +144,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/vol_up_image_detail"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="8dp"
@@ -163,7 +164,7 @@
                     android:rotation="0"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintStart_toEndOf="@+id/vol_up_image_detail"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
@@ -173,7 +174,7 @@
             android:layout_width="0dp"
             android:layout_height="310dp"
             android:layout_marginTop="24dp"
-            app:cardElevation="5dp"
+            app:cardElevation="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nameCardView_detail">

@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.app.Application
 import android.content.Context
 import android.media.MediaPlayer
+import android.provider.MediaStore.Audio.Radio
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -24,10 +25,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private var api = RadioApiService.UserApi
 
-    val repository = Repository(api)
+    private val repository = Repository(api)
 
     val loadTheRadio = repository.loadRadio
 
+    val favoritenListe = repository.favoritesList
 
 
         fun searchRadio(format: String, term: String) {
@@ -38,7 +40,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                } catch (e:Exception) {
                        Log.d("MainViewModel","$e")
                    }
-
            }
         }
     fun buttonAnimator(button: Button) {
@@ -68,7 +69,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         if (theText == "") {
             text.text = "Not found"
         }
+    }
 
+    fun addFav(radioStation:RadioClass){
+        repository.addFavorites(radioStation)
+    }
+
+    fun removeFav(radioStation: RadioClass){
+        repository.removeFavorite(radioStation)
     }
 
 

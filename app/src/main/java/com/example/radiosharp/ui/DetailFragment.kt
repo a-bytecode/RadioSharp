@@ -6,6 +6,7 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,8 @@ class DetailFragment: Fragment() {
 
     private var mediaPlayer: MediaPlayer? = null
 
+    private lateinit var currentStation: RadioClass
+
     private lateinit var mediaController : MediaController
 
     private lateinit var audioManager: AudioManager
@@ -45,7 +48,13 @@ class DetailFragment: Fragment() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        stopPlaying()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         //TODO aktiviert den Audio Manager um Sound abzuspielen
         audioManager = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
@@ -57,9 +66,9 @@ class DetailFragment: Fragment() {
         // und in der Variable currentSation speichern wir das Ergebnis.
        viewModel.loadTheRadio.observe(viewLifecycleOwner, Observer {
 
-           val currentStation = it.find {
-               it.stationuuid == serverid
-           }
+            currentStation = it.find {
+                it.stationuuid == serverid
+            }!!
            //TODO Die "Null" Abfrage dient dazu um zu erkenen ob die current station gleich "null" ist
            if(currentStation != null) {
 
@@ -88,15 +97,14 @@ class DetailFragment: Fragment() {
                    binding.playImageDetail.visibility = View.GONE
                    binding.stopImageDetail.visibility = View.VISIBLE
 
-                       resetPlaying()
-                       mediaPlayer = MediaPlayer().apply {
-                           setAudioAttributes(
-                               AudioAttributes.Builder()
-                                   .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                                   .setUsage(AudioAttributes.USAGE_MEDIA)
-                                   .build()
-                           )
-                       }
+                   mediaPlayer = MediaPlayer().apply {
+                       setAudioAttributes(
+                           AudioAttributes.Builder()
+                               .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                               .setUsage(AudioAttributes.USAGE_MEDIA)
+                               .build()
+                       )
+                   }
                        mediaPlayer!!.setDataSource(requireContext(),currentStation.playRadio.toUri())
                        mediaPlayer!!.prepareAsync()
                        mediaPlayer!!.setOnPreparedListener {
@@ -116,21 +124,34 @@ class DetailFragment: Fragment() {
            }
 
            binding.skipNextImageDetail.setOnClickListener {
-
            }
+
            binding.skipPreviousImageDetail.setOnClickListener {
            }
 
+           if (currentStation.favorite == false) {
+               binding.favOffImageDetail.visibility = View.VISIBLE
+               binding.favOnImageDetail.visibility = View.GONE
+           } else {
+               binding.favOnImageDetail.visibility = View.VISIBLE
+               binding.favOffImageDetail.visibility = View.GONE
+           }
            binding.favOnImageDetail.setOnClickListener {
                binding.favOffImageDetail.visibility = View.VISIBLE
                binding.favOnImageDetail.visibility = View.GONE
-
+               currentStation.favorite = false
+               viewModel.removeFav(currentStation)
            }
            binding.favOffImageDetail.setOnClickListener {
                binding.favOnImageDetail.visibility = View.VISIBLE
                binding.favOffImageDetail.visibility = View.GONE
-
+               currentStation.favorite = true
+               viewModel.addFav(currentStation)
            }
+
+           viewModel.favoritenListe.observe(viewLifecycleOwner, Observer {
+               Log.d("removeFavorite","${viewModel.favoritenListe.value?.size}")
+           })
 
            binding.informationImageDetail.setOnClickListener {
                binding.informationDialogDetail.visibility = View.VISIBLE
@@ -174,10 +195,10 @@ class DetailFragment: Fragment() {
             mediaPlayer = null
         }
     }
-    // TODO Fehler bei der Multiplen Wiedergabe beheben
+    // TODO Fehler der Multiplen Wiedergabe beheben
     private fun resetAllPlayers(mediaPlayer: MediaPlayer) {
         if(mediaPlayer.isPlaying) {
-            mediaPlayer.reset()
+            mediaPlayer.stop()
             mediaPlayer.release()
         } else {
             mediaPlayer.start()
