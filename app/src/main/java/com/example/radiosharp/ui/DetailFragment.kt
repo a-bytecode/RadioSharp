@@ -55,7 +55,7 @@ class DetailFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        //TODO aktiviert den Audio Manager um Sound abzuspielen
+        //TODO definieren des Audio Managers um den Sound in der SeekBar zu regulieren
         audioManager = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         //TODO Um die Argumete zu übergeben, speichern wir den Station-key in der variable serverid
@@ -73,8 +73,6 @@ class DetailFragment: Fragment() {
            if(currentStation != null) {
 
                binding.radioNameDetail.text = currentStation.name
-//               binding.countryTextDetail.text = currentStation.country
-//               binding.genreTextDetail.text = currentStation.tags
                binding.headerTextDialogDetail.text = currentStation.name
                binding.countryTextDialogDetail.text = currentStation.country
                binding.genreTextDialogDetail.text = currentStation.tags
@@ -129,6 +127,7 @@ class DetailFragment: Fragment() {
            binding.skipPreviousImageDetail.setOnClickListener {
            }
 
+           //TODO veränderung der Zustände an dem Favoriten Symbol durch die if Verzweigung
            if (currentStation.favorite == false) {
                binding.favOffImageDetail.visibility = View.VISIBLE
                binding.favOnImageDetail.visibility = View.GONE
@@ -136,6 +135,7 @@ class DetailFragment: Fragment() {
                binding.favOnImageDetail.visibility = View.VISIBLE
                binding.favOffImageDetail.visibility = View.GONE
            }
+           // TODO implementierung der remove & add Funktionen an dem Favoriten Symbol
            binding.favOnImageDetail.setOnClickListener {
                binding.favOffImageDetail.visibility = View.VISIBLE
                binding.favOnImageDetail.visibility = View.GONE
@@ -207,7 +207,6 @@ class DetailFragment: Fragment() {
     //TODO previous und next sound abspielen fixen
     private fun nextIndex(list: List<RadioClass>) {
         for (i in list) {
-
         }
     }
 

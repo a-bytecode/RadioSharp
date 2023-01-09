@@ -22,7 +22,6 @@ class Repository(private val api: RadioApiService.UserApi) {
        loadRadio.value = api.retrofitService.getServerResponse(format,term)
    }
 
-
     fun addFavorites(radioStation:RadioClass){
         if (favoritesList.value != null){
             val favList : MutableList<RadioClass> = favoritesList.value!!
@@ -30,7 +29,6 @@ class Repository(private val api: RadioApiService.UserApi) {
             _favoritesList.value = favList
             Log.d("removeFavorite","${radioStation.name}")
         }
-
     }
 
     fun removeFavorite(radioStation: RadioClass){
@@ -43,7 +41,6 @@ class Repository(private val api: RadioApiService.UserApi) {
 //        _favoritesList.value?.remove(radioStation)
 //        _favoritesList.value = _favoritesList.value
 //        Log.d("removeFavorite","${radioStation.name}")
-
     }
 }
 
