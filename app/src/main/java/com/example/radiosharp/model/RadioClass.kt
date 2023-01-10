@@ -1,6 +1,7 @@
 package com.example.radiosharp.model
 
 import android.net.Uri
+import com.example.radiosharp.adapter.RadioAdapter
 import com.squareup.moshi.Json
 
 data class RadioClass(
@@ -23,6 +24,10 @@ data class RadioClass(
     @Json(name = "tags")
     val tags: String,
 
-    var favorite : Boolean = false
+    var favorite : Boolean = false,
+
+    var nextStation : String = "",
+
+    var previousStation : String = ""
 
     )

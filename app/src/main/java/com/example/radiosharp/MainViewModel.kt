@@ -3,17 +3,12 @@ package com.example.radiosharp
 import android.animation.ObjectAnimator
 import android.app.Application
 import android.content.Context
-import android.media.MediaPlayer
-import android.provider.MediaStore.Audio.Radio
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.remote.RadioApiService

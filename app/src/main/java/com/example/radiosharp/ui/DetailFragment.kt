@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.MediaController
 import android.widget.SeekBar
 import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
@@ -60,6 +61,8 @@ class DetailFragment: Fragment() {
 
         //TODO Um die Argumete zu übergeben, speichern wir den Station-key in der variable serverid
         val serverid = requireArguments().getString("stationuuid")
+        val nextstationid = requireArguments().getString("nextstationuuid")
+        val previousstationid = requireArguments().getString("previousstationuuid")
 
         //TODO wir schauen die Liste an Radio Stationen durch den observer an, wir vergleichen die Server ID mit der
         // jeder StationsID in der Liste bis die Station die die gleiche ID hat wie die Server ID gefunden wird,
@@ -122,9 +125,19 @@ class DetailFragment: Fragment() {
            }
 
            binding.skipNextImageDetail.setOnClickListener {
+               if (nextstationid != null && previousstationid != null && previousstationid != "" && nextstationid != ""){
+                   findNavController().navigate(DetailFragmentDirections.actionDetailFragmentSelf(nextstationid))
+               }
            }
 
            binding.skipPreviousImageDetail.setOnClickListener {
+               if (previousstationid != null && nextstationid != null && previousstationid != "" && nextstationid != ""){
+                   findNavController().navigate(DetailFragmentDirections.actionDetailFragmentSelf(previousstationid))
+               }
+           }
+
+           binding.favListImageDetail.setOnClickListener{
+               findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToFavFragment())
            }
 
            //TODO veränderung der Zustände an dem Favoriten Symbol durch die if Verzweigung
@@ -151,6 +164,9 @@ class DetailFragment: Fragment() {
 
            viewModel.favoritenListe.observe(viewLifecycleOwner, Observer {
                Log.d("removeFavorite","${viewModel.favoritenListe.value?.size}")
+               it.find {
+                   it.favorite
+               }
            })
 
            binding.informationImageDetail.setOnClickListener {

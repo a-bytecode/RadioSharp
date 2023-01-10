@@ -5,6 +5,7 @@ import android.graphics.drawable.AnimatedImageDrawable
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,12 +55,24 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
     override fun onBindViewHolder(holder: ItemViewHodler, position: Int) {
 
         val radioData : RadioClass = dataset[position]
+
+        if (position < dataset.size -1 && position > 0){
+            val previousRadioData : RadioClass = dataset[position -1]
+            val nextRadioData : RadioClass = dataset[position +1]
+            Log.d("TEST","${nextRadioData.stationuuid}")
+            radioData.previousStation = previousRadioData.stationuuid
+            radioData.nextStation = nextRadioData.stationuuid
+        }
+
         holder.radioName.text = radioData.name
         holder.countryName.text = radioData.country
         holder.genreName.text = radioData.tags
         holder.radioCardView.setOnClickListener {
-            holder.itemView.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(radioData.stationuuid))
+            holder.itemView.findNavController().navigate(
+                HomeFragmentDirections
+                    .actionHomeFragmentToDetailFragment(radioData.stationuuid,radioData.nextStation,radioData.previousStation))
         }
+
 
 
         val gif = ContextCompat.getDrawable(context,R.drawable.giphy4) as AnimatedImageDrawable
@@ -68,7 +81,6 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
         Glide.with(context).load(radioData.favicon).placeholder(gif).into(holder.iconImage)
         defaultText(holder.countryName)
         defaultText(holder.genreName)
-
     }
 
     override fun getItemCount(): Int {

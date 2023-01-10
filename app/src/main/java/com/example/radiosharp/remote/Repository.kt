@@ -3,6 +3,7 @@ package com.example.radiosharp.remote
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.room.Index
 import com.example.radiosharp.model.RadioClass
 
 class Repository(private val api: RadioApiService.UserApi) {
@@ -12,6 +13,8 @@ class Repository(private val api: RadioApiService.UserApi) {
     val loadRadio : MutableLiveData<List<RadioClass>>
     get() = _loadRadio
 
+    //TODO Eine leere Favoriten-Liste erstellt damit der User
+    // zukünftige Favoriten in dieser Liste abspeichern kann.
     private var _favoritesList = MutableLiveData<MutableList<RadioClass>>(mutableListOf())
     val favoritesList : LiveData<MutableList<RadioClass>>
     get() = _favoritesList
@@ -22,6 +25,8 @@ class Repository(private val api: RadioApiService.UserApi) {
        loadRadio.value = api.retrofitService.getServerResponse(format,term)
    }
 
+    //TODO die Funktion add und remove, bereitgestellt und sie ungleich "null" gesetzt
+    // damit bei der Aktivierung der funktion die App nicht abstürzt
     fun addFavorites(radioStation:RadioClass){
         if (favoritesList.value != null){
             val favList : MutableList<RadioClass> = favoritesList.value!!
@@ -32,7 +37,6 @@ class Repository(private val api: RadioApiService.UserApi) {
     }
 
     fun removeFavorite(radioStation: RadioClass){
-        //TODO MutableLiveData triggern
         if (favoritesList.value != null) {
             val removeUnitfromList : MutableList<RadioClass> = favoritesList.value!!
             removeUnitfromList.remove(radioStation)
@@ -42,5 +46,6 @@ class Repository(private val api: RadioApiService.UserApi) {
 //        _favoritesList.value = _favoritesList.value
 //        Log.d("removeFavorite","${radioStation.name}")
     }
-}
+
+    }
 
