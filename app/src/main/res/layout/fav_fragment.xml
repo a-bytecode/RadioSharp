@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/gradient_270">
+        android:background="@drawable/gradient_270v2">
 
         <Button
             android:id="@+id/search_button_fav"
@@ -36,8 +36,9 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:fontFamily="@font/fugaz_one"
-            android:text="Your Favorites"
+            android:text="Favorites"
             android:textAlignment="center"
+            android:textColor="#FFFFFF"
             android:textSize="34sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -66,11 +67,12 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
-            android:hint="Search Favorites..."
+            android:hint="Search..."
             android:minHeight="48dp"
             android:outlineAmbientShadowColor="@color/white"
             android:textAlignment="textStart"
             android:textColorHighlight="#DCA4FF"
+            android:textColorHint="#FFFFFF"
             android:textColorLink="#9F00FF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

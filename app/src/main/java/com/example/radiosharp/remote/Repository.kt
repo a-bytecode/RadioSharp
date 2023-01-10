@@ -21,7 +21,8 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
     val favoritesList : LiveData<MutableList<RadioClass>>
     get() = _favoritesList
 
-    val radioStations = database.radioDatabaseDao.getAll()
+    val dB = database.radioDatabaseDao
+    val radioDatabase = database.radioDatabaseDao.getFav()
 
 
    suspend fun getConnection(format:String,term:String){
@@ -29,7 +30,6 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
        loadRadio.value = api.retrofitService.getServerResponse(format,term)
        val response = api.retrofitService.getServerResponse(format,term)
        database.radioDatabaseDao.insert(response)
-
    }
 
     //TODO die Funktion add und remove, bereitgestellt und sie ungleich "null" gesetzt

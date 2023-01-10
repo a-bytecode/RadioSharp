@@ -38,6 +38,10 @@ class FavFragment: Fragment() {
         viewModel.favoritenListe.observe(viewLifecycleOwner, Observer {
             favAdapter.submitlist(it)
         })
+
+        viewModel.radioDatabase.observe(viewLifecycleOwner, Observer {
+            favAdapter.submitlist(it)
+        })
     }
 
 }

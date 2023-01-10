@@ -39,7 +39,6 @@ class FavAdapter (val context: Context, val defaultText : (text: TextView)-> Uni
         val radioCardView = view.findViewById<CardView>(R.id.radioCardView)
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHodler {
         val itemLayout = LayoutInflater.from(parent.context)
             .inflate(R.layout.radio_item,parent,false)

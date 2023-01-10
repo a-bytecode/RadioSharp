@@ -5,6 +5,7 @@ import android.graphics.drawable.AnimatedImageDrawable
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.media.audiofx.Visualizer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -160,8 +161,11 @@ class DetailFragment: Fragment() {
                binding.favOffImageDetail.visibility = View.GONE
                currentStation.favorite = true
                viewModel.addFav(currentStation)
+//               viewModel.dataB.update(currentStation)
            }
 
+           //TODO Hier sucht die Favoritenliste den Markierten Favorit
+           // indem es durch eine "Boolean" Abfrage nachprüft.
            viewModel.favoritenListe.observe(viewLifecycleOwner, Observer {
                Log.d("removeFavorite","${viewModel.favoritenListe.value?.size}")
                it.find {
@@ -174,6 +178,13 @@ class DetailFragment: Fragment() {
                binding.okButtonDialog.setOnClickListener {
                  binding.informationDialogDetail.visibility = View.GONE
                }
+           }
+
+           if (mediaPlayer != null) {
+               binding.visualizer.setColor(R.drawable.gradient_yellow_pink)
+               binding.visualizer.setDensity(150F)
+               binding.visualizer.setGap(2)
+               binding.visualizer.setPlayer(mediaPlayer!!.audioSessionId)
            }
 
        })
