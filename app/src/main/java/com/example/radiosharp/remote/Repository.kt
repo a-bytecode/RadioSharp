@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Index
+import com.example.radiosharp.local.RadioDatabase
+import com.example.radiosharp.local.getDatabase
 import com.example.radiosharp.model.RadioClass
 
-class Repository(private val api: RadioApiService.UserApi) {
+class Repository(private val api: RadioApiService.UserApi,private val database: RadioDatabase) {
 
 
     private var _loadRadio = MutableLiveData<List<RadioClass>>()
@@ -19,10 +21,15 @@ class Repository(private val api: RadioApiService.UserApi) {
     val favoritesList : LiveData<MutableList<RadioClass>>
     get() = _favoritesList
 
+    val radioStations = database.radioDatabaseDao.getAll()
+
 
    suspend fun getConnection(format:String,term:String){
 
        loadRadio.value = api.retrofitService.getServerResponse(format,term)
+       val response = api.retrofitService.getServerResponse(format,term)
+       database.radioDatabaseDao.insert(response)
+
    }
 
     //TODO die Funktion add und remove, bereitgestellt und sie ungleich "null" gesetzt

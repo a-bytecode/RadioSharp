@@ -56,6 +56,11 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
 
         val radioData : RadioClass = dataset[position]
 
+        //TODO mit diesen Zeilen geben wir der "RadioClass" Bescheid, dass sie erkennen soll
+        // das wir VOR der aktuellen "position" und NACH der aktuellen "position" eine weitere "position" haben.
+        // Und wir ermöglichen es somit, die Ausführung der Previous und Next Wiedergabe.
+        // U.a mussten wir auch in unserem nav_graph seine übergabe Argumente "prev & next" erweitern.
+
         if (position < dataset.size -1 && position > 0){
             val previousRadioData : RadioClass = dataset[position -1]
             val nextRadioData : RadioClass = dataset[position +1]
@@ -70,7 +75,8 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
         holder.radioCardView.setOnClickListener {
             holder.itemView.findNavController().navigate(
                 HomeFragmentDirections
-                    .actionHomeFragmentToDetailFragment(radioData.stationuuid,radioData.nextStation,radioData.previousStation))
+                    .actionHomeFragmentToDetailFragment(
+                        radioData.stationuuid,radioData.nextStation,radioData.previousStation))
         }
 
 
@@ -86,15 +92,6 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
     override fun getItemCount(): Int {
         return dataset.size
     }
-
-    //        if (radioData.favicon == "") {
-////           Glide.with(context).load(R.drawable.giphy).
-////           into(holder.iconImage)
-//            holder.iconImage.setImageResource(R.drawable.giphy)
-//        }else {
-////            Glide.with(context).clear(holder.iconImage)
-//            holder.iconImage.load(radioData.favicon)
-//        }
 
     //        holder.iconImage.load(radioData.favicon){
 //

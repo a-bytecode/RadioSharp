@@ -1,11 +1,14 @@
 package com.example.radiosharp.model
 
-import android.net.Uri
-import com.example.radiosharp.adapter.RadioAdapter
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
+
+@Entity
 data class RadioClass(
 
+    @PrimaryKey
     @Json(name = "stationuuid")
     val stationuuid: String,
 

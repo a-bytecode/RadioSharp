@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.radiosharp.local.getDatabase
 import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.remote.RadioApiService
 import com.example.radiosharp.remote.Repository
@@ -17,10 +18,11 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
+    val database = getDatabase(application)
 
     private var api = RadioApiService.UserApi
 
-    private val repository = Repository(api)
+    private val repository = Repository(api,database)
 
     val loadTheRadio = repository.loadRadio
 
