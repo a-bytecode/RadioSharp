@@ -56,7 +56,7 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
 
         val radioData : RadioClass = dataset[position]
 
-        //TODO mit diesen Zeilen geben wir der "RadioClass" Bescheid, dass sie erkennen soll
+        // mit diesen Zeilen geben wir der "RadioClass" Bescheid, dass sie erkennen soll
         // das wir VOR der aktuellen "position" und NACH der aktuellen "position" eine weitere "position" haben.
         // Und wir ermöglichen es somit, die Ausführung der Previous und Next Wiedergabe.
         // U.a mussten wir auch in unserem nav_graph seine übergabe Argumente "prev & next" erweitern.

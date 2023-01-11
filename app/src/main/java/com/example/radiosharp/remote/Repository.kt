@@ -1,5 +1,6 @@
 package com.example.radiosharp.remote
 
+import android.opengl.Visibility
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -31,7 +32,6 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
        val response = api.retrofitService.getServerResponse(format,term)
        database.radioDatabaseDao.insert(response)
    }
-
     // Die Funktion add und remove, bereitgestellt und sie ungleich "null" gesetzt
     // damit bei der Aktivierung der funktion die App nicht abstürzt
     fun addFavorites(radioStation:RadioClass){
@@ -49,26 +49,18 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
             removeUnitfromList.remove(radioStation)
             _favoritesList.value = removeUnitfromList
         }
-//        _favoritesList.value?.remove(radioStation)
-//        _favoritesList.value = _favoritesList.value
-//        Log.d("removeFavorite","${radioStation.name}")
     }
 
-
     fun setPrevAndNext() {
-
         // Temporäre Liste erstellt.
             val tempList = loadRadio.value
-
         // Wird nur ausgeführt wenn TempLuste nicht "null" und nicht "leer" ist.
             if (!tempList.isNullOrEmpty()){
 
                 for (position in tempList.indices) {
-
                     val currentStation = tempList[position]
 
                     if (position < tempList.size -1){
-
                         // Damit die Liste nicht "out of Bounds" geht geben wir der "position" +1, somit kann mann vor schalten ohne Absturz.
                         val nextStation = tempList[position +1]
                         currentStation.nextStation = nextStation.stationuuid
@@ -78,14 +70,10 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
                         val previousRadio = tempList[position -1]
                         currentStation.previousStation = previousRadio.stationuuid
                     }
-
             }
                 // hiermit Triggern wir die Live data.
               _loadRadio.value = tempList.toMutableList()
-
         }
-
-
     }
 
     }

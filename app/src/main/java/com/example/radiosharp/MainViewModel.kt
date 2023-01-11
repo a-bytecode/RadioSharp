@@ -83,5 +83,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun setPrevAndNextStation(){
         repository.setPrevAndNext()
     }
+
+
 }
 

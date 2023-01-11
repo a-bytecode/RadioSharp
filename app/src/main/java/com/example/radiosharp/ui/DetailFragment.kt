@@ -26,6 +26,7 @@ import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
 import com.example.radiosharp.databinding.DetailFragmentBinding
 import com.example.radiosharp.model.RadioClass
+import com.example.radiosharp.visualizer.SquareBarVisualizer
 
 class DetailFragment: Fragment() {
 
@@ -41,7 +42,7 @@ class DetailFragment: Fragment() {
 
     private lateinit var audioManager: AudioManager
 
-    private lateinit var visualizer: Visualizer
+    private lateinit var squareBarVisualizer: SquareBarVisualizer
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -129,12 +130,16 @@ class DetailFragment: Fragment() {
            binding.skipNextImageDetail.setOnClickListener {
                if (currentStation.nextStation.isNotEmpty()){
                    findNavController().navigate(DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation))
+               } else {
+                   binding.skipNextImageDetail.visibility = View.INVISIBLE
                }
            }
 
            binding.skipPreviousImageDetail.setOnClickListener {
                if (currentStation.previousStation.isNotEmpty()){
                    findNavController().navigate(DetailFragmentDirections.actionDetailFragmentSelf(currentStation.previousStation))
+               } else {
+                       binding.skipPreviousImageDetail.visibility = View.INVISIBLE
                }
            }
 
@@ -182,12 +187,15 @@ class DetailFragment: Fragment() {
            }
 
            if (mediaPlayer != null) {
-               visualizer.enabled
-               binding.visualizer.setColor(R.drawable.gradient_yellow_pink)
-               binding.visualizer.setDensity(150F)
-               binding.visualizer.setGap(2)
-               binding.visualizer.setPlayer(mediaPlayer!!.audioSessionId)
-               visualizer.release()
+               squareBarVisualizer.visualizer.enabled
+
+               squareBarVisualizer.animation.start()
+
+               squareBarVisualizer.setColor(R.drawable.gradient_yellow_pink)
+               squareBarVisualizer.setDensity(150F)
+               squareBarVisualizer.setGap(2)
+               squareBarVisualizer.setPlayer(mediaPlayer!!.audioSessionId)
+               squareBarVisualizer.release()
            }
 
        })
