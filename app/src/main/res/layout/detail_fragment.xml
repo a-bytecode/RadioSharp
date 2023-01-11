@@ -199,6 +199,15 @@
                     app:layout_constraintVertical_bias="1.0"
                     tools:srcCompat="@tools:sample/avatars" />
 
+                <com.chibde.visualizer.SquareBarVisualizer
+                    android:id="@+id/visualizer"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    app:layout_constraintBottom_toTopOf="@+id/icon_image_detail"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>

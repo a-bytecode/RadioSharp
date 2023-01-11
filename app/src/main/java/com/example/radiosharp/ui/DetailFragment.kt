@@ -41,6 +41,8 @@ class DetailFragment: Fragment() {
 
     private lateinit var audioManager: AudioManager
 
+    private lateinit var visualizer: Visualizer
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,23 +59,22 @@ class DetailFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        //TODO definieren des Audio Managers um den Sound in der SeekBar zu regulieren
+        // Das definieren des Audio Managers um den Sound in der SeekBar zu regulieren
         audioManager = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
-        //TODO Um die Argumete zu übergeben, speichern wir den Station-key in der variable serverid
+        // Um die Argumete zu übergeben, speichern wir den Station-key in der variable serverid
         val serverid = requireArguments().getString("stationuuid")
-        val nextstationid = requireArguments().getString("nextstationuuid")
-        val previousstationid = requireArguments().getString("previousstationuuid")
 
-        //TODO wir schauen die Liste an Radio Stationen durch den observer an, wir vergleichen die Server ID mit der
+        // Wir schauen die Liste an Radio Stationen durch den observer an, wir vergleichen die Server ID mit der
         // jeder StationsID in der Liste bis die Station die die gleiche ID hat wie die Server ID gefunden wird,
         // und in der Variable currentSation speichern wir das Ergebnis.
        viewModel.loadTheRadio.observe(viewLifecycleOwner, Observer {
 
-            currentStation = it.find {
-                it.stationuuid == serverid
+            currentStation = it.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
+                radiostation.stationuuid == serverid
             }!!
-           //TODO Die "Null" Abfrage dient dazu um zu erkenen ob die current station gleich "null" ist
+
+           // Die "Null" Abfrage dient dazu um zu erkenen ob die current station gleich "null" ist
            if(currentStation != null) {
 
                binding.radioNameDetail.text = currentStation.name
@@ -84,7 +85,7 @@ class DetailFragment: Fragment() {
                viewModel.fillText(binding.countryTextDialogDetail)
                viewModel.fillText(binding.genreTextDialogDetail)
 
-               //TODO Starten von animierten gifs in der Detailansicht
+               // Starten von animierten gifs in der Detailansicht
                val gif = ContextCompat.getDrawable(requireContext(),R.drawable.giphy3) as AnimatedImageDrawable
                gif.start()
 
@@ -126,14 +127,14 @@ class DetailFragment: Fragment() {
            }
 
            binding.skipNextImageDetail.setOnClickListener {
-               if (nextstationid != null && previousstationid != null && previousstationid != "" && nextstationid != ""){
-                   findNavController().navigate(DetailFragmentDirections.actionDetailFragmentSelf(nextstationid))
+               if (currentStation.nextStation.isNotEmpty()){
+                   findNavController().navigate(DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation))
                }
            }
 
            binding.skipPreviousImageDetail.setOnClickListener {
-               if (previousstationid != null && nextstationid != null && previousstationid != "" && nextstationid != ""){
-                   findNavController().navigate(DetailFragmentDirections.actionDetailFragmentSelf(previousstationid))
+               if (currentStation.previousStation.isNotEmpty()){
+                   findNavController().navigate(DetailFragmentDirections.actionDetailFragmentSelf(currentStation.previousStation))
                }
            }
 
@@ -141,7 +142,7 @@ class DetailFragment: Fragment() {
                findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToFavFragment())
            }
 
-           //TODO veränderung der Zustände an dem Favoriten Symbol durch die if Verzweigung
+           // Veränderung der Zustände an dem Favoriten Symbol durch die if Verzweigung
            if (currentStation.favorite == false) {
                binding.favOffImageDetail.visibility = View.VISIBLE
                binding.favOnImageDetail.visibility = View.GONE
@@ -149,7 +150,7 @@ class DetailFragment: Fragment() {
                binding.favOnImageDetail.visibility = View.VISIBLE
                binding.favOffImageDetail.visibility = View.GONE
            }
-           // TODO implementierung der remove & add Funktionen an dem Favoriten Symbol
+           //  Implementierung der remove & add Funktionen an dem Favoriten Symbol
            binding.favOnImageDetail.setOnClickListener {
                binding.favOffImageDetail.visibility = View.VISIBLE
                binding.favOnImageDetail.visibility = View.GONE
@@ -164,7 +165,7 @@ class DetailFragment: Fragment() {
 //               viewModel.dataB.update(currentStation)
            }
 
-           //TODO Hier sucht die Favoritenliste den Markierten Favorit
+           // Hier sucht die Favoritenliste den Markierten Favorit
            // indem es durch eine "Boolean" Abfrage nachprüft.
            viewModel.favoritenListe.observe(viewLifecycleOwner, Observer {
                Log.d("removeFavorite","${viewModel.favoritenListe.value?.size}")
@@ -181,14 +182,16 @@ class DetailFragment: Fragment() {
            }
 
            if (mediaPlayer != null) {
+               visualizer.enabled
                binding.visualizer.setColor(R.drawable.gradient_yellow_pink)
                binding.visualizer.setDensity(150F)
                binding.visualizer.setGap(2)
                binding.visualizer.setPlayer(mediaPlayer!!.audioSessionId)
+               visualizer.release()
            }
 
        })
-        //TODO Damit die VolumeSeekbar die Laustärke regulieren kann definieren wir hier,
+        // Damit die VolumeSeekbar die Laustärke regulieren kann definieren wir hier,
         // die Maximale und die aktuelle Lautstärke.
         val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
         val curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
@@ -206,7 +209,7 @@ class DetailFragment: Fragment() {
             }
         })
     }
-    //TODO um Abstürze beim drücken vom Stop des Tracks zu beseitigen definieren wir hier eine Funktion
+    // Um Abstürze beim drücken vom Stop des Tracks zu beseitigen definieren wir hier eine Funktion
     // die den Mediaplayer stoppt und weiterspielen lässt wenn es nicht "null" ist.
     private fun stopPlaying() {
         if (mediaPlayer != null) {
@@ -222,7 +225,7 @@ class DetailFragment: Fragment() {
             mediaPlayer = null
         }
     }
-    // TODO Fehler der Multiplen Wiedergabe beheben
+    // Fehler der Multiplen Wiedergabe beheben
     private fun resetAllPlayers(mediaPlayer: MediaPlayer) {
         if(mediaPlayer.isPlaying) {
             mediaPlayer.stop()
@@ -231,11 +234,5 @@ class DetailFragment: Fragment() {
             mediaPlayer.start()
         }
     }
-    //TODO previous und next sound abspielen fixen
-    private fun nextIndex(list: List<RadioClass>) {
-        for (i in list) {
-        }
+
     }
-
-
-}

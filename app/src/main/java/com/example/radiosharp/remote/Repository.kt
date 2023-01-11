@@ -12,10 +12,10 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
 
 
     private var _loadRadio = MutableLiveData<List<RadioClass>>()
-    val loadRadio : MutableLiveData<List<RadioClass>>
+    val loadRadio : LiveData<List<RadioClass>>
     get() = _loadRadio
 
-    //TODO Eine leere Favoriten-Liste erstellt damit der User
+    // Eine leere Favoriten-Liste erstellt damit der User
     // zukünftige Favoriten in dieser Liste abspeichern kann.
     private var _favoritesList = MutableLiveData<MutableList<RadioClass>>(mutableListOf())
     val favoritesList : LiveData<MutableList<RadioClass>>
@@ -27,12 +27,12 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
 
    suspend fun getConnection(format:String,term:String){
 
-       loadRadio.value = api.retrofitService.getServerResponse(format,term)
+       _loadRadio.value = api.retrofitService.getServerResponse(format,term)
        val response = api.retrofitService.getServerResponse(format,term)
        database.radioDatabaseDao.insert(response)
    }
 
-    //TODO die Funktion add und remove, bereitgestellt und sie ungleich "null" gesetzt
+    // Die Funktion add und remove, bereitgestellt und sie ungleich "null" gesetzt
     // damit bei der Aktivierung der funktion die App nicht abstürzt
     fun addFavorites(radioStation:RadioClass){
         if (favoritesList.value != null){
@@ -52,6 +52,40 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
 //        _favoritesList.value?.remove(radioStation)
 //        _favoritesList.value = _favoritesList.value
 //        Log.d("removeFavorite","${radioStation.name}")
+    }
+
+
+    fun setPrevAndNext() {
+
+        // Temporäre Liste erstellt.
+            val tempList = loadRadio.value
+
+        // Wird nur ausgeführt wenn TempLuste nicht "null" und nicht "leer" ist.
+            if (!tempList.isNullOrEmpty()){
+
+                for (position in tempList.indices) {
+
+                    val currentStation = tempList[position]
+
+                    if (position < tempList.size -1){
+
+                        // Damit die Liste nicht "out of Bounds" geht geben wir der "position" +1, somit kann mann vor schalten ohne Absturz.
+                        val nextStation = tempList[position +1]
+                        currentStation.nextStation = nextStation.stationuuid
+                    }
+                    // Das selbe für zurück schalten.
+                    if (position > 0) {
+                        val previousRadio = tempList[position -1]
+                        currentStation.previousStation = previousRadio.stationuuid
+                    }
+
+            }
+                // hiermit Triggern wir die Live data.
+              _loadRadio.value = tempList.toMutableList()
+
+        }
+
+
     }
 
     }

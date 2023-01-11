@@ -31,14 +31,6 @@
         <action
             android:id="@+id/action_detailFragment_to_favFragment"
             app:destination="@id/favFragment" />
-        <argument
-            android:name="nextstationuuid"
-            app:argType="string"
-            android:defaultValue='""' />
-        <argument
-            android:name="previousstationuuid"
-            app:argType="string"
-            android:defaultValue='""' />
     </fragment>
     <fragment
         android:id="@+id/favFragment"

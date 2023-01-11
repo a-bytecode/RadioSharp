@@ -37,6 +37,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                viewModelScope.launch {
                    try {
                    repository.getConnection(format,term)
+                       setPrevAndNextStation()
                } catch (e:Exception) {
                        Log.d("MainViewModel","$e")
                    }
@@ -79,6 +80,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         repository.removeFavorite(radioStation)
     }
 
-
+    fun setPrevAndNextStation(){
+        repository.setPrevAndNext()
     }
+}
 

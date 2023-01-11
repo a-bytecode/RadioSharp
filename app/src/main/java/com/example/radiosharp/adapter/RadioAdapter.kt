@@ -61,13 +61,13 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
         // Und wir ermöglichen es somit, die Ausführung der Previous und Next Wiedergabe.
         // U.a mussten wir auch in unserem nav_graph seine übergabe Argumente "prev & next" erweitern.
 
-        if (position < dataset.size -1 && position > 0){
-            val previousRadioData : RadioClass = dataset[position -1]
-            val nextRadioData : RadioClass = dataset[position +1]
-            Log.d("TEST","${nextRadioData.stationuuid}")
-            radioData.previousStation = previousRadioData.stationuuid
-            radioData.nextStation = nextRadioData.stationuuid
-        }
+//        if (position < dataset.size -1 && position > 0){
+//            val previousRadioData : RadioClass = dataset[position -1]
+//            val nextRadioData : RadioClass = dataset[position +1]
+//            Log.d("TEST","${nextRadioData.stationuuid}")
+//            radioData.previousStation = previousRadioData.stationuuid
+//            radioData.nextStation = nextRadioData.stationuuid
+//        }
 
         holder.radioName.text = radioData.name
         holder.countryName.text = radioData.country
@@ -76,7 +76,7 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
             holder.itemView.findNavController().navigate(
                 HomeFragmentDirections
                     .actionHomeFragmentToDetailFragment(
-                        radioData.stationuuid,radioData.nextStation,radioData.previousStation))
+                        radioData.stationuuid))
         }
 
 

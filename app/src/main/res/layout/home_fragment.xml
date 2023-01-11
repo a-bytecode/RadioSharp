@@ -97,6 +97,7 @@
             android:outlineAmbientShadowColor="@color/white"
             android:textAlignment="textStart"
             android:textColorHighlight="#DCA4FF"
+            android:textColorHint="#000000"
             android:textColorLink="#9F00FF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
