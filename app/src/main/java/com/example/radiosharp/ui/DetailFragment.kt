@@ -128,17 +128,21 @@ class DetailFragment: Fragment() {
            binding.skipNextImageDetail.setOnClickListener {
                if (currentStation.nextStation.isNotEmpty()){
                    findNavController().navigate(DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation))
-               } else {
-                   binding.skipNextImageDetail.visibility = View.INVISIBLE
                }
+//               else {
+////                   binding.skipNextImageDetail.visibility = View.INVISIBLE
+////                   binding.skipPreviousImageDetail.visibility = View.VISIBLE
+//               }
            }
 
            binding.skipPreviousImageDetail.setOnClickListener {
                if (currentStation.previousStation.isNotEmpty()){
                    findNavController().navigate(DetailFragmentDirections.actionDetailFragmentSelf(currentStation.previousStation))
-               } else {
-                       binding.skipPreviousImageDetail.visibility = View.INVISIBLE
                }
+//               else {
+////                   binding.skipPreviousImageDetail.visibility = View.INVISIBLE
+////                   binding.skipNextImageDetail.visibility = View.VISIBLE
+//               }
            }
 
            binding.favListImageDetail.setOnClickListener{
