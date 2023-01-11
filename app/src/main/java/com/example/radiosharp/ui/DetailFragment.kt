@@ -13,8 +13,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
 import android.widget.SeekBar
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
@@ -186,11 +184,13 @@ class DetailFragment: Fragment() {
                }
            }
 
+           binding.homeImageDetail.setOnClickListener {
+               findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToHomeFragment())
+           }
+
            if (mediaPlayer != null) {
                squareBarVisualizer.visualizer.enabled
-
                squareBarVisualizer.animation.start()
-
                squareBarVisualizer.setColor(R.drawable.gradient_yellow_pink)
                squareBarVisualizer.setDensity(150F)
                squareBarVisualizer.setGap(2)

@@ -313,6 +313,13 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <ImageView
+                android:id="@+id/home_image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_home_24" />
+
+            <ImageView
                 android:id="@+id/favList_image_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

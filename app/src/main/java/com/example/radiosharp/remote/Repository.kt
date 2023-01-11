@@ -51,6 +51,9 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
         }
     }
 
+    // mit diesen Zeilen geben wir der "RadioClass" Bescheid, dass sie erkennen soll
+    // das wir VOR der aktuellen "position" und NACH der aktuellen "position" eine weitere "position" haben.
+    // Und wir ermöglichen es somit, die Ausführung der Previous und Next Wiedergabe.
     fun setPrevAndNext() {
         // Temporäre Liste erstellt.
             val tempList = loadRadio.value
