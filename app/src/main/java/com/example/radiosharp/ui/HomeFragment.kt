@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.radiosharp.MainViewModel
+import com.example.radiosharp.adapter.RadioAdapter
 import com.example.radiosharp.databinding.HomeFragmentBinding
 
 class HomeFragment : Fragment() {
@@ -31,15 +33,27 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        val radioAdapter = RadioAdapter(requireContext(),viewModel::fillText)
 
-    viewModel.getConnect("json","techno")
-        Log.d("MainViewModel","${viewModel.test.value}")
+        binding.radioRecyclerView.adapter = radioAdapter
 
-        viewModel.test.observe(viewLifecycleOwner, Observer {
-            Log.d("MainViewModel","$it")
+        viewModel.loadTheRadio.observe(viewLifecycleOwner, Observer {
+            radioAdapter.submitlist(it)
+            Log.d("HomeFragment","$it")
         })
 
+            binding.searchButton.setOnClickListener {
 
+                viewModel.buttonAnimator(binding.searchButton)
+
+                viewModel.loadText(binding.inputSearchText,requireContext())
 
     }
+
+        binding.favListImage.setOnClickListener{
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToFavFragment())
+
+        }
+}
+
 }
