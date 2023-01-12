@@ -34,8 +34,10 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
    }
     // Die Funktion add und remove, bereitgestellt und sie ungleich "null" gesetzt
     // damit bei der Aktivierung der funktion die App nicht abstürzt
-    fun addFavorites(radioStation:RadioClass){
+    suspend fun addFavorites(radioStation:RadioClass){
         if (favoritesList.value != null){
+            radioStation.favorite = true
+            dB.update(radioStation)
             val favList : MutableList<RadioClass> = favoritesList.value!!
             favList.add(radioStation)
             _favoritesList.value = favList
@@ -43,8 +45,10 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
         }
     }
 
-    fun removeFavorite(radioStation: RadioClass){
+    suspend fun removeFavorite(radioStation: RadioClass){
         if (favoritesList.value != null) {
+            radioStation.favorite = false
+            dB.update(radioStation)
             val removeUnitfromList : MutableList<RadioClass> = favoritesList.value!!
             removeUnitfromList.remove(radioStation)
             _favoritesList.value = removeUnitfromList

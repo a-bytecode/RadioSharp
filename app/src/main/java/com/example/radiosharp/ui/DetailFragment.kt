@@ -161,15 +161,12 @@ class DetailFragment: Fragment() {
            binding.favOnImageDetail.setOnClickListener {
                binding.favOffImageDetail.visibility = View.VISIBLE
                binding.favOnImageDetail.visibility = View.GONE
-               currentStation.favorite = false
                viewModel.removeFav(currentStation)
            }
            binding.favOffImageDetail.setOnClickListener {
                binding.favOnImageDetail.visibility = View.VISIBLE
                binding.favOffImageDetail.visibility = View.GONE
-               currentStation.favorite = true
                viewModel.addFav(currentStation)
-//               viewModel.dataB.update(currentStation)
            }
 
            // Hier sucht die Favoritenliste den Markierten Favorit

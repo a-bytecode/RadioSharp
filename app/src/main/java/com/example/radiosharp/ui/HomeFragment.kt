@@ -47,7 +47,6 @@ class HomeFragment : Fragment() {
                 viewModel.buttonAnimator(binding.searchButton)
 
                 viewModel.loadText(binding.inputSearchText,requireContext())
-
     }
 
         binding.favListImage.setOnClickListener{

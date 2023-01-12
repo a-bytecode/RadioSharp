@@ -73,11 +73,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun addFav(radioStation:RadioClass){
-        repository.addFavorites(radioStation)
+        viewModelScope.launch {
+            repository.addFavorites(radioStation)
+        }
     }
 
     fun removeFav(radioStation: RadioClass){
-        repository.removeFavorite(radioStation)
+        viewModelScope.launch {
+            repository.removeFavorite(radioStation)
+        }
     }
 
     fun setPrevAndNextStation(){
