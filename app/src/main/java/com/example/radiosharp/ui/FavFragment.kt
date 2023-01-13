@@ -35,11 +35,6 @@ class FavFragment: Fragment() {
 
         binding.radioRecyclerViewFav.adapter = favAdapter
 
-//        binding.searchButtonFav.setOnClickListener {
-//            viewModel.buttonAnimator(binding.searchButtonFav)
-//            viewModel.loadText(binding.inputSearchTextFav,requireContext())
-//        }
-
         viewModel.favoritenListe.observe(viewLifecycleOwner, Observer {
             favAdapter.submitlist(it)
         })

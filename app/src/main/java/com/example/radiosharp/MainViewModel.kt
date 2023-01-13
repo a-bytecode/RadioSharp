@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.radiosharp.local.getDatabase
 import com.example.radiosharp.model.RadioClass
@@ -16,13 +18,16 @@ import com.example.radiosharp.remote.RadioApiService
 import com.example.radiosharp.remote.Repository
 import kotlinx.coroutines.launch
 
+
+enum class ApiStatus { LOADING, DONE, ERROR }
+
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val database = getDatabase(application)
 
     private var api = RadioApiService.UserApi
 
-    private val repository = Repository(api,database)
+    private val repository = Repository(api, database)
 
     val loadTheRadio = repository.loadRadio
 
@@ -30,19 +35,26 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val radioDatabase = repository.radioDatabase
 
-    val dataB = repository.dB
-    
-        fun searchRadio(format: String, term: String) {
+    private var _loadingprogress = MutableLiveData<ApiStatus>()
+    val loadingprogress : LiveData<ApiStatus>
+        get() = _loadingprogress
 
-               viewModelScope.launch {
-                   try {
-                   repository.getConnection(format,term)
-                       setPrevAndNextStation()
-               } catch (e:Exception) {
-                       Log.d("MainViewModel","$e")
-                   }
-           }
+    fun searchRadio(format: String, term: String,context: Context) {
+        viewModelScope.launch {
+            try {
+                _loadingprogress.value = ApiStatus.LOADING
+                Log.d("MVVM","CHECK")
+                repository.getConnection(format, term)
+                _loadingprogress.value = ApiStatus.DONE
+            } catch (e: Exception) {
+                Log.d("MainViewModel", "$e")
+                _loadingprogress.value = ApiStatus.ERROR
+//                Toast.makeText(context,"${repository.getConnection(format,term)} Not Found", Toast.LENGTH_SHORT).show()
+            }
+            setPrevAndNextStation()
         }
+    }
+
     fun buttonAnimator(button: Button) {
         // animatorTwo verändert ROTATION_X (X-Achse) von RotateButton laufend von 0f bis 360f
         // innerhalb 2000ms
@@ -51,13 +63,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         animatorTwo.start()
     }
 
-    fun loadText(text:TextView,context: Context) {
+    fun loadText(text: TextView, context: Context) {
 
         val searchyourRadiotext = text.text.toString()
 
         if (searchyourRadiotext != "") {
-            searchRadio("json",searchyourRadiotext)
-            Log.d("MainViewModel","Test")
+            searchRadio("json", searchyourRadiotext,context)
+            Log.d("MainViewModel", "Test")
         } else {
             Toast.makeText(context, "Bitte Suchbegriff eingeben", Toast.LENGTH_SHORT)
                 .show()
@@ -65,26 +77,26 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
-    fun fillText(text:TextView) {
+    fun fillText(text: TextView) {
         val theText = text.text.toString()
         if (theText == "") {
             text.text = "Not found"
         }
     }
 
-    fun addFav(radioStation:RadioClass){
+    fun addFav(radioStation: RadioClass) {
         viewModelScope.launch {
             repository.addFavorites(radioStation)
         }
     }
 
-    fun removeFav(radioStation: RadioClass){
+    fun removeFav(radioStation: RadioClass) {
         viewModelScope.launch {
             repository.removeFavorite(radioStation)
         }
     }
 
-    fun setPrevAndNextStation(){
+    fun setPrevAndNextStation() {
         repository.setPrevAndNext()
     }
 

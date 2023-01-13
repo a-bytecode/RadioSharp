@@ -2,9 +2,12 @@ package com.example.radiosharp.remote
 
 import android.opengl.Visibility
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.room.Index
+import com.example.radiosharp.ApiStatus
 import com.example.radiosharp.local.RadioDatabase
 import com.example.radiosharp.local.getDatabase
 import com.example.radiosharp.model.RadioClass
@@ -25,11 +28,9 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
     val dB = database.radioDatabaseDao
     val radioDatabase = database.radioDatabaseDao.getFav()
 
-
-   suspend fun getConnection(format:String,term:String){
-
-       _loadRadio.value = api.retrofitService.getServerResponse(format,term)
+    suspend fun getConnection(format:String,term:String){
        val response = api.retrofitService.getServerResponse(format,term)
+       _loadRadio.value = response
        database.radioDatabaseDao.insert(response)
    }
     // Die Funktion add und remove, bereitgestellt und sie ungleich "null" gesetzt
