@@ -8,15 +8,12 @@ import com.example.radiosharp.model.RadioClass
 
 class Repository(private val api: RadioApiService.UserApi,private val database: RadioDatabase) {
 
-
     val allRadios = database.radioDatabaseDao.getAll()
-
     // Eine leere Favoriten-Liste erstellt damit der User
     // zukünftige Favoriten in dieser Liste abspeichern kann.
     private var _favoritesList = MutableLiveData<MutableList<RadioClass>>(mutableListOf())
     val favoritesList : LiveData<MutableList<RadioClass>>
     get() = _favoritesList
-
 
     val dB = database.radioDatabaseDao
     val radioDatabase = dB.getFav() //FAV List
@@ -25,12 +22,11 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
        val response = api.retrofitService.getServerResponse(format,term)
         dB.deleteAll()
         setPrevAndNext(response)
-       dB.insert(response)
+       dB.insert(response as MutableList<RadioClass>)
     }
     // Die Funktion add und remove, bereitgestellt und sie ungleich "null" gesetzt
     // damit bei der Aktivierung der funktion die App nicht abstürzt
     suspend fun addFavorites(radioStation:RadioClass){
-//        if (favoritesList.value != null){
             radioStation.favorite = true
         _favoritesList.value?.add(radioStation)
         dB.update(radioStation)
@@ -42,14 +38,10 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
     }
 
     suspend fun removeFavorite(radioStation: RadioClass){
-
         radioStation.favorite = false
         _favoritesList.value?.remove(radioStation)
-
         if (favoritesList.value != null) {
-            setPrevAndNext(favoritesList.value!!)
-        }
-
+            setPrevAndNext(favoritesList.value!!)}
         dB.update(radioStation)
 //            val removeUnitfromList : MutableList<RadioClass> = favoritesList.value!!
 //            removeUnitfromList.remove(radioStation)

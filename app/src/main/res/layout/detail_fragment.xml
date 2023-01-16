@@ -151,7 +151,7 @@
                 <ImageView
                     android:id="@+id/vol_up_image_detail"
                     android:layout_width="40dp"
-                    android:layout_height="43dp"
+                    android:layout_height="38dp"
                     android:layout_marginStart="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

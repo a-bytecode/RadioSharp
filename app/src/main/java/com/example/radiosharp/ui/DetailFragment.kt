@@ -22,7 +22,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.radiosharp.ApiStatus
 import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
 import com.example.radiosharp.databinding.DetailFragmentBinding

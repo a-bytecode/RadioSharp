@@ -8,10 +8,10 @@ import com.example.radiosharp.model.RadioClass
 interface RadioDatabaseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(station: List<RadioClass>)
+    suspend fun insert(station: MutableList<RadioClass>)
 
     @Query("SELECT*FROM RadioClass")
-    fun getAll(): LiveData<List<RadioClass>>
+    fun getAll(): LiveData<MutableList<RadioClass>>
 
     @Delete
     suspend fun delete(station:RadioClass)
@@ -23,7 +23,7 @@ interface RadioDatabaseDao {
     suspend fun update(station:RadioClass)
 
     @Query ("SELECT * FROM RadioClass WHERE favorite = 1")
-    fun getFav(): LiveData<List<RadioClass>>
+    fun getFav(): LiveData<MutableList<RadioClass>>
 
     //Favoriten auf "null" setzen
     // UPDATE RadioClass SET favorite = 0 WHERE favorite = 1

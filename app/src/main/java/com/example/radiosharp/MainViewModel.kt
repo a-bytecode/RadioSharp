@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.radiosharp.local.getDatabase
 import com.example.radiosharp.model.RadioClass
@@ -17,10 +18,8 @@ import com.example.radiosharp.remote.Repository
 import kotlinx.coroutines.launch
 
 
-enum class ApiStatus { LOADING, DONE, ERROR }
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-
 
     val database = getDatabase(application)
 
@@ -84,6 +83,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun removeFav(radioStation: RadioClass) {
         viewModelScope.launch {
             repository.removeFavorite(radioStation)
+        }
+    }
+
+    fun deteleData(radioStation: LiveData<List<RadioClass>>){
+        viewModelScope.launch {
+            repository.dB.deleteAll()
         }
     }
 
