@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
 
         binding.radioRecyclerView.adapter = radioAdapter
 
-        viewModel.loadTheRadio.observe(viewLifecycleOwner, Observer {
+        viewModel.allRadios.observe(viewLifecycleOwner, Observer {
             radioAdapter.submitlist(it)
             Log.d("HomeFragment","$it")
         })

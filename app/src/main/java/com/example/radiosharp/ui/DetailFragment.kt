@@ -60,7 +60,6 @@ class DetailFragment : Fragment() {
         stopPlaying()
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // Das definieren des Audio Managers um den Sound in der SeekBar zu regulieren
         audioManager = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -68,29 +67,10 @@ class DetailFragment : Fragment() {
         // Um die Argumete zu übergeben, speichern wir den Station-key in der variable serverid
         val serverid = requireArguments().getString("stationuuid")
 
-
-        viewModel.loadingprogress.observe(viewLifecycleOwner) {
-            when (it) {
-                com.example.radiosharp.ApiStatus.LOADING -> {
-                    binding.playImageDetail.visibility = android.view.View.GONE
-                    binding.progressBarDetail.visibility = android.view.View.VISIBLE
-                }
-                com.example.radiosharp.ApiStatus.DONE -> {
-                    binding.playImageDetail.visibility = android.view.View.VISIBLE
-                    binding.progressBarDetail.visibility = android.view.View.GONE
-                }
-                com.example.radiosharp.ApiStatus.ERROR -> {
-
-                    binding.progressBarDetail.visibility = android.view.View.VISIBLE
-                    binding.playImageDetail.visibility = android.view.View.GONE
-                }
-            }
-        }
-
         // Wir schauen die Liste an Radio Stationen durch den observer an, wir vergleichen die Server ID mit der
         // jeder StationsID in der Liste bis die Station die die gleiche ID hat wie die Server ID gefunden wird,
         // und in der Variable currentSation speichern wir das Ergebnis.
-        viewModel.loadTheRadio.observe(viewLifecycleOwner, Observer {
+        viewModel.allRadios.observe(viewLifecycleOwner, Observer {
 
             currentStation =
                 it.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
@@ -117,6 +97,8 @@ class DetailFragment : Fragment() {
                 .into(binding.iconImageDetail)
 
             mediaPlayer = MediaPlayer().apply {
+                binding.playImageDetail.visibility = View.GONE
+                binding.progressBarDetail.visibility = View.VISIBLE
                 setAudioAttributes(
                     AudioAttributes.Builder()
                         .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -135,7 +117,8 @@ class DetailFragment : Fragment() {
             mediaPlayer!!.setDataSource(requireContext(), uri.toUri())
             mediaPlayer!!.prepareAsync()
             mediaPlayer!!.setOnPreparedListener {
-
+                binding.progressBarDetail.visibility = View.GONE
+                binding.playImageDetail.visibility = View.VISIBLE
                 binding.playImageDetail.setOnClickListener {
                     mediaPlayer!!.start()
                     binding.playImageDetail.visibility = View.GONE
@@ -150,20 +133,12 @@ class DetailFragment : Fragment() {
             binding.skipNextImageDetail.setOnClickListener {
                 if (currentStation.nextStation.isNotEmpty()) {
                     findNavController().navigate(
-                        DetailFragmentDirections.actionDetailFragmentSelf(
-                            currentStation.nextStation
-                        )
-                    )
-                }
+                        DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation))}
             }
             binding.skipPreviousImageDetail.setOnClickListener {
                 if (currentStation.previousStation.isNotEmpty()) {
                     findNavController().navigate(
-                        DetailFragmentDirections.actionDetailFragmentSelf(
-                            currentStation.previousStation
-                        )
-                    )
-                }
+                        DetailFragmentDirections.actionDetailFragmentSelf(currentStation.previousStation))}
             }
             binding.favListImageDetail.setOnClickListener {
                 findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToFavFragment())
@@ -196,6 +171,7 @@ class DetailFragment : Fragment() {
                     it.favorite
                 }
             })
+
             binding.informationImageDetail.setOnClickListener {
                 binding.informationDialogDetail.visibility = View.VISIBLE
                 binding.okButtonDialog.setOnClickListener {
@@ -235,7 +211,6 @@ class DetailFragment : Fragment() {
             }
         })
     }
-
     // Um Abstürze beim drücken vom Stop des Tracks zu beseitigen definieren wir hier eine Funktion
     // die den Mediaplayer stoppt und weiterspielen lässt wenn es nicht "null" ist.
     private fun stopPlaying() {

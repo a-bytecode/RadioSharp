@@ -16,7 +16,6 @@ abstract class RadioDatabase : RoomDatabase() {
 
 private lateinit var INSTANCE : RadioDatabase
 
-
 fun getDatabase(context: Context) : RadioDatabase {
     synchronized(RadioDatabase::class.java) {
         if (!::INSTANCE.isInitialized) {
@@ -27,6 +26,7 @@ fun getDatabase(context: Context) : RadioDatabase {
         }
     }
     return INSTANCE
-
 }
+
+
 

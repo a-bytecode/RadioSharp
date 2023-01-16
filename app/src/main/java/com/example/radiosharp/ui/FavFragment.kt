@@ -35,10 +35,6 @@ class FavFragment: Fragment() {
 
         binding.radioRecyclerViewFav.adapter = favAdapter
 
-        viewModel.favoritenListe.observe(viewLifecycleOwner, Observer {
-            favAdapter.submitlist(it)
-        })
-
         viewModel.radioDatabase.observe(viewLifecycleOwner, Observer {
             favAdapter.submitlist(it)
         })
