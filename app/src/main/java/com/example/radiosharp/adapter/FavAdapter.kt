@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide
 import com.example.radiosharp.R
 import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.ui.FavFragmentDirections
-import com.example.radiosharp.ui.HomeFragmentDirections
 
 class FavAdapter (val context: Context, val defaultText : (text: TextView)-> Unit): RecyclerView.Adapter<FavAdapter.ItemViewHodler>() {
 

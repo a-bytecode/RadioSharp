@@ -2,10 +2,7 @@ package com.example.radiosharp.adapter
 
 import android.content.Context
 import android.graphics.drawable.AnimatedImageDrawable
-import android.graphics.drawable.AnimationDrawable
-import android.graphics.drawable.Drawable
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +13,8 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.bumptech.glide.Glide
-import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
-import com.example.radiosharp.databinding.DetailFragmentBinding
 import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.ui.HomeFragmentDirections
 

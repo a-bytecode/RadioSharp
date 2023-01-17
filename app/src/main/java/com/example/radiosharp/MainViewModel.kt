@@ -33,7 +33,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val radioDatabase = repository.radioDatabase
 
-
     fun searchRadio(format: String, term: String) {
         viewModelScope.launch {
             try {
