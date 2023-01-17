@@ -25,6 +25,9 @@ interface RadioDatabaseDao {
     @Query ("SELECT * FROM RadioClass WHERE favorite = 1")
     fun getFav(): LiveData<MutableList<RadioClass>>
 
+//    @Query ("DELETE FROM RadioClass WHERE favorite = 0")
+//    fun deleteNotFav(): LiveData<MutableList<RadioClass>>
+
     //Favoriten auf "null" setzen
     // UPDATE RadioClass SET favorite = 0 WHERE favorite = 1
 

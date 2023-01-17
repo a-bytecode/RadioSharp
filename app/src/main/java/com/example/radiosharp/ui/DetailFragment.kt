@@ -1,12 +1,10 @@
 package com.example.radiosharp.ui
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.drawable.AnimatedImageDrawable
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.media.audiofx.Visualizer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
 import android.widget.SeekBar
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
@@ -26,7 +23,6 @@ import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
 import com.example.radiosharp.databinding.DetailFragmentBinding
 import com.example.radiosharp.model.RadioClass
-import com.example.radiosharp.visualizer.SquareBarVisualizer
 
 class DetailFragment : Fragment() {
 
@@ -107,10 +103,10 @@ class DetailFragment : Fragment() {
             }
             // Durch diese Variable sagen wir der Uri das sie anstatt "http" -> "https:" laden soll.
             // Da die normale "http" nicht in der Lage war "https" Url abzurufen.
-            val uri = if (currentStation.playRadio.contains("https:")) {
-                currentStation.playRadio
+            val uri = if (currentStation.radioUrl.contains("https:")) {
+                currentStation.radioUrl
             } else {
-                currentStation.playRadio.replace("http:", "https:")
+                currentStation.radioUrl.replace("http:", "https:")
             }
 
             mediaPlayer!!.setDataSource(requireContext(), uri.toUri())
@@ -118,6 +114,7 @@ class DetailFragment : Fragment() {
             mediaPlayer!!.setOnPreparedListener {
                 binding.progressBarDetail.visibility = View.GONE
                 binding.playImageDetail.visibility = View.VISIBLE
+
                 binding.playImageDetail.setOnClickListener {
                     mediaPlayer!!.start()
                     binding.playImageDetail.visibility = View.GONE

@@ -18,7 +18,7 @@ data class RadioClass(
     val name: String,
 
     @Json(name = "url")
-    val playRadio: String,
+    val radioUrl: String,
 
     @Json(name = "favicon")
     val favicon: String,

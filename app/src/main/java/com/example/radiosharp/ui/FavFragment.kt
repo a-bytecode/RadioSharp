@@ -1,6 +1,7 @@
 package com.example.radiosharp.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,7 +57,11 @@ class FavFragment: Fragment() {
                 val deletedCourse: RadioClass = viewModel.allRadios.value!!.get(viewHolder.adapterPosition)
                 val position = viewHolder.adapterPosition
 
-                viewModel.allRadios.value?.removeAt(position)
+                if (viewModel.allRadios.value != null){
+                        viewModel.allRadios.value?.removeAt(position)
+                        viewModel.removeFav(deletedCourse)
+                }
+
                 favAdapter.notifyItemRemoved(viewHolder.adapterPosition)
 
                 Snackbar.make(binding.radioRecyclerViewFav, "Deleted" + deletedCourse.name, Snackbar.LENGTH_LONG)
@@ -65,8 +70,8 @@ class FavFragment: Fragment() {
                         View.OnClickListener {
 
                             viewModel.allRadios.value?.add(position, deletedCourse)
-
                             favAdapter.notifyItemInserted(position)
+
                         }).show()
             }
         }).attachToRecyclerView(binding.radioRecyclerViewFav)

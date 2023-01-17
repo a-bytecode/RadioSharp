@@ -29,6 +29,8 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
     suspend fun addFavorites(radioStation:RadioClass){
             radioStation.favorite = true
         _favoritesList.value?.add(radioStation)
+//        if (favoritesList.value != null) {
+//            setPrevAndNext(favoritesList.value!!)}
         dB.update(radioStation)
 //            val favList : MutableList<RadioClass> = favoritesList.value!!
 //            favList.add(radioStation)
@@ -40,8 +42,8 @@ class Repository(private val api: RadioApiService.UserApi,private val database: 
     suspend fun removeFavorite(radioStation: RadioClass){
         radioStation.favorite = false
         _favoritesList.value?.remove(radioStation)
-        if (favoritesList.value != null) {
-            setPrevAndNext(favoritesList.value!!)}
+//        if (favoritesList.value != null) {
+//            setPrevAndNext(favoritesList.value!!)}
         dB.update(radioStation)
 //            val removeUnitfromList : MutableList<RadioClass> = favoritesList.value!!
 //            removeUnitfromList.remove(radioStation)

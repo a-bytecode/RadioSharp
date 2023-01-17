@@ -86,7 +86,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun deteleData(radioStation: LiveData<List<RadioClass>>){
+    fun deleteData(radioStation: LiveData<List<RadioClass>>){
         viewModelScope.launch {
             repository.dB.deleteAll()
         }
