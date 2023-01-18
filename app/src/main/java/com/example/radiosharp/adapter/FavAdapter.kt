@@ -18,18 +18,19 @@ import com.example.radiosharp.R
 import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.ui.FavFragmentDirections
 
-class FavAdapter (val context: Context, val defaultText : (text: TextView)-> Unit): RecyclerView.Adapter<FavAdapter.ItemViewHodler>() {
+class FavAdapter(val context: Context, val defaultText: (text: TextView) -> Unit) :
+    RecyclerView.Adapter<FavAdapter.ItemViewHodler>() {
 
 
     private var dataset = listOf<RadioClass>()
 
 
-    fun submitlist(radioList:List<RadioClass>) {
+    fun submitlist(radioList: List<RadioClass>) {
         dataset = radioList
         notifyDataSetChanged()
     }
 
-    class ItemViewHodler(view: View): RecyclerView.ViewHolder(view) {
+    class ItemViewHodler(view: View) : RecyclerView.ViewHolder(view) {
 
         val radioName = view.findViewById<TextView>(R.id.radio_name_detail)
         val genreName = view.findViewById<TextView>(R.id.genreText)
@@ -40,21 +41,21 @@ class FavAdapter (val context: Context, val defaultText : (text: TextView)-> Uni
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHodler {
         val itemLayout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.radio_item,parent,false)
+            .inflate(R.layout.radio_item, parent, false)
         return ItemViewHodler(itemLayout)
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onBindViewHolder(holder: ItemViewHodler, position: Int) {
 
-        val radioData : RadioClass = dataset[position]
+        val radioData: RadioClass = dataset[position]
         holder.radioName.text = radioData.name
         holder.countryName.text = radioData.country
         holder.genreName.text = radioData.tags
         holder.radioCardView.setOnClickListener {
-            holder.itemView.findNavController().navigate(FavFragmentDirections.actionFavFragmentToDetailFragment(radioData.stationuuid))
+            holder.itemView.findNavController()
+                .navigate(FavFragmentDirections.actionFavFragmentToDetailFragment(radioData.stationuuid))
         }
-
 
 
         val gif = ContextCompat.getDrawable(context, R.drawable.giphy4) as AnimatedImageDrawable

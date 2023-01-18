@@ -18,18 +18,19 @@ import com.example.radiosharp.R
 import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.ui.HomeFragmentDirections
 
-class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Unit): RecyclerView.Adapter<RadioAdapter.ItemViewHodler>() {
+class RadioAdapter(val context: Context, val defaultText: (text: TextView) -> Unit) :
+    RecyclerView.Adapter<RadioAdapter.ItemViewHodler>() {
 
 
     private var dataset = listOf<RadioClass>()
 
 
-    fun submitlist(radioList:List<RadioClass>) {
+    fun submitlist(radioList: List<RadioClass>) {
         dataset = radioList
         notifyDataSetChanged()
     }
 
-    class ItemViewHodler(view:View):RecyclerView.ViewHolder(view) {
+    class ItemViewHodler(view: View) : RecyclerView.ViewHolder(view) {
 
         val radioName = view.findViewById<TextView>(R.id.radio_name_detail)
         val genreName = view.findViewById<TextView>(R.id.genreText)
@@ -41,22 +42,14 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHodler {
         val itemLayout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.radio_item,parent,false)
+            .inflate(R.layout.radio_item, parent, false)
         return ItemViewHodler(itemLayout)
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onBindViewHolder(holder: ItemViewHodler, position: Int) {
 
-        val radioData : RadioClass = dataset[position]
-
-//        if (position < dataset.size -1 && position > 0){
-//            val previousRadioData : RadioClass = dataset[position -1]
-//            val nextRadioData : RadioClass = dataset[position +1]
-//            Log.d("TEST","${nextRadioData.stationuuid}")
-//            radioData.previousStation = previousRadioData.stationuuid
-//            radioData.nextStation = nextRadioData.stationuuid
-//        }
+        val radioData: RadioClass = dataset[position]
 
         holder.radioName.text = radioData.name
         holder.countryName.text = radioData.country
@@ -65,12 +58,12 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
             holder.itemView.findNavController().navigate(
                 HomeFragmentDirections
                     .actionHomeFragmentToDetailFragment(
-                        radioData.stationuuid))
+                        radioData.stationuuid
+                    )
+            )
         }
 
-
-
-        val gif = ContextCompat.getDrawable(context,R.drawable.giphy4) as AnimatedImageDrawable
+        val gif = ContextCompat.getDrawable(context, R.drawable.giphy4) as AnimatedImageDrawable
 
         gif.start()
         Glide.with(context).load(radioData.favicon).placeholder(gif).into(holder.iconImage)
@@ -81,26 +74,6 @@ class RadioAdapter(val context: Context, val defaultText : (text:TextView)-> Uni
     override fun getItemCount(): Int {
         return dataset.size
     }
-
-    //        holder.iconImage.load(radioData.favicon){
-//
-//            target(
-//                onStart = { placeholder ->
-//                    if (placeholder == null) {
-//                        Glide.with(context).load(R.drawable.giphy).into(holder.iconImage)
-//                    }
-//                }, onError = { placeholder ->
-//                    if (placeholder == null) {
-//                        Glide.with(context).load(R.drawable.giphy2).into(holder.iconImage)
-//                    }
-//
-//                }, onSuccess = { result ->
-//                    Glide.with(context).clear(holder.iconImage)
-//                    holder.iconImage.setImageDrawable(result)
-//                }
-//
-//            )
-//        }
 
 
 }

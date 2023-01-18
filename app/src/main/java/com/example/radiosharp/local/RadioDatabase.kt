@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
 
 
-@Database(entities = [RadioClass::class], version = 2)
+//Aktivierung eines neuen Room-Table für die Favoriten-Liste:
+//"Auslagerung der Favoriten_Liste in ein seperates Table (FavClass) um
+// mögliche Bugs & Fehlerquellen zu vermeiden."
+@Database(entities = [RadioClass::class, FavClass::class], version = 1)
 abstract class RadioDatabase : RoomDatabase() {
 
     abstract val radioDatabaseDao: RadioDatabaseDao
@@ -23,7 +25,8 @@ fun getDatabase(context: Context): RadioDatabase {
         if (!::INSTANCE.isInitialized) {
             INSTANCE = Room.databaseBuilder(
                 context.applicationContext,
-                RadioDatabase::class.java, "RadioDatabase")
+                RadioDatabase::class.java, "RadioDatabase"
+            )
                 .fallbackToDestructiveMigration()
                 .build()
         }

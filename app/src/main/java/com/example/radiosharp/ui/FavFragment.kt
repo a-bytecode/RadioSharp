@@ -13,10 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.adapter.FavAdapter
 import com.example.radiosharp.databinding.FavFragmentBinding
+import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
 import com.google.android.material.snackbar.Snackbar
 
-class FavFragment: Fragment() {
+class FavFragment : Fragment() {
 
     private lateinit var binding: FavFragmentBinding
 
@@ -35,15 +36,15 @@ class FavFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val favAdapter = FavAdapter(requireContext(),viewModel::fillText)
+        val favAdapter = FavAdapter(requireContext(), viewModel::fillText)
 
         binding.radioRecyclerViewFav.adapter = favAdapter
 
-        viewModel.radioDatabase.observe(viewLifecycleOwner, Observer {
+        viewModel.favoritenListe.observe(viewLifecycleOwner, Observer {
             favAdapter.submitlist(it)
         })
 
-        // Swipe to Delete
+        // Swipe to Delete Funktion
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -53,31 +54,57 @@ class FavFragment: Fragment() {
 
                 return false
             }
+
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
-                val deletedCourse: RadioClass = viewModel.allRadios.value!!.get(viewHolder.adapterPosition)
+                val deletedCourse: RadioClass =
+                    viewModel.favoritenListe.value!!.get(viewHolder.adapterPosition)
                 val position = viewHolder.adapterPosition
 
-                if (viewModel.allRadios.value != null){
-                        viewModel.allRadios.value?.removeAt(position)
-                        viewModel.removeFav(deletedCourse)
+                if (viewModel.favoritenListe.value != null) {
+
+                    viewModel.favoritenListe.value?.removeAt(position)
+                    viewModel.removeFav(FavClass(deletedCourse.stationuuid))
+                    favAdapter.notifyItemRemoved(viewHolder.adapterPosition)
+
+                    Snackbar.make(
+                        binding.radioRecyclerViewFav,
+                        "Deleted" + deletedCourse.name,
+                        Snackbar.LENGTH_LONG
+                    )
+                        .setAction(
+                            "Undo",
+                            View.OnClickListener {
+
+                                viewModel.favoritenListe.value?.add(position, deletedCourse)
+                                favAdapter.notifyItemInserted(position)
+
+                            }).show()
+                    Log.d("PositionLog", "$position")
+                    Log.d("DeletedCourseLog_Name", "${deletedCourse.name}")
+                    Log.d("DeletedCourseLog_UID", "${deletedCourse.stationuuid}")
                 }
-
-                favAdapter.notifyItemRemoved(viewHolder.adapterPosition)
-
-                Snackbar.make(binding.radioRecyclerViewFav, "Deleted" + deletedCourse.name, Snackbar.LENGTH_LONG)
-                    .setAction(
-                        "Undo",
-                        View.OnClickListener {
-
-                            viewModel.allRadios.value?.add(position, deletedCourse)
-                            favAdapter.notifyItemInserted(position)
-
-                        }).show()
             }
         }).attachToRecyclerView(binding.radioRecyclerViewFav)
 
     }
 }
+
+//                val favList = viewModel.favoritenListe.value
+//                if (position <= 0) {
+//                    fun showEndDialog() {
+//                        MaterialAlertDialogBuilder(requireContext())
+//                            .setTitle("Favoritenliste Leer")
+//                            .setMessage("Wohin gehts?")
+//                            .setCancelable(false)
+//                            .setNegativeButton("Zurück zur Suche") { _,_ ->
+//                                findNavController().navigate(FavFragmentDirections.actionFavFragmentToHomeFragment())
+//                            }
+//                            .setPositiveButton("Weiter zu Radio Station") { _,_ ->
+//                                findNavController().navigate(FavFragmentDirections.actionFavFragmentToDetailFragment(deletedCourse.nextStation))
+//                            }
+//                            .show() }
+//                    showEndDialog()
+//                }
 
 

@@ -6,7 +6,6 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
 import com.example.radiosharp.databinding.DetailFragmentBinding
+import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
 
 class DetailFragment : Fragment() {
@@ -71,6 +71,8 @@ class DetailFragment : Fragment() {
                 it.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
                     radiostation.stationuuid == serverid
                 }!!
+            //das erstellen einer Boolean Variable um der Favoritenliste die
+            val isFavorite : Boolean =  viewModel.favoritenListe.value!!.contains(currentStation)
 
             binding.radioNameDetail.text = currentStation.name
             binding.headerTextDialogDetail.text = currentStation.name
@@ -79,6 +81,7 @@ class DetailFragment : Fragment() {
 
             viewModel.fillText(binding.countryTextDialogDetail)
             viewModel.fillText(binding.genreTextDialogDetail)
+
             // Starten von animierten Gifs in der Detailansicht
             val gif = ContextCompat.getDrawable(
                 requireContext(),
@@ -139,34 +142,24 @@ class DetailFragment : Fragment() {
             binding.favListImageDetail.setOnClickListener {
                 findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToFavFragment())
             }
+
             // Veränderung der Zustände an dem Favoriten Symbol durch die if Verzweigung
-            if (currentStation.favorite == false) {
-                binding.favOffImageDetail.visibility = View.VISIBLE
-                binding.favOnImageDetail.visibility = View.GONE
+            if (isFavorite) {
+                // Zustände der Favoriten sind in der Funktion "toggleFav" ausgelagert
+                toggleFav(true)
             } else {
-                binding.favOnImageDetail.visibility = View.VISIBLE
-                binding.favOffImageDetail.visibility = View.GONE
+
+                toggleFav(false)
             }
             //  Implementierung der remove & add Funktionen an dem Favoriten Symbol
             binding.favOnImageDetail.setOnClickListener {
-                binding.favOffImageDetail.visibility = View.VISIBLE
-                binding.favOnImageDetail.visibility = View.GONE
-                viewModel.removeFav(currentStation)
+                toggleFav(false)
+                viewModel.removeFav(FavClass(currentStation.stationuuid))
             }
             binding.favOffImageDetail.setOnClickListener {
-                binding.favOnImageDetail.visibility = View.VISIBLE
-                binding.favOffImageDetail.visibility = View.GONE
-                viewModel.addFav(currentStation)
+                toggleFav(true)
+                viewModel.addFav(FavClass(currentStation.stationuuid))
             }
-
-            // Hier sucht die Favoritenliste den Markierten Favorit
-            // indem es durch eine "Boolean" Abfrage nachprüft.
-            viewModel.favoritenListe.observe(viewLifecycleOwner, Observer {
-                Log.d("removeFavorite", "${viewModel.favoritenListe.value?.size}")
-                it.find {
-                    it.favorite
-                }
-            })
 
             binding.informationImageDetail.setOnClickListener {
                 binding.informationDialogDetail.visibility = View.VISIBLE
@@ -177,15 +170,6 @@ class DetailFragment : Fragment() {
             binding.homeImageDetail.setOnClickListener {
                 findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToHomeFragment())
             }
-//            if (mediaPlayer != null) {
-//                squareBarVisualizer.visualizer.enabled
-//                squareBarVisualizer.animation.start()
-//                squareBarVisualizer.setColor(R.drawable.gradient_yellow_pink)
-//                squareBarVisualizer.setDensity(150F)
-//                squareBarVisualizer.setGap(2)
-//                squareBarVisualizer.setPlayer(mediaPlayer!!.audioSessionId)
-//                squareBarVisualizer.release()
-//            }
         })
         // Damit die VolumeSeekbar die Laustärke regulieren kann definieren wir hier,
         // die Maximale und die aktuelle Lautstärke.
@@ -232,4 +216,26 @@ class DetailFragment : Fragment() {
             mediaPlayer.start()
         }
     }
+
+    fun toggleFav(on : Boolean){
+        if (on) {
+            binding.favOnImageDetail.visibility = View.VISIBLE
+            binding.favOffImageDetail.visibility = View.GONE
+        } else {
+            binding.favOffImageDetail.visibility = View.VISIBLE
+            binding.favOnImageDetail.visibility = View.GONE
+        }
+    }
 }
+
+//TODO Visualizer
+
+//            if (mediaPlayer != null) {
+//                squareBarVisualizer.visualizer.enabled
+//                squareBarVisualizer.animation.start()
+//                squareBarVisualizer.setColor(R.drawable.gradient_yellow_pink)
+//                squareBarVisualizer.setDensity(150F)
+//                squareBarVisualizer.setGap(2)
+//                squareBarVisualizer.setPlayer(mediaPlayer!!.audioSessionId)
+//                squareBarVisualizer.release()
+//            }

@@ -12,11 +12,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.radiosharp.local.getDatabase
+import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.remote.RadioApiService
 import com.example.radiosharp.remote.Repository
 import kotlinx.coroutines.launch
-
 
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -36,7 +36,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun searchRadio(format: String, term: String) {
         viewModelScope.launch {
             try {
-                Log.d("MVVM","CHECK")
+                Log.d("MVVM", "CHECK")
                 repository.getConnection(format, term)
             } catch (e: Exception) {
                 Log.d("MainViewModel", "$e")
@@ -45,9 +45,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun buttonAnimator(button: Button) {
-        // animatorTwo verändert ROTATION_X (X-Achse) von RotateButton laufend von 0f bis 360f
+        // animatorTwo verändert ROTATION_X (X-Achse)
+        // von RotateButton laufend von 0f bis 360f
         // innerhalb 2000ms
-        val animatorTwo = ObjectAnimator.ofFloat(button, View.ROTATION_X, 0f, 360f)
+        val animatorTwo = ObjectAnimator
+            .ofFloat(button, View.ROTATION_X, 0f, 360f)
         animatorTwo.duration = 500
         animatorTwo.start()
     }
@@ -60,7 +62,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             searchRadio("json", searchyourRadiotext)
             Log.d("MainViewModel", "Test")
         } else {
-            Toast.makeText(context, "Bitte Suchbegriff eingeben", Toast.LENGTH_SHORT)
+            Toast
+                .makeText(
+                    context, "Bitte Suchbegriff eingeben",
+                    Toast.LENGTH_SHORT
+                )
                 .show()
         }
 
@@ -73,19 +79,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun addFav(radioStation: RadioClass) {
+    fun addFav(favorite: FavClass) {
         viewModelScope.launch {
-            repository.addFavorites(radioStation)
+            repository.addFavorites(favorite)
         }
     }
 
-    fun removeFav(radioStation: RadioClass) {
+    fun removeFav(favorite: FavClass) {
         viewModelScope.launch {
-            repository.removeFavorite(radioStation)
+            repository.removeFavorite(favorite)
         }
     }
 
-    fun deleteData(radioStation: LiveData<List<RadioClass>>){
+    fun deleteAllData(radioStation: LiveData<MutableList<RadioClass>>) {
         viewModelScope.launch {
             repository.dB.deleteAll()
         }

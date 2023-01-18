@@ -26,8 +26,6 @@ data class RadioClass(
     @Json(name = "tags")
     val tags: String,
 
-    var favorite : Boolean = false,
-
     var nextStation : String = "",
 
     var previousStation : String = ""
