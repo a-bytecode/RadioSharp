@@ -9,11 +9,9 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.radiosharp.local.getDatabase
 import com.example.radiosharp.model.FavClass
-import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.remote.RadioApiService
 import com.example.radiosharp.remote.Repository
 import kotlinx.coroutines.launch
@@ -31,7 +29,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val favoritenListe = repository.favoritesList
 
-    val radioDatabase = repository.radioDatabase
+    val radioDatabase = repository.getFavDatabase
 
     fun searchRadio(format: String, term: String) {
         viewModelScope.launch {
@@ -91,7 +89,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun deleteAllData(radioStation: LiveData<MutableList<RadioClass>>) {
+    fun deleteAllData() {
         viewModelScope.launch {
             repository.dB.deleteAll()
         }

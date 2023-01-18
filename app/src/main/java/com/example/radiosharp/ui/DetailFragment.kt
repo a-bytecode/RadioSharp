@@ -71,7 +71,9 @@ class DetailFragment : Fragment() {
                 it.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
                     radiostation.stationuuid == serverid
                 }!!
-            //das erstellen einer Boolean Variable um der Favoritenliste die
+            //Hier holen wir einen Boolean aus der Favoritenliste und
+            // verknüpfen ihn mit der "currentStation"
+            // um "is Favorite" für die Optische Anzeige der Favoriten zu benutzen.
             val isFavorite : Boolean =  viewModel.favoritenListe.value!!.contains(currentStation)
 
             binding.radioNameDetail.text = currentStation.name

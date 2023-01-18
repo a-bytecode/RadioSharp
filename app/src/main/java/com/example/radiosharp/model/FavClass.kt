@@ -10,5 +10,4 @@ data class FavClass(
     @PrimaryKey
     @Json(name = "stationuuid")
     val stationuuid: String
-
     )

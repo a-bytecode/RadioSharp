@@ -18,7 +18,7 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
         get() = _favoritesList
 
     val dB = database.radioDatabaseDao
-    val radioDatabase = dB.getFav() //FAV List
+    val getFavDatabase = dB.getFav() //FAV List
 
     suspend fun getConnection(format: String, term: String) {
         val response = api.retrofitService.getServerResponse(format, term)

@@ -40,9 +40,13 @@ class FavFragment : Fragment() {
 
         binding.radioRecyclerViewFav.adapter = favAdapter
 
+
         viewModel.favoritenListe.observe(viewLifecycleOwner, Observer {
             favAdapter.submitlist(it)
         })
+
+        binding.deleteAllButtonFav.setOnClickListener {
+        }
 
         // Swipe to Delete Funktion
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -51,7 +55,6 @@ class FavFragment : Fragment() {
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-
                 return false
             }
 
