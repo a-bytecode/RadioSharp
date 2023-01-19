@@ -3,10 +3,7 @@ package com.example.radiosharp.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
 import android.widget.PopupMenu
-import android.widget.Toast
-import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -25,7 +22,7 @@ class HomeFragment : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
 
     override fun registerForContextMenu(view: View) {
-        super.registerForContextMenu(view.findViewById(R.id.favList_image))
+        super.registerForContextMenu(view.findViewById(R.id.favList_image_fav))
     }
 
 
@@ -58,19 +55,11 @@ class HomeFragment : Fragment() {
                 viewModel.loadText(binding.inputSearchText,requireContext())
     }
 
-        binding.favListImage.setOnClickListener{
-            showPopUp(binding.favListImage)
+        binding.favListImageHome.setOnClickListener{
+            showPopUp(binding.favListImageHome)
         }
 
 }
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        val button = binding.favListImage
-//        button.setOnClickListener { v: View ->
-//            showMenu(v, R.menu.popup_menu)
-//        }
-//    }
 
     fun showPopUp(view: View) {
         val popupMenu = PopupMenu(requireContext(), view)

@@ -5,16 +5,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.radiosharp.MainViewModel
+import com.example.radiosharp.R
 import com.example.radiosharp.adapter.FavAdapter
 import com.example.radiosharp.databinding.FavFragmentBinding
 import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 
 class FavFragment : Fragment() {
@@ -46,6 +50,10 @@ class FavFragment : Fragment() {
         })
 
         binding.deleteAllButtonFav.setOnClickListener {
+        }
+
+        binding.favListImageFav.setOnClickListener {
+            showPopUp(binding.favListImageFav)
         }
 
         // Swipe to Delete Funktion
@@ -90,6 +98,46 @@ class FavFragment : Fragment() {
             }
         }).attachToRecyclerView(binding.radioRecyclerViewFav)
 
+
+    }
+
+    fun showPopUp(view: View) {
+        val popupMenu = PopupMenu(requireContext(), view)
+        val inflater = popupMenu.menuInflater
+        inflater.inflate(R.menu.popup_menu_fav, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener {
+            when(it.itemId){
+
+
+                R.id.pop_up_home_fav -> {
+                    findNavController().navigate(FavFragmentDirections.actionFavFragmentToHomeFragment())
+                }
+
+                R.id.pop_up_end_home -> {
+                    fun showEndDialog() {
+                        MaterialAlertDialogBuilder(requireContext())
+                            .setTitle("Beenden")
+                            .setMessage("App wirklich Beenden?")
+                            .setCancelable(false)
+                            .setNegativeButton("Nein") { _,_ ->
+                                findNavController().navigate(FavFragmentDirections.actionFavFragmentSelf())
+                            }
+                            .setPositiveButton("Ja") { _,_ ->
+                                activity?.finish()
+                            }
+                            .show() }
+                    showEndDialog()
+                }
+            }
+            true
+        }
+        popupMenu.setOnDismissListener {
+            // Respond to popup being dismissed.
+        }
+        // Show the popup menu.
+
+        popupMenu.show()
     }
 }
 
