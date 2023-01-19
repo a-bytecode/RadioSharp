@@ -113,7 +113,6 @@ class FavFragment : Fragment() {
                 R.id.pop_up_home_fav -> {
                     findNavController().navigate(FavFragmentDirections.actionFavFragmentToHomeFragment())
                 }
-
                 R.id.pop_up_end_home -> {
                     fun showEndDialog() {
                         MaterialAlertDialogBuilder(requireContext())
