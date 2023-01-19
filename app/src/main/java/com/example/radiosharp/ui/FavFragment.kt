@@ -93,21 +93,6 @@ class FavFragment : Fragment() {
     }
 }
 
-//                val favList = viewModel.favoritenListe.value
-//                if (position <= 0) {
-//                    fun showEndDialog() {
-//                        MaterialAlertDialogBuilder(requireContext())
-//                            .setTitle("Favoritenliste Leer")
-//                            .setMessage("Wohin gehts?")
-//                            .setCancelable(false)
-//                            .setNegativeButton("Zurück zur Suche") { _,_ ->
-//                                findNavController().navigate(FavFragmentDirections.actionFavFragmentToHomeFragment())
-//                            }
-//                            .setPositiveButton("Weiter zu Radio Station") { _,_ ->
-//                                findNavController().navigate(FavFragmentDirections.actionFavFragmentToDetailFragment(deletedCourse.nextStation))
-//                            }
-//                            .show() }
-//                    showEndDialog()
-//                }
+
 
 
