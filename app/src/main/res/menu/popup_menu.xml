@@ -3,8 +3,14 @@
 
     <item
         android:id="@+id/pop_up_fav_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:icon="@drawable/ic_baseline_favorite_24"
         android:title="Favoriten" />
+    <item
+        android:id="@+id/pop_up_deleteAll_home"
+        android:icon="@drawable/ic_baseline_delete_24"
+        android:title="Löschen" />
     <item
         android:id="@+id/pop_up_end_home"
         android:icon="@drawable/ic_baseline_exit_to_app_24"
