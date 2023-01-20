@@ -36,9 +36,8 @@ interface RadioDatabaseDao {
     @Query("DELETE FROM FavClass")
     suspend fun deleteAllFav()
 
-
 //    @Update
-//    suspend fun update(station:RadioClass)
+//    suspend fun updateFav(favoritesList: LiveData<MutableList<RadioClass>>)
 
 //    @Query ("DELETE FROM RadioClass WHERE favorite = 1")
 //    fun deleteNotFav(): LiveData<MutableList<RadioClass>>

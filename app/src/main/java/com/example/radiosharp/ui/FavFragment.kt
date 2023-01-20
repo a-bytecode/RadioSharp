@@ -50,6 +50,7 @@ class FavFragment : Fragment() {
         })
 
         binding.deleteAllButtonFav.setOnClickListener {
+            viewModel.deleteAllFav()
         }
 
         binding.favListImageFav.setOnClickListener {
@@ -98,7 +99,6 @@ class FavFragment : Fragment() {
             }
         }).attachToRecyclerView(binding.radioRecyclerViewFav)
 
-
     }
 
     fun showPopUp(view: View) {
@@ -107,25 +107,31 @@ class FavFragment : Fragment() {
         inflater.inflate(R.menu.popup_menu_fav, popupMenu.menu)
 
         popupMenu.setOnMenuItemClickListener {
-            when(it.itemId){
 
+            when (it.itemId) {
 
                 R.id.pop_up_home_fav -> {
                     findNavController().navigate(FavFragmentDirections.actionFavFragmentToHomeFragment())
                 }
+
+                R.id.pop_up_deleteAll_fav -> {
+                    viewModel.deleteAllFav()
+                }
+
                 R.id.pop_up_end_home -> {
                     fun showEndDialog() {
                         MaterialAlertDialogBuilder(requireContext())
                             .setTitle("Beenden")
                             .setMessage("App wirklich Beenden?")
                             .setCancelable(false)
-                            .setNegativeButton("Nein") { _,_ ->
+                            .setNegativeButton("Nein") { _, _ ->
                                 findNavController().navigate(FavFragmentDirections.actionFavFragmentSelf())
                             }
-                            .setPositiveButton("Ja") { _,_ ->
+                            .setPositiveButton("Ja") { _, _ ->
                                 activity?.finish()
                             }
-                            .show() }
+                            .show()
+                    }
                     showEndDialog()
                 }
             }

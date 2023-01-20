@@ -74,6 +74,10 @@ class HomeFragment : Fragment() {
                     findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToFavFragment())
                 }
 
+                R.id.pop_up_deleteAll_home -> {
+                    viewModel.deleteAll()
+                }
+
                 R.id.pop_up_end_home -> {
                     fun showEndDialog() {
                         MaterialAlertDialogBuilder(requireContext())
