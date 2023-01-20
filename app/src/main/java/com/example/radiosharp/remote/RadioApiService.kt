@@ -41,7 +41,6 @@ interface RadioApiService{
 
     suspend fun getServerResponse(@Path("format") format:String,@Path("searchterm") term:String):List<RadioClass>
 
-
     object UserApi {
         val retrofitService: RadioApiService by lazy { retrofit.create(RadioApiService::class.java) }
     }

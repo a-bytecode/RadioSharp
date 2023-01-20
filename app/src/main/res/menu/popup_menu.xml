@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/pop_up_fav_home"
+        android:icon="@drawable/ic_baseline_favorite_24"
+        android:title="Favoriten" />
+    <item
+        android:id="@+id/pop_up_end_home"
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
+        android:title="Beenden" />
+</menu>

@@ -2,16 +2,19 @@ package com.example.radiosharp.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
 
 @Dao
 interface RadioDatabaseDao {
 
+    //DATABASE RadioClass
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(station: List<RadioClass>)
+    suspend fun insert(station: MutableList<RadioClass>)
 
     @Query("SELECT*FROM RadioClass")
-    fun getAll(): LiveData<List<RadioClass>>
+    fun getAll(): LiveData<MutableList<RadioClass>>
 
     @Delete
     suspend fun delete(station:RadioClass)
@@ -19,16 +22,28 @@ interface RadioDatabaseDao {
     @Query("DELETE FROM RadioClass")
     suspend fun deleteAll()
 
-    @Update
-    suspend fun update(station:RadioClass)
+    //DATABASE FavClass
 
-    @Query ("SELECT * FROM RadioClass WHERE favorite = 1")
-    fun getFav(): LiveData<List<RadioClass>>
+    @Query ("SELECT * FROM FavClass")
+    fun getFav(): LiveData<MutableList<FavClass>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFav(station: FavClass)
+
+    @Delete
+    suspend fun deleteFav(station:FavClass)
+
+    @Query("DELETE FROM FavClass")
+    suspend fun deleteAllFav()
+
 
 //    @Update
-//    suspend fun getFavorite(): LiveData<List<RadioClass>>
+//    suspend fun update(station:RadioClass)
 
+//    @Query ("DELETE FROM RadioClass WHERE favorite = 1")
+//    fun deleteNotFav(): LiveData<MutableList<RadioClass>>
 
-
+//    Favoriten auf "null" setzen
+//    UPDATE RadioClass SET favorite = 0 WHERE favorite = 0
 
 }

@@ -7,13 +7,14 @@
 
     </data>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/gradient_270">
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/linearLayout_fav"
             android:layout_width="406dp"
             android:layout_height="55dp"
             android:layout_marginTop="8dp"
@@ -41,15 +42,19 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/favList_image"
+                    android:id="@+id/favList_image_home"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:onClick="showPopup"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/headline_textView"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_playlist_play_24" />
+                    app:srcCompat="@drawable/ic_baseline_menu_25"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
@@ -101,6 +106,6 @@
             android:textColorLink="#9F00FF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout_fav"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

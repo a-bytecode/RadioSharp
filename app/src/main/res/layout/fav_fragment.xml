@@ -12,38 +12,69 @@
         android:layout_height="match_parent"
         android:background="@drawable/gradient_270v2">
 
+        <LinearLayout
+            android:id="@+id/linearLayout_fav"
+            android:layout_width="406dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/headline_textView"
+                    android:layout_width="318dp"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:fontFamily="@font/fugaz_one"
+                    android:text="Favorites"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="34sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/favList_image_fav"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:onClick="showPopup"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/headline_textView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_baseline_menu_24"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
         <Button
-            android:id="@+id/search_button_fav"
+            android:id="@+id/deleteAll_button_fav"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="32dp"
             android:fontFamily="@font/fugaz_one"
-            android:text="Search"
+            android:text="Delete List"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputSearchText_fav" />
-
-        <TextView
-            android:id="@+id/headline_textView_fav"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:fontFamily="@font/fugaz_one"
-            android:text="Favorites"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="34sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/radioRecyclerView_fav"
@@ -57,7 +88,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_button_fav"
+            app:layout_constraintTop_toBottomOf="@+id/deleteAll_button_fav"
             tools:listitem="@layout/radio_item" />
 
         <com.google.android.material.textfield.TextInputEditText
@@ -65,7 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
             android:hint="Search..."
             android:minHeight="48dp"
@@ -76,6 +107,6 @@
             android:textColorLink="#9F00FF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headline_textView_fav" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout_fav" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

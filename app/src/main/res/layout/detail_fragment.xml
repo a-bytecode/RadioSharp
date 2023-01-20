@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#94000000"
+            android:background="#B0000000"
             android:clickable="true"
             android:elevation="25dp"
             android:visibility="gone"
@@ -135,9 +135,9 @@
             android:id="@+id/vol_linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="24dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -150,8 +150,8 @@
 
                 <ImageView
                     android:id="@+id/vol_up_image_detail"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="38dp"
                     android:layout_marginStart="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -162,7 +162,7 @@
                     android:id="@+id/volume_seekBar"
                     style="@android:style/Widget.SeekBar"
                     android:layout_width="0dp"
-                    android:layout_height="14dp"
+                    android:layout_height="11dp"
                     android:max="100"
                     android:orientation="vertical"
                     android:progress="30"
@@ -282,12 +282,19 @@
                 android:layout_weight="1"
                 app:srcCompat="@drawable/ic_baseline_skip_previous_24" />
 
+            <ProgressBar
+                android:id="@+id/progressBar_detail"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="gone" />
+
             <ImageView
                 android:id="@+id/play_Image_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:visibility="visible"
                 app:srcCompat="@drawable/ic_baseline_play_arrow_24" />
 
             <ImageView
