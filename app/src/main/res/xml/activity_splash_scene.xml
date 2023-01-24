@@ -41,7 +41,7 @@
     <Transition
         motion:constraintSetStart="@+id/start"
         motion:constraintSetEnd="@+id/end"
-        motion:duration="3367"
+        motion:duration="3070"
         motion:autoTransition="animateToEnd">
         <KeyFrameSet >
 
@@ -55,7 +55,7 @@
             <KeyAttribute
                 motion:motionTarget="@+id/rsHeadlinetext"
                 motion:framePosition="0"
-                android:scaleX="1.2" />
+                android:scaleX="1.4" />
 
         </KeyFrameSet>
         <OnSwipe motion:springStiffness="40.0"

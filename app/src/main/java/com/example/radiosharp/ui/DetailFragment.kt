@@ -39,6 +39,8 @@ class DetailFragment : Fragment() {
 
     private lateinit var audioManager: AudioManager
 
+//    lateinit var visualizer: SquareBarVisualizer
+
 //    private lateinit var squareBarVisualizer: SquareBarVisualizer
 
     override fun onCreateView(
@@ -74,7 +76,8 @@ class DetailFragment : Fragment() {
             //Hier holen wir einen Boolean aus der Favoritenliste und
             // verknüpfen ihn mit der "currentStation"
             // um "is Favorite" für die Optische Anzeige der Favoriten zu benutzen.
-            val isFavorite : Boolean =  viewModel.favoritenListe.value!!.contains(currentStation)
+            val isFavorite: Boolean =
+                viewModel.favoritenListeRadioClass.value!!.contains(currentStation)
 
             binding.radioNameDetail.text = currentStation.name
             binding.headerTextDialogDetail.text = currentStation.name
@@ -134,12 +137,16 @@ class DetailFragment : Fragment() {
             binding.skipNextImageDetail.setOnClickListener {
                 if (currentStation.nextStation.isNotEmpty()) {
                     findNavController().navigate(
-                        DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation))}
+                        DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation)
+                    )
+                }
             }
             binding.skipPreviousImageDetail.setOnClickListener {
                 if (currentStation.previousStation.isNotEmpty()) {
                     findNavController().navigate(
-                        DetailFragmentDirections.actionDetailFragmentSelf(currentStation.previousStation))}
+                        DetailFragmentDirections.actionDetailFragmentSelf(currentStation.previousStation)
+                    )
+                }
             }
             binding.favListImageDetail.setOnClickListener {
                 findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToFavFragment())
@@ -156,11 +163,29 @@ class DetailFragment : Fragment() {
             //  Implementierung der remove & add Funktionen an dem Favoriten Symbol
             binding.favOnImageDetail.setOnClickListener {
                 toggleFav(false)
-                viewModel.removeFav(FavClass(currentStation.stationuuid))
+                viewModel.removeFav(
+                    FavClass(
+                        currentStation.stationuuid,
+                        currentStation.country,
+                        currentStation.name,
+                        currentStation.radioUrl,
+                        currentStation.favicon,
+                        currentStation.tags
+                    )
+                )
             }
             binding.favOffImageDetail.setOnClickListener {
                 toggleFav(true)
-                viewModel.addFav(FavClass(currentStation.stationuuid))
+                viewModel.addFav(
+                    FavClass(
+                        currentStation.stationuuid,
+                        currentStation.country,
+                        currentStation.name,
+                        currentStation.radioUrl,
+                        currentStation.favicon,
+                        currentStation.tags
+                    )
+                )
             }
 
             binding.informationImageDetail.setOnClickListener {
@@ -193,6 +218,7 @@ class DetailFragment : Fragment() {
             }
         })
     }
+
     // Um Abstürze beim drücken vom Stop des Tracks zu beseitigen definieren wir hier eine Funktion
     // die den Mediaplayer stoppt und weiterspielen lässt wenn es nicht "null" ist.
     private fun stopPlaying() {
@@ -202,6 +228,7 @@ class DetailFragment : Fragment() {
             mediaPlayer = null
         }
     }
+
     private fun resetPlaying() {
         if (mediaPlayer != null) {
             mediaPlayer!!.reset()
@@ -209,6 +236,7 @@ class DetailFragment : Fragment() {
             mediaPlayer = null
         }
     }
+
     // Fehler der Multiplen Wiedergabe beheben
     private fun resetAllPlayers(mediaPlayer: MediaPlayer) {
         if (mediaPlayer.isPlaying) {
@@ -219,7 +247,7 @@ class DetailFragment : Fragment() {
         }
     }
 
-    fun toggleFav(on : Boolean){
+    fun toggleFav(on: Boolean) {
         if (on) {
             binding.favOnImageDetail.visibility = View.VISIBLE
             binding.favOffImageDetail.visibility = View.GONE
@@ -232,12 +260,14 @@ class DetailFragment : Fragment() {
 
 //TODO Visualizer
 
-//            if (mediaPlayer != null) {
-//                squareBarVisualizer.visualizer.enabled
-//                squareBarVisualizer.animation.start()
-//                squareBarVisualizer.setColor(R.drawable.gradient_yellow_pink)
-//                squareBarVisualizer.setDensity(150F)
-//                squareBarVisualizer.setGap(2)
-//                squareBarVisualizer.setPlayer(mediaPlayer!!.audioSessionId)
-//                squareBarVisualizer.release()
-//            }
+//visualizer =
+//if (mediaPlayer != null) {
+//    visualizer.visualizer.enabled
+//    visualizer.animation.start()
+//    visualizer.setColor(R.color.purple_500)
+//    visualizer.setDensity(150F)
+//    visualizer.setGap(2)
+//    visualizer.setPlayer(mediaPlayer!!.audioSessionId)
+//    visualizer.release()
+//}
+

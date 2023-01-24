@@ -11,10 +11,13 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
+import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.ui.FavFragmentDirections
 
@@ -22,10 +25,10 @@ class FavAdapter(val context: Context, val defaultText: (text: TextView) -> Unit
     RecyclerView.Adapter<FavAdapter.ItemViewHodler>() {
 
 
-    private var dataset = listOf<RadioClass>()
+    private var dataset = listOf<FavClass>()
 
 
-    fun submitlist(radioList: List<RadioClass>) {
+    fun submitlist(radioList: List<FavClass>) {
         dataset = radioList
         notifyDataSetChanged()
     }
@@ -48,7 +51,8 @@ class FavAdapter(val context: Context, val defaultText: (text: TextView) -> Unit
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onBindViewHolder(holder: ItemViewHodler, position: Int) {
 
-        val radioData: RadioClass = dataset[position]
+        val radioData: FavClass = dataset[position]
+
         holder.radioName.text = radioData.name
         holder.countryName.text = radioData.country
         holder.genreName.text = radioData.tags
@@ -56,7 +60,6 @@ class FavAdapter(val context: Context, val defaultText: (text: TextView) -> Unit
             holder.itemView.findNavController()
                 .navigate(FavFragmentDirections.actionFavFragmentToDetailFragment(radioData.stationuuid))
         }
-
 
         val gif = ContextCompat.getDrawable(context, R.drawable.giphy4) as AnimatedImageDrawable
 

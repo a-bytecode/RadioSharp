@@ -1,7 +1,11 @@
 package com.example.radiosharp.remote
 
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import com.example.radiosharp.adapter.FavAdapter
 import com.example.radiosharp.local.RadioDatabase
 import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
@@ -51,9 +55,9 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
     }
 
     // TODO Favoritenliste neu laden (Aktualisieren)
-    fun loadFav(){
-        favoritesList.value
-    }
+//    fun loadFav(adapter: FavAdapter){
+//        adapter.submitlist(favoritesList.value!!.toMutableList())
+//    }
 
     // mit diesen Zeilen geben wir der "RadioClass" Bescheid, dass sie erkennen soll
     // das wir VOR der aktuellen "position" und NACH der aktuellen "position" eine weitere "position" haben.

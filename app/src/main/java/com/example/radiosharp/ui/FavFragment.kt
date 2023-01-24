@@ -38,6 +38,7 @@ class FavFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val favAdapter = FavAdapter(requireContext(), viewModel::fillText)
@@ -45,8 +46,10 @@ class FavFragment : Fragment() {
         binding.radioRecyclerViewFav.adapter = favAdapter
 
 
-        viewModel.favoritenListe.observe(viewLifecycleOwner, Observer {
+        viewModel.favRadioDatabase.observe(viewLifecycleOwner, Observer {
+
             favAdapter.submitlist(it)
+            Log.d("Wurde Aktualisiert", "Wurde Aktualisiert")
         })
 
         binding.deleteAllButtonFav.setOnClickListener {
@@ -69,14 +72,23 @@ class FavFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
-                val deletedCourse: RadioClass =
-                    viewModel.favoritenListe.value!!.get(viewHolder.adapterPosition)
+                val deletedCourse: FavClass =
+                    viewModel.favRadioDatabase.value!!.get(viewHolder.adapterPosition)
                 val position = viewHolder.adapterPosition
 
-                if (viewModel.favoritenListe.value != null) {
+                if (viewModel.favRadioDatabase.value != null) {
 
-                    viewModel.favoritenListe.value?.removeAt(position)
-                    viewModel.removeFav(FavClass(deletedCourse.stationuuid))
+                    viewModel.favRadioDatabase.value?.removeAt(position)
+                    viewModel.removeFav(
+                        FavClass(
+                            deletedCourse.stationuuid,
+                            deletedCourse.country,
+                            deletedCourse.name,
+                            deletedCourse.radioUrl,
+                            deletedCourse.favicon,
+                            deletedCourse.tags
+                        )
+                    )
                     favAdapter.notifyItemRemoved(viewHolder.adapterPosition)
 
                     Snackbar.make(
@@ -88,7 +100,10 @@ class FavFragment : Fragment() {
                             "Undo",
                             View.OnClickListener {
 
-                                viewModel.favoritenListe.value?.add(position, deletedCourse)
+                                viewModel.favRadioDatabase.value?.add(
+                                    position,
+                                    deletedCourse
+                                )
                                 favAdapter.notifyItemInserted(position)
 
                             }).show()

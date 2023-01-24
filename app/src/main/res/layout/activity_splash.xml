@@ -21,9 +21,10 @@
         android:id="@+id/rsHeadlinetext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/fugaz_one"
         android:text="RadioSharp"
+        android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="40sp"
-        android:fontFamily="@font/fugaz_one"
-        android:textAlignment="center"/>
+        tools:layout_editor_absoluteY="336dp" />
 </androidx.constraintlayout.motion.widget.MotionLayout>
