@@ -102,9 +102,5 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-//    fun loadFAV(adapter: FavAdapter){
-//        repository.loadFav(adapter)
-//    }
-
 }
 

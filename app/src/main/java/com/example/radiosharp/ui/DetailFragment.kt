@@ -1,16 +1,20 @@
 package com.example.radiosharp.ui
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.drawable.AnimatedImageDrawable
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.media.audiofx.Visualizer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
 import android.widget.SeekBar
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
@@ -18,6 +22,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.chibde.visualizer.BarVisualizer
+import com.chibde.visualizer.LineVisualizer
 import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
 import com.example.radiosharp.databinding.DetailFragmentBinding
@@ -25,7 +31,6 @@ import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
 
 class DetailFragment : Fragment() {
-
 
     private lateinit var binding: DetailFragmentBinding
 
@@ -39,9 +44,11 @@ class DetailFragment : Fragment() {
 
     private lateinit var audioManager: AudioManager
 
-//    lateinit var visualizer: SquareBarVisualizer
+    private lateinit var lineVisualizer: LineVisualizer
 
-//    private lateinit var squareBarVisualizer: SquareBarVisualizer
+    private lateinit var barVisualizer: BarVisualizer
+
+    private lateinit var visualizer: Visualizer
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +65,40 @@ class DetailFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        if (ContextCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(),
+                arrayOf(Manifest.permission.RECORD_AUDIO), 42)
+        }
+
+
+//        if (ContextCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.RECORD_AUDIO
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//
+//            if(ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
+//                    Manifest.permission.RECORD_AUDIO)){
+//
+//                Toast.makeText(requireContext(), "EXPLANATION", Toast.LENGTH_LONG).show()
+//            }
+//            else{
+//                ActivityCompat.requestPermissions(requireActivity(),
+//                    arrayOf(Manifest.permission.RECORD_AUDIO),
+//                    42)
+//
+//                Toast.makeText(requireContext(), "EXPLANATION NOT NEEDED", Toast.LENGTH_LONG).show()
+//            }
+//
+//        }
+//        ActivityCompat.requestPermissions(
+//            requireActivity(),
+//            arrayOf(Manifest.permission.RECORD_AUDIO),
+//            42
+//        )
+
         // Das definieren des Audio Managers um den Sound in der SeekBar zu regulieren
         audioManager = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
@@ -99,6 +140,9 @@ class DetailFragment : Fragment() {
                 .placeholder(gif)
                 .into(binding.iconImageDetail)
 
+//            lineVisualizer = view.findViewById(R.id.myVisualizer)
+            barVisualizer = view.findViewById(R.id.myVisualizer)
+
             mediaPlayer = MediaPlayer().apply {
                 binding.playImageDetail.visibility = View.GONE
                 binding.progressBarDetail.visibility = View.VISIBLE
@@ -120,6 +164,7 @@ class DetailFragment : Fragment() {
             mediaPlayer!!.setDataSource(requireContext(), uri.toUri())
             mediaPlayer!!.prepareAsync()
             mediaPlayer!!.setOnPreparedListener {
+
                 binding.progressBarDetail.visibility = View.GONE
                 binding.playImageDetail.visibility = View.VISIBLE
 
@@ -128,7 +173,44 @@ class DetailFragment : Fragment() {
                     binding.playImageDetail.visibility = View.GONE
                     binding.stopImageDetail.visibility = View.VISIBLE
                 }
+
             }
+
+            if (mediaPlayer != null) {
+                barVisualizer.visibility = View.VISIBLE
+                barVisualizer.apply {
+                    setColor(requireContext().getColor(R.color.white))
+                    setDensity(15F)
+//                    setStrokeWidth(1)
+                    setPlayer(mediaPlayer!!.audioSessionId)
+                }
+
+//                lineVisualizer.visualizer.enabled
+//                lineVisualizer.animation.start()
+
+
+//                visualizer = Visualizer(mediaPlayer!!.audioSessionId).apply {
+//
+//                    enabled = false
+//                    captureSize = Visualizer.getCaptureSizeRange()[0] // Minimum sampling
+//                    setDataCaptureListener(
+//                        object : Visualizer.OnDataCaptureListener {
+//                            override fun onFftDataCapture(visualizer: Visualizer, fft: ByteArray, samplingRate: Int) {
+//                            }
+//                            override fun onWaveFormDataCapture(visualizer: Visualizer, waveform: ByteArray, samplingRate: Int) {
+//                                process(waveform)
+//                            }
+//                        },
+//                        Visualizer.getMaxCaptureRate(), true, true)
+//                    enabled = true // Configuration is done, can enable now...
+//                }
+
+                } else {
+                    lineVisualizer.visibility = View.GONE
+            }
+
+
+
             binding.stopImageDetail.setOnClickListener {
                 binding.stopImageDetail.visibility = View.GONE
                 binding.playImageDetail.visibility = View.VISIBLE
@@ -187,6 +269,7 @@ class DetailFragment : Fragment() {
                     )
                 )
             }
+
 
             binding.informationImageDetail.setOnClickListener {
                 binding.informationDialogDetail.visibility = View.VISIBLE
@@ -258,16 +341,4 @@ class DetailFragment : Fragment() {
     }
 }
 
-//TODO Visualizer
-
-//visualizer =
-//if (mediaPlayer != null) {
-//    visualizer.visualizer.enabled
-//    visualizer.animation.start()
-//    visualizer.setColor(R.color.purple_500)
-//    visualizer.setDensity(150F)
-//    visualizer.setGap(2)
-//    visualizer.setPlayer(mediaPlayer!!.audioSessionId)
-//    visualizer.release()
-//}
 

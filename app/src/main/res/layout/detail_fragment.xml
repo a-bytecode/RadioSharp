@@ -12,15 +12,6 @@
         android:layout_height="match_parent"
         android:background="@drawable/gradient_270">
 
-        <com.chibde.visualizer.SquareBarVisualizer
-            android:id="@+id/visualizer"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/information_dialog_detail"
             android:layout_width="match_parent"
@@ -175,6 +166,8 @@
                     android:orientation="vertical"
                     android:progress="30"
                     android:rotation="0"
+                    android:progressDrawable=""
+                    android:thumb=""
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/vol_up_image_detail"
@@ -210,6 +203,14 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0"
                     tools:srcCompat="@tools:sample/avatars" />
+
+                <com.chibde.visualizer.BarVisualizer
+                    android:id="@+id/myVisualizer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:ignore="RtlSymmetry"
+                    tools:visibility="gone" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
