@@ -1,10 +1,13 @@
 package com.example.radiosharp.ui
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -40,6 +43,16 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
+        if (ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(requireActivity(),
+                arrayOf(Manifest.permission.RECORD_AUDIO), 42)
+        } else {
+            ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
+                Manifest.permission.RECORD_AUDIO)
+        }
 
         val radioAdapter = RadioAdapter(requireContext(),viewModel::fillText)
 

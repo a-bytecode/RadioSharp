@@ -9,11 +9,13 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.audiofx.Visualizer
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -66,39 +68,6 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        if (ContextCompat.checkSelfPermission(requireContext(),
-                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(),
-                arrayOf(Manifest.permission.RECORD_AUDIO), 42)
-        }
-
-
-//        if (ContextCompat.checkSelfPermission(
-//                requireContext(),
-//                Manifest.permission.RECORD_AUDIO
-//            ) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//
-//            if(ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
-//                    Manifest.permission.RECORD_AUDIO)){
-//
-//                Toast.makeText(requireContext(), "EXPLANATION", Toast.LENGTH_LONG).show()
-//            }
-//            else{
-//                ActivityCompat.requestPermissions(requireActivity(),
-//                    arrayOf(Manifest.permission.RECORD_AUDIO),
-//                    42)
-//
-//                Toast.makeText(requireContext(), "EXPLANATION NOT NEEDED", Toast.LENGTH_LONG).show()
-//            }
-//
-//        }
-//        ActivityCompat.requestPermissions(
-//            requireActivity(),
-//            arrayOf(Manifest.permission.RECORD_AUDIO),
-//            42
-//        )
-
         // Das definieren des Audio Managers um den Sound in der SeekBar zu regulieren
         audioManager = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
@@ -140,7 +109,7 @@ class DetailFragment : Fragment() {
                 .placeholder(gif)
                 .into(binding.iconImageDetail)
 
-//            lineVisualizer = view.findViewById(R.id.myVisualizer)
+            //Zuweisung des Visualizers
             barVisualizer = view.findViewById(R.id.myVisualizer)
 
             mediaPlayer = MediaPlayer().apply {
@@ -175,41 +144,20 @@ class DetailFragment : Fragment() {
                 }
 
             }
-
-            if (mediaPlayer != null) {
+            //Visualizer prüft ob die permissions "Granted" sind und gibt bei der Wiedergabe des
+            // Media Players den Effekt frei.
+            if (mediaPlayer != null &&
+                ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+                    ) {
                 barVisualizer.visibility = View.VISIBLE
                 barVisualizer.apply {
+                    isEnabled
                     setColor(requireContext().getColor(R.color.white))
                     setDensity(15F)
 //                    setStrokeWidth(1)
                     setPlayer(mediaPlayer!!.audioSessionId)
                 }
-
-//                lineVisualizer.visualizer.enabled
-//                lineVisualizer.animation.start()
-
-
-//                visualizer = Visualizer(mediaPlayer!!.audioSessionId).apply {
-//
-//                    enabled = false
-//                    captureSize = Visualizer.getCaptureSizeRange()[0] // Minimum sampling
-//                    setDataCaptureListener(
-//                        object : Visualizer.OnDataCaptureListener {
-//                            override fun onFftDataCapture(visualizer: Visualizer, fft: ByteArray, samplingRate: Int) {
-//                            }
-//                            override fun onWaveFormDataCapture(visualizer: Visualizer, waveform: ByteArray, samplingRate: Int) {
-//                                process(waveform)
-//                            }
-//                        },
-//                        Visualizer.getMaxCaptureRate(), true, true)
-//                    enabled = true // Configuration is done, can enable now...
-//                }
-
-                } else {
-                    lineVisualizer.visibility = View.GONE
             }
-
-
 
             binding.stopImageDetail.setOnClickListener {
                 binding.stopImageDetail.visibility = View.GONE
@@ -238,6 +186,7 @@ class DetailFragment : Fragment() {
             if (isFavorite) {
                 // Zustände der Favoriten sind in der Funktion "toggleFav" ausgelagert
                 toggleFav(true)
+
             } else {
 
                 toggleFav(false)
@@ -270,7 +219,6 @@ class DetailFragment : Fragment() {
                 )
             }
 
-
             binding.informationImageDetail.setOnClickListener {
                 binding.informationDialogDetail.visibility = View.VISIBLE
                 binding.okButtonDialog.setOnClickListener {
@@ -300,6 +248,7 @@ class DetailFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
             }
         })
+
     }
 
     // Um Abstürze beim drücken vom Stop des Tracks zu beseitigen definieren wir hier eine Funktion
@@ -337,6 +286,16 @@ class DetailFragment : Fragment() {
         } else {
             binding.favOffImageDetail.visibility = View.VISIBLE
             binding.favOnImageDetail.visibility = View.GONE
+        }
+    }
+
+    fun createVisualizer() {
+        barVisualizer = barVisualizer.apply {
+            isEnabled
+            setColor(requireContext().getColor(R.color.white))
+            setDensity(15F)
+//                    setStrokeWidth(1)
+            setPlayer(mediaPlayer!!.audioSessionId)
         }
     }
 }
