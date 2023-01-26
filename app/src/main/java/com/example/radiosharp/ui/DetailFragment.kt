@@ -9,19 +9,15 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.audiofx.Visualizer
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
 import android.widget.SeekBar
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.chibde.visualizer.BarVisualizer
@@ -91,7 +87,7 @@ class DetailFragment : Fragment() {
                     radiostation.stationuuid == serverid
                 }
         }
-        
+
         if (currentStation != null) {
             //Hier holen wir einen Boolean aus der Favoritenliste und
             // verknüpfen ihn mit der "currentStation"
@@ -120,7 +116,8 @@ class DetailFragment : Fragment() {
                 .into(binding.iconImageDetail)
 
             //Zuweisung des Visualizers
-            barVisualizer = view.findViewById(R.id.myVisualizer)
+            barVisualizer = view.findViewById(R.id.BarVisualizer)
+            lineVisualizer = view.findViewById(R.id.LineVisualizer)
 
             mediaPlayer = MediaPlayer().apply {
                 binding.playImageDetail.visibility = View.GONE
@@ -162,12 +159,40 @@ class DetailFragment : Fragment() {
                     Manifest.permission.RECORD_AUDIO
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
+
                 barVisualizer.visibility = View.VISIBLE
+                lineVisualizer.visibility = View.GONE
                 barVisualizer.apply {
                     isEnabled
                     setColor(requireContext().getColor(R.color.white))
                     setDensity(15F)
-//                    setStrokeWidth(1)
+                    setPlayer(mediaPlayer!!.audioSessionId)
+                }
+            }
+
+            binding.visualizerSwitch1ImageDetail.setOnClickListener {
+                binding.visualizerSwitch1ImageDetail.visibility = View.GONE
+                binding.visualizerSwitch2ImageDetail.visibility = View.VISIBLE
+
+                barVisualizer.visibility = View.GONE
+                lineVisualizer.visibility = View.VISIBLE
+                lineVisualizer.apply {
+                    isEnabled
+                    setColor(requireContext().getColor(R.color.white))
+                    setStrokeWidth(1)
+                    setPlayer(mediaPlayer!!.audioSessionId)
+                }
+            }
+
+            binding.visualizerSwitch2ImageDetail.setOnClickListener {
+                binding.visualizerSwitch1ImageDetail.visibility = View.VISIBLE
+                binding.visualizerSwitch2ImageDetail.visibility = View.GONE
+                barVisualizer.visibility = View.VISIBLE
+                lineVisualizer.visibility = View.GONE
+                barVisualizer.apply {
+                    isEnabled
+                    setColor(requireContext().getColor(R.color.white))
+                    setDensity(15F)
                     setPlayer(mediaPlayer!!.audioSessionId)
                 }
             }
@@ -307,7 +332,7 @@ class DetailFragment : Fragment() {
         barVisualizer = barVisualizer.apply {
             isEnabled
             setColor(requireContext().getColor(R.color.white))
-            setDensity(15F)
+//            setDensity(15F)
 //                    setStrokeWidth(1)
             setPlayer(mediaPlayer!!.audioSessionId)
         }

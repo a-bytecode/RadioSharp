@@ -47,6 +47,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
         if (searchFavRadiotext != "") {
             repository.getFavDatabase
+            favoritenListeRadioClass.value!!.filter {
+                it.name.contains(searchFavRadiotext)
+            }
         } else {
             Toast
                 .makeText(

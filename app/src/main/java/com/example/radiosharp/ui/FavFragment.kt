@@ -47,7 +47,6 @@ class FavFragment : Fragment() {
 
 
         viewModel.favRadioDatabase.observe(viewLifecycleOwner, Observer {
-
             favAdapter.submitlist(it)
             Log.d("Wurde Aktualisiert", "Wurde Aktualisiert")
         })
