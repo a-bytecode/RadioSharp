@@ -21,6 +21,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.chibde.visualizer.BarVisualizer
+import com.chibde.visualizer.CircleBarVisualizer
+import com.chibde.visualizer.CircleBarVisualizerSmooth
 import com.chibde.visualizer.LineVisualizer
 import com.chibde.visualizer.SquareBarVisualizer
 import com.example.radiosharp.MainViewModel
@@ -48,6 +50,8 @@ class DetailFragment : Fragment() {
     private lateinit var barVisualizer: BarVisualizer
 
     private lateinit var squareBarVisualizer: SquareBarVisualizer
+
+    private lateinit var circleBarVisualizer: CircleBarVisualizer
 
     private lateinit var visualizer: Visualizer
 
@@ -118,10 +122,11 @@ class DetailFragment : Fragment() {
                 .placeholder(gif)
                 .into(binding.iconImageDetail)
 
-            //Zuweisung des Visualizers
+            //Initialisierung des Visualizers
             barVisualizer = view.findViewById(R.id.BarVisualizer)
             lineVisualizer = view.findViewById(R.id.LineVisualizer)
             squareBarVisualizer = view.findViewById(R.id.SquareBarVisualizer)
+            circleBarVisualizer = view.findViewById(R.id.CircleBarVisualizer)
 
             mediaPlayer = MediaPlayer().apply {
                 binding.playImageDetail.visibility = View.GONE
@@ -178,6 +183,7 @@ class DetailFragment : Fragment() {
                 binding.visualizerSwitch1ImageDetail.visibility = View.GONE
                 binding.visualizerSwitch2ImageDetail.visibility = View.VISIBLE
                 binding.visualizerSwitch3ImageDetail.visibility = View.GONE
+                binding.visualizerSwitch4ImageDetail.visibility = View.GONE
                 squareBarVisualizer.visibility = View.GONE
                 barVisualizer.visibility = View.GONE
                 lineVisualizer.visibility = View.VISIBLE
@@ -193,22 +199,54 @@ class DetailFragment : Fragment() {
                 binding.visualizerSwitch1ImageDetail.visibility = View.GONE
                 binding.visualizerSwitch2ImageDetail.visibility = View.GONE
                 binding.visualizerSwitch3ImageDetail.visibility = View.VISIBLE
+                binding.visualizerSwitch4ImageDetail.visibility = View.GONE
                 squareBarVisualizer.visibility = View.VISIBLE
                 barVisualizer.visibility = View.GONE
                 lineVisualizer.visibility = View.GONE
                 squareBarVisualizer.apply {
                     isEnabled
                     setColor(requireContext().getColor(R.color.white))
-                    setDensity(100F)
+                    setDensity(90F)
                     setGap(3)
                     setPlayer(mediaPlayer!!.audioSessionId)
                 }
             }
 
             binding.visualizerSwitch3ImageDetail.setOnClickListener {
+                binding.visualizerSwitch1ImageDetail.visibility = View.GONE
+                binding.visualizerSwitch2ImageDetail.visibility = View.GONE
+                binding.visualizerSwitch3ImageDetail.visibility = View.GONE
+                binding.visualizerSwitch4ImageDetail.visibility = View.VISIBLE
+                binding.visualizerSwitchOFFImageDetail.visibility = View.GONE
+                barVisualizer.visibility = View.GONE
+                lineVisualizer.visibility = View.GONE
+                squareBarVisualizer.visibility = View.GONE
+                circleBarVisualizer.visibility = View.VISIBLE
+                circleBarVisualizer.apply {
+                    isEnabled
+                    setColor(requireContext().getColor(R.color.white))
+                    setPlayer(mediaPlayer!!.audioSessionId)
+                }
+
+            }
+
+            binding.visualizerSwitch4ImageDetail.setOnClickListener {
+                binding.visualizerSwitch1ImageDetail.visibility = View.GONE
+                binding.visualizerSwitch2ImageDetail.visibility = View.GONE
+                binding.visualizerSwitch3ImageDetail.visibility = View.GONE
+                binding.visualizerSwitch4ImageDetail.visibility = View.GONE
+                binding.visualizerSwitchOFFImageDetail.visibility = View.VISIBLE
+                barVisualizer.visibility = View.GONE
+                lineVisualizer.visibility = View.GONE
+                squareBarVisualizer.visibility = View.GONE
+                circleBarVisualizer.visibility = View.GONE
+            }
+
+            binding.visualizerSwitchOFFImageDetail.setOnClickListener {
                 binding.visualizerSwitch1ImageDetail.visibility = View.VISIBLE
                 binding.visualizerSwitch2ImageDetail.visibility = View.GONE
                 binding.visualizerSwitch3ImageDetail.visibility = View.GONE
+                binding.visualizerSwitchOFFImageDetail.visibility = View.GONE
                 barVisualizer.visibility = View.VISIBLE
                 lineVisualizer.visibility = View.GONE
                 squareBarVisualizer.visibility = View.GONE
@@ -218,6 +256,7 @@ class DetailFragment : Fragment() {
                     setDensity(15F)
                     setPlayer(mediaPlayer!!.audioSessionId)
                 }
+
             }
 
             binding.stopImageDetail.setOnClickListener {

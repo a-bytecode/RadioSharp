@@ -228,6 +228,14 @@
                     tools:ignore="RtlSymmetry"
                     tools:visibility="gone" />
 
+                <com.chibde.visualizer.CircleBarVisualizer
+                    android:id="@+id/CircleBarVisualizer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:ignore="RtlSymmetry"
+                    tools:visibility="gone" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
@@ -400,7 +408,23 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:visibility="gone"
+                app:srcCompat="@drawable/ic_baseline_blur_linear_24" />
+
+            <ImageView
+                android:id="@+id/visualizer_switch4_image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="gone"
                 app:srcCompat="@drawable/ic_baseline_blur_circular_24" />
+
+            <ImageView
+                android:id="@+id/visualizer_switchOFF_image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_baseline_blur_off_24" />
 
             <ImageView
                 android:id="@+id/information_image_detail"
