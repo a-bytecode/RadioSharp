@@ -52,9 +52,11 @@ class FavFragment : Fragment() {
             Log.d("Wurde Aktualisiert", "Wurde Aktualisiert")
         })
 
-        binding.deleteAllButtonFav.setOnClickListener {
-            viewModel.deleteAllFav()
+
+        binding.searchButtonFav.setOnClickListener {
+            viewModel.searchFav(binding.inputSearchTextFav,requireContext())
         }
+
 
         binding.favListImageFav.setOnClickListener {
             showPopUp(binding.favListImageFav)

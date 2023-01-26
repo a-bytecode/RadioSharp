@@ -61,7 +61,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/deleteAll_button_fav"
+            android:id="@+id/search_button_fav"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginStart="32dp"
@@ -88,7 +88,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/deleteAll_button_fav"
+            app:layout_constraintTop_toBottomOf="@+id/search_button_fav"
             tools:listitem="@layout/radio_item" />
 
         <com.google.android.material.textfield.TextInputEditText

@@ -42,6 +42,28 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun searchFav(text: TextView,context: Context) {
+        val searchFavRadiotext = text.text.toString()
+
+        if (searchFavRadiotext != "") {
+            repository.getFavDatabase
+        } else {
+            Toast
+                .makeText(
+                    context, "Bitte Suchbegriff eingeben",
+                    Toast.LENGTH_SHORT
+                )
+                .show()
+        }
+
+    }
+
+    fun findAllFav(text: String){
+        favoritenListeRadioClass.value!!.filter {
+            it.name.contains(text)
+        }
+    }
+
     fun buttonAnimator(button: Button) {
         // animatorTwo verändert ROTATION_X (X-Achse)
         // von RotateButton laufend von 0f bis 360f
