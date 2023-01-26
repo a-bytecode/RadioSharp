@@ -22,6 +22,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.chibde.visualizer.BarVisualizer
 import com.chibde.visualizer.LineVisualizer
+import com.chibde.visualizer.SquareBarVisualizer
 import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
 import com.example.radiosharp.databinding.DetailFragmentBinding
@@ -45,6 +46,8 @@ class DetailFragment : Fragment() {
     private lateinit var lineVisualizer: LineVisualizer
 
     private lateinit var barVisualizer: BarVisualizer
+
+    private lateinit var squareBarVisualizer: SquareBarVisualizer
 
     private lateinit var visualizer: Visualizer
 
@@ -118,6 +121,7 @@ class DetailFragment : Fragment() {
             //Zuweisung des Visualizers
             barVisualizer = view.findViewById(R.id.BarVisualizer)
             lineVisualizer = view.findViewById(R.id.LineVisualizer)
+            squareBarVisualizer = view.findViewById(R.id.SquareBarVisualizer)
 
             mediaPlayer = MediaPlayer().apply {
                 binding.playImageDetail.visibility = View.GONE
@@ -173,7 +177,8 @@ class DetailFragment : Fragment() {
             binding.visualizerSwitch1ImageDetail.setOnClickListener {
                 binding.visualizerSwitch1ImageDetail.visibility = View.GONE
                 binding.visualizerSwitch2ImageDetail.visibility = View.VISIBLE
-
+                binding.visualizerSwitch3ImageDetail.visibility = View.GONE
+                squareBarVisualizer.visibility = View.GONE
                 barVisualizer.visibility = View.GONE
                 lineVisualizer.visibility = View.VISIBLE
                 lineVisualizer.apply {
@@ -185,10 +190,28 @@ class DetailFragment : Fragment() {
             }
 
             binding.visualizerSwitch2ImageDetail.setOnClickListener {
+                binding.visualizerSwitch1ImageDetail.visibility = View.GONE
+                binding.visualizerSwitch2ImageDetail.visibility = View.GONE
+                binding.visualizerSwitch3ImageDetail.visibility = View.VISIBLE
+                squareBarVisualizer.visibility = View.VISIBLE
+                barVisualizer.visibility = View.GONE
+                lineVisualizer.visibility = View.GONE
+                squareBarVisualizer.apply {
+                    isEnabled
+                    setColor(requireContext().getColor(R.color.white))
+                    setDensity(100F)
+                    setGap(3)
+                    setPlayer(mediaPlayer!!.audioSessionId)
+                }
+            }
+
+            binding.visualizerSwitch3ImageDetail.setOnClickListener {
                 binding.visualizerSwitch1ImageDetail.visibility = View.VISIBLE
                 binding.visualizerSwitch2ImageDetail.visibility = View.GONE
+                binding.visualizerSwitch3ImageDetail.visibility = View.GONE
                 barVisualizer.visibility = View.VISIBLE
                 lineVisualizer.visibility = View.GONE
+                squareBarVisualizer.visibility = View.GONE
                 barVisualizer.apply {
                     isEnabled
                     setColor(requireContext().getColor(R.color.white))
