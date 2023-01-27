@@ -30,6 +30,7 @@ import com.example.radiosharp.R
 import com.example.radiosharp.databinding.DetailFragmentBinding
 import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
+import com.squareup.moshi.Json
 
 class DetailFragment : Fragment() {
 
@@ -39,7 +40,48 @@ class DetailFragment : Fragment() {
 
     private var mediaPlayer: MediaPlayer? = null
 
-    private var currentStation: RadioClass? = null
+    // Überklasse von RadioClass und FavClass mit Methoden zum auffangen der Daten des geöffneten Radio Senders.
+    // Notwendig weil, sowohl vom Typ RadioClass als auch vom Typ FavClass sein kann.
+    private data class Radio(
+        var stationuuid: String = "",
+        var country: String = "",
+        var name: String = "",
+        var radioUrl: String = "",
+        var favicon: String = "",
+        var tags: String = "",
+        var nextStation : String = "",
+        var previousStation : String = ""
+    ){
+        fun fromRadioClass(radioClass: RadioClass?){
+            if(radioClass != null){
+                stationuuid = radioClass.stationuuid
+                country = radioClass.country
+                name = radioClass.name
+                radioUrl = radioClass.radioUrl
+                favicon = radioClass.favicon
+                tags = radioClass.tags
+                nextStation  = radioClass.nextStation
+                previousStation  = radioClass.previousStation
+            }
+
+        }
+        fun fromFavClass(favClass: FavClass?){
+            if(favClass != null){
+                stationuuid = favClass.stationuuid
+                country = favClass.country
+                name = favClass.name
+                radioUrl = favClass.radioUrl
+                favicon = favClass.favicon
+                tags = favClass.tags
+                nextStation  = favClass.nextStation
+                previousStation  = favClass.previousStation
+            }
+
+        }
+    }
+
+    // Hier erstellen wir ein leeres Objekt um es später zu füllen.
+    private var currentStation: Radio = Radio()
 
     private lateinit var mediaController: MediaController
 
@@ -76,6 +118,9 @@ class DetailFragment : Fragment() {
 
         // Um die Argumete zu übergeben, speichern wir den Station-key in der variable serverid
         val serverid = requireArguments().getString("stationuuid")
+        //Wir haben ein Boolean Argument erstellt um die Klassen voneinander schließen zu können woher das Radio kommt.
+        //"FavClass oder RadioClass" -> OpeningFav Gibt an ob wir aus der Favoritenliste kommen.
+        val openingFav = requireArguments().getBoolean("openingFav")
 
         // Wir schauen die Liste an Radio Stationen durch den observer an, wir vergleichen die Server ID mit der
         // jeder StationsID in der Liste bis die Station die die gleiche ID hat wie die Server ID gefunden wird,
@@ -84,25 +129,37 @@ class DetailFragment : Fragment() {
         //Das Laden bzw. finden der Radios im Homescreen. (search funktion)
         //TODO Favoriten müssen aus der FavoritenTabelle geladen werden, nicht bedingungslos aus der "RadioClass"
         //      Grund: eine neue Suche kann einen Favoriten aus der RadioClass löschen
-        currentStation =
-            viewModel.allRadios.value?.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
-                radiostation.stationuuid == serverid
-            }
-
-        // Das Laden bzw. finden der Favoriten in der Favoritenliste.
-        if (currentStation == null) {
-            currentStation =
-                viewModel.favoritenListeRadioClass.value?.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
+        if(openingFav){
+            //Wir kommen aus der Favoritenliste
+            currentStation.fromFavClass(
+                viewModel.favRadios.value?.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
                     radiostation.stationuuid == serverid
                 }
+            )
+
+        } else {
+            // Wir kommen aus der Suchergebnis Liste (RadioClass)
+            currentStation.fromRadioClass(
+                viewModel.allRadios.value?.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
+                    radiostation.stationuuid == serverid
+                }
+            )
         }
 
         if (currentStation != null) {
             //Hier holen wir einen Boolean aus der Favoritenliste und
             // verknüpfen ihn mit der "currentStation"
             // um "is Favorite" für die Optische Anzeige der Favoriten zu benutzen.
-            val isFavorite: Boolean =
-                viewModel.favoritenListeRadioClass.value!!.contains(currentStation)
+
+
+
+            // .find gibt den Wert eines Elements einer Liste zurück wenn er ihn findet, ansonsten "null"
+            // .find such anhand einer Kondition in diesem Fall "it.stationuuid == serverid"
+            val foundStationInFavorites = viewModel.favRadios.value?.find {
+                it.stationuuid == serverid
+            } != null
+
+            val isFavorite: Boolean = openingFav or foundStationInFavorites
 
             binding.radioNameDetail.text = currentStation!!.name
             binding.headerTextDialogDetail.text = currentStation!!.name

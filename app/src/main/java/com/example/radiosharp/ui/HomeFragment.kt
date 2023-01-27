@@ -64,18 +64,14 @@ class HomeFragment : Fragment() {
             Log.d("HomeFragment","$it")
         })
 
-            binding.searchButton.setOnClickListener {
-
-                viewModel.buttonAnimator(binding.searchButton)
-
-                viewModel.loadText(binding.inputSearchText,requireContext())
-
-    }
+        binding.searchButton.setOnClickListener {
+            viewModel.buttonAnimator(binding.searchButton)
+            viewModel.loadText(binding.inputSearchText,requireContext())
+        }
 
         binding.favListImageHome.setOnClickListener{
             showPopUp(binding.favListImageHome)
         }
-
 }
 
     fun showPopUp(view: View) {
@@ -120,5 +116,4 @@ class HomeFragment : Fragment() {
 
         popupMenu.show()
     }
-
 }

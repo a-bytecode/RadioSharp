@@ -35,6 +35,10 @@
         <action
             android:id="@+id/action_detailFragment_to_favFragment"
             app:destination="@id/favFragment" />
+        <argument
+            android:name="openingFav"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/favFragment"

@@ -58,7 +58,8 @@ class FavAdapter(val context: Context, val defaultText: (text: TextView) -> Unit
         holder.genreName.text = radioData.tags
         holder.radioCardView.setOnClickListener {
             holder.itemView.findNavController()
-                .navigate(FavFragmentDirections.actionFavFragmentToDetailFragment(radioData.stationuuid))
+                .navigate(FavFragmentDirections.actionFavFragmentToDetailFragment(radioData.stationuuid,
+                openingFav = true))
         }
 
         val gif = ContextCompat.getDrawable(context, R.drawable.giphy4) as AnimatedImageDrawable
