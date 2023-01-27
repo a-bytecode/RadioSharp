@@ -19,6 +19,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.room.PrimaryKey
 import com.bumptech.glide.Glide
 import com.chibde.visualizer.BarVisualizer
 import com.chibde.visualizer.CircleBarVisualizer
@@ -30,6 +31,7 @@ import com.example.radiosharp.R
 import com.example.radiosharp.databinding.DetailFragmentBinding
 import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
+import com.squareup.moshi.Json
 
 class DetailFragment : Fragment() {
 
@@ -39,7 +41,28 @@ class DetailFragment : Fragment() {
 
     private var mediaPlayer: MediaPlayer? = null
 
-    private var currentStation: RadioClass? = null
+    private class Radio(
+
+                        var stationuuid: String,
+                        var country: String,
+                        var name: String,
+                        var radioUrl: String,
+                        var favicon: String,
+                        var tags: String,
+                        var nextStation : String = "",
+                        var previousStation : String = "")
+
+    {
+        fun fromFav(favClass: FavClass?){
+            stationuuid = favClass!!.stationuuid
+        }
+
+        fun fromRadio(radioClass: RadioClass?){
+            stationuuid = radioClass!!.stationuuid
+        }
+    }
+
+    private var currentStation: Radio? = null
 
     private lateinit var mediaController: MediaController
 
@@ -84,18 +107,18 @@ class DetailFragment : Fragment() {
         //Das Laden bzw. finden der Radios im Homescreen. (search funktion)
         //TODO Favoriten müssen aus der FavoritenTabelle geladen werden, nicht bedingungslos aus der "RadioClass"
         //      Grund: eine neue Suche kann einen Favoriten aus der RadioClass löschen
-        currentStation =
-            viewModel.allRadios.value?.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
-                radiostation.stationuuid == serverid
-            }
+        currentStation!!.fromRadio(viewModel.allRadios.value?.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
+            radiostation.stationuuid == serverid
+        })
+
 
         // Das Laden bzw. finden der Favoriten in der Favoritenliste.
-        if (currentStation == null) {
-            currentStation =
-                viewModel.favoritenListeRadioClass.value?.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
-                    radiostation.stationuuid == serverid
-                }
-        }
+//        if (currentStation == null) {
+//            currentStation =
+//                viewModel.favoritenListeRadioClass.value?.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
+//                    radiostation.stationuuid == serverid
+//                }
+//        }
 
         if (currentStation != null) {
             //Hier holen wir einen Boolean aus der Favoritenliste und
