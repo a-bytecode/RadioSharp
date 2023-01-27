@@ -82,6 +82,8 @@ class DetailFragment : Fragment() {
         // und in der Variable currentSation speichern wir das Ergebnis.
 
         //Das Laden bzw. finden der Radios im Homescreen. (search funktion)
+        //TODO Favoriten müssen aus der FavoritenTabelle geladen werden, nicht bedingungslos aus der "RadioClass"
+        //      Grund: eine neue Suche kann einen Favoriten aus der RadioClass löschen
         currentStation =
             viewModel.allRadios.value?.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
                 radiostation.stationuuid == serverid
@@ -338,8 +340,13 @@ class DetailFragment : Fragment() {
             binding.volumeSeekBar.max = maxVolume
             binding.volumeSeekBar.progress = curVolume
 
-            binding.volumeSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+            binding.volumeSeekBar.setOnSeekBarChangeListener(object :
+                SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
                     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0)
                 }
 
@@ -400,5 +407,7 @@ class DetailFragment : Fragment() {
         }
     }
 }
+
+//TODO Durch Blidschirmtimeout verursachten Soundstop fixen. Lösung suchen!
 
 

@@ -17,7 +17,6 @@ import com.example.radiosharp.R
 import com.example.radiosharp.adapter.FavAdapter
 import com.example.radiosharp.databinding.FavFragmentBinding
 import com.example.radiosharp.model.FavClass
-import com.example.radiosharp.model.RadioClass
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 
@@ -46,7 +45,7 @@ class FavFragment : Fragment() {
         binding.radioRecyclerViewFav.adapter = favAdapter
 
 
-        viewModel.favRadioDatabase.observe(viewLifecycleOwner, Observer {
+        viewModel.favRadios.observe(viewLifecycleOwner, Observer {
             favAdapter.submitlist(it)
             Log.d("Wurde Aktualisiert", "Wurde Aktualisiert")
         })
@@ -74,12 +73,12 @@ class FavFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
                 val deletedCourse: FavClass =
-                    viewModel.favRadioDatabase.value!!.get(viewHolder.adapterPosition)
+                    viewModel.favRadios.value!!.get(viewHolder.adapterPosition)
                 val position = viewHolder.adapterPosition
 
-                if (viewModel.favRadioDatabase.value != null) {
+                if (viewModel.favRadios.value != null) {
 
-                    viewModel.favRadioDatabase.value?.removeAt(position)
+                    viewModel.favRadios.value?.removeAt(position)
                     viewModel.removeFav(
                         FavClass(
                             deletedCourse.stationuuid,
@@ -101,7 +100,7 @@ class FavFragment : Fragment() {
                             "Undo",
                             View.OnClickListener {
 
-                                viewModel.favRadioDatabase.value?.add(
+                                viewModel.favRadios.value?.add(
                                     position,
                                     deletedCourse
                                 )

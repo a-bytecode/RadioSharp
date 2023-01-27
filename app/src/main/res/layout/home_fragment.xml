@@ -101,11 +101,12 @@
             android:minHeight="48dp"
             android:outlineAmbientShadowColor="@color/white"
             android:textAlignment="textStart"
-            android:textColorHighlight="#DCA4FF"
+            android:textColor="#FFFFFF"
+            android:textColorHighlight="#000000"
             android:textColorHint="#000000"
-            android:textColorLink="#9F00FF"
+            android:textColorLink="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout_fav"/>
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout_fav" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

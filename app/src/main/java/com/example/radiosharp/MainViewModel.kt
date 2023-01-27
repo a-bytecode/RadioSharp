@@ -25,11 +25,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = Repository(api, database)
 
-    val allRadios = repository.allRadios
+    val allRadios = repository.getAllDatabase
+
+    val favRadios = repository.getFavDatabase
 
     val favoritenListeRadioClass = repository.favoritesList
 
-    val favRadioDatabase = repository.getFavDatabase
+
 
     fun searchRadio(format: String, term: String) {
         viewModelScope.launch {
