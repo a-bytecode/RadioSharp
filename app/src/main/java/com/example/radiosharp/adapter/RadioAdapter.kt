@@ -58,7 +58,8 @@ class RadioAdapter(val context: Context, val defaultText: (text: TextView) -> Un
             holder.itemView.findNavController().navigate(
                 HomeFragmentDirections
                     .actionHomeFragmentToDetailFragment(
-                        radioData.stationuuid
+                        radioData.stationuuid,
+                        openingFav = false
                     )
             )
         }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
@@ -34,6 +35,10 @@
         <action
             android:id="@+id/action_detailFragment_to_favFragment"
             app:destination="@id/favFragment" />
+        <argument
+            android:name="openingFav"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/favFragment"
@@ -49,4 +54,9 @@
             android:id="@+id/action_favFragment_self"
             app:destination="@id/favFragment" />
     </fragment>
+    <activity
+        android:id="@+id/splashActivity"
+        android:name="com.example.radiosharp.SplashActivity"
+        android:label="activity_splash"
+        tools:layout="@layout/activity_splash" />
 </navigation>

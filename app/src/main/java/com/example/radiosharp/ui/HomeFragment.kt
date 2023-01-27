@@ -1,9 +1,14 @@
 package com.example.radiosharp.ui
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -39,26 +44,34 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+
+        if (ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(requireActivity(),
+                arrayOf(Manifest.permission.RECORD_AUDIO), 42)
+        } else {
+            ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
+                Manifest.permission.RECORD_AUDIO)
+        }
+
         val radioAdapter = RadioAdapter(requireContext(),viewModel::fillText)
 
         binding.radioRecyclerView.adapter = radioAdapter
+
 
         viewModel.allRadios.observe(viewLifecycleOwner, Observer {
             radioAdapter.submitlist(it)
             Log.d("HomeFragment","$it")
         })
 
-            binding.searchButton.setOnClickListener {
-
-                viewModel.buttonAnimator(binding.searchButton)
-
-                viewModel.loadText(binding.inputSearchText,requireContext())
-    }
+        binding.searchButton.setOnClickListener {
+            viewModel.buttonAnimator(binding.searchButton)
+            viewModel.loadText(binding.inputSearchText,requireContext())
+        }
 
         binding.favListImageHome.setOnClickListener{
             showPopUp(binding.favListImageHome)
         }
-
 }
 
     fun showPopUp(view: View) {
@@ -103,5 +116,4 @@ class HomeFragment : Fragment() {
 
         popupMenu.show()
     }
-
 }

@@ -25,7 +25,7 @@ interface RadioDatabaseDao {
     //DATABASE FavClass
 
     @Query ("SELECT * FROM FavClass")
-    fun getFav(): LiveData<MutableList<FavClass>>
+    fun getAllFav(): LiveData<MutableList<FavClass>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFav(station: FavClass)

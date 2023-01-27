@@ -9,7 +9,6 @@ import com.example.radiosharp.model.RadioClass
 
 class Repository(private val api: RadioApiService.UserApi, private val database: RadioDatabase) {
 
-    val allRadios = database.radioDatabaseDao.getAll()
 
     // Eine leere Favoriten-Liste erstellt damit der User
     // zukünftige Favoriten in dieser Liste abspeichern kann.
@@ -18,7 +17,8 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
         get() = _favoritesList
 
     val dB = database.radioDatabaseDao
-    val getFavDatabase = dB.getFav() //FAV List
+    val getFavDatabase = dB.getAllFav() //FAV List
+    val getAllDatabase = dB.getAll()
 
     suspend fun getConnection(format: String, term: String) {
         val response = api.retrofitService.getServerResponse(format, term)
@@ -31,7 +31,7 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
     // damit bei der Aktivierung der funktion die App nicht abstürzt
     suspend fun addFavorites(favorite: FavClass) {
 
-        val radioStation = allRadios.value!!.find {
+        val radioStation = getAllDatabase.value!!.find {
             it.stationuuid == favorite.stationuuid
         }
         if (radioStation != null) {
@@ -41,18 +41,13 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
     }
 
     suspend fun removeFavorite(favorite: FavClass) {
-        val radioStation = allRadios.value!!.find {
+        val radioStation = getAllDatabase.value!!.find {
             it.stationuuid == favorite.stationuuid
         }
         if (radioStation != null) {
             _favoritesList.value?.remove(radioStation)
             dB.deleteFav(favorite)
         }
-    }
-
-    // TODO Favoritenliste neu laden (Aktualisieren)
-    fun loadFav(){
-        favoritesList.value
     }
 
     // mit diesen Zeilen geben wir der "RadioClass" Bescheid, dass sie erkennen soll

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@+id/rsbackround"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:layout_height="wrap_content"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:id="@+id/rsHeadlinetext"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/rsbackround"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:layout_height="wrap_content"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:id="@+id/rsHeadlinetext"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+    </ConstraintSet>
+    <Transition
+        motion:constraintSetStart="@+id/start"
+        motion:constraintSetEnd="@+id/end"
+        motion:duration="3070"
+        motion:autoTransition="animateToEnd">
+        <KeyFrameSet >
+
+            <KeyCycle
+                motion:motionTarget="@+id/rsbackround"
+                motion:framePosition="0"
+                motion:wavePeriod="1"
+                motion:waveShape="triangle"
+                android:scaleY="0.7"
+                motion:waveOffset="1" />
+            <KeyAttribute
+                motion:motionTarget="@+id/rsHeadlinetext"
+                motion:framePosition="0"
+                android:scaleX="1.4" />
+
+        </KeyFrameSet>
+        <OnSwipe motion:springStiffness="40.0"
+            motion:springDamping="1.0"
+            motion:maxVelocity="0.1"
+            motion:maxAcceleration="3.1" />
+    </Transition>
+</MotionScene>

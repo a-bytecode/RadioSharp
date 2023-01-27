@@ -11,7 +11,7 @@ import com.example.radiosharp.model.RadioClass
 //Aktivierung eines neuen Room-Table für die Favoriten-Liste:
 //"Auslagerung der Favoriten_Liste in ein seperates Table (FavClass) um
 // mögliche Bugs & Fehlerquellen zu vermeiden."
-@Database(entities = [RadioClass::class, FavClass::class], version = 1)
+@Database(entities = [RadioClass::class, FavClass::class], version = 2)
 abstract class RadioDatabase : RoomDatabase() {
 
     abstract val radioDatabaseDao: RadioDatabaseDao

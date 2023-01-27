@@ -9,11 +9,9 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.radiosharp.local.getDatabase
 import com.example.radiosharp.model.FavClass
-import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.remote.RadioApiService
 import com.example.radiosharp.remote.Repository
 import kotlinx.coroutines.launch
@@ -27,11 +25,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = Repository(api, database)
 
-    val allRadios = repository.allRadios
+    val allRadios = repository.getAllDatabase
 
-    val favoritenListe = repository.favoritesList
+    val favRadios = repository.getFavDatabase
 
-    val radioDatabase = repository.getFavDatabase
+    val favoritenListeRadioClass = repository.favoritesList
+
+
 
     fun searchRadio(format: String, term: String) {
         viewModelScope.launch {
@@ -41,6 +41,31 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             } catch (e: Exception) {
                 Log.d("MainViewModel", "$e")
             }
+        }
+    }
+
+    fun searchFav(text: TextView,context: Context) {
+        val searchFavRadiotext = text.text.toString()
+
+        if (searchFavRadiotext != "") {
+            repository.getFavDatabase
+            favoritenListeRadioClass.value!!.filter {
+                it.name.contains(searchFavRadiotext)
+            }
+        } else {
+            Toast
+                .makeText(
+                    context, "Bitte Suchbegriff eingeben",
+                    Toast.LENGTH_SHORT
+                )
+                .show()
+        }
+
+    }
+
+    fun findAllFav(text: String){
+        favoritenListeRadioClass.value!!.filter {
+            it.name.contains(text)
         }
     }
 

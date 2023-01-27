@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:background="@drawable/gradient_270">
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/information_dialog_detail"
             android:layout_width="match_parent"
@@ -167,6 +166,8 @@
                     android:orientation="vertical"
                     android:progress="30"
                     android:rotation="0"
+                    android:progressDrawable="@drawable/seekbar_progress"
+                    android:thumb="@drawable/seekbar_thumb"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/vol_up_image_detail"
@@ -202,6 +203,38 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0"
                     tools:srcCompat="@tools:sample/avatars" />
+
+                <com.chibde.visualizer.BarVisualizer
+                    android:id="@+id/BarVisualizer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:ignore="RtlSymmetry"
+                    tools:visibility="gone" />
+
+                <com.chibde.visualizer.LineVisualizer
+                    android:id="@+id/LineVisualizer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:ignore="RtlSymmetry"
+                    tools:visibility="gone" />
+
+                <com.chibde.visualizer.SquareBarVisualizer
+                    android:id="@+id/SquareBarVisualizer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:ignore="RtlSymmetry"
+                    tools:visibility="gone" />
+
+                <com.chibde.visualizer.CircleBarVisualizer
+                    android:id="@+id/CircleBarVisualizer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    tools:ignore="RtlSymmetry"
+                    tools:visibility="gone" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -284,7 +317,7 @@
 
             <ProgressBar
                 android:id="@+id/progressBar_detail"
-                style="?android:attr/progressBarStyle"
+                style="@style/Widget.AppCompat.ProgressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -353,6 +386,45 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+
+            <ImageView
+                android:id="@+id/visualizer_switch1_image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_baseline_blur_on_24" />
+
+            <ImageView
+                android:id="@+id/visualizer_switch2_image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_baseline_deblur_24" />
+
+            <ImageView
+                android:id="@+id/visualizer_switch3_image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_baseline_blur_linear_24" />
+
+            <ImageView
+                android:id="@+id/visualizer_switch4_image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_baseline_blur_circular_24" />
+
+            <ImageView
+                android:id="@+id/visualizer_switchOFF_image_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_baseline_blur_off_24" />
 
             <ImageView
                 android:id="@+id/information_image_detail"

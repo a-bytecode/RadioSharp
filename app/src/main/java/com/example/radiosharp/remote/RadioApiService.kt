@@ -9,9 +9,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 
-const val BASE_URL = "https://radio-browser.p.rapidapi.com/"
+const val BASE_URL = "https://de1.api.radio-browser.info/"
 
 val API_TOKEN = "d841fadc6emshcff481dd4ef3e2cp148a97jsnd6be3c3c51b1"
 
@@ -37,9 +38,9 @@ private val retrofit = Retrofit.Builder()
 
 interface RadioApiService{
 
-    @GET("{format}/stations/byname/{searchterm}")
+    @GET("{format}/stations/search")
 
-    suspend fun getServerResponse(@Path("format") format:String,@Path("searchterm") term:String):List<RadioClass>
+    suspend fun getServerResponse(@Path("format") format:String,@Query("name") term:String):List<RadioClass>
 
     object UserApi {
         val retrofitService: RadioApiService by lazy { retrofit.create(RadioApiService::class.java) }
