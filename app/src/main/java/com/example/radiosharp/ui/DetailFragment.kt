@@ -66,17 +66,16 @@ class DetailFragment : Fragment() {
 
         }
         fun fromFavClass(favClass: FavClass?){
-            if(favClass != null){
+            if (favClass != null) {
                 stationuuid = favClass.stationuuid
                 country = favClass.country
                 name = favClass.name
                 radioUrl = favClass.radioUrl
                 favicon = favClass.favicon
                 tags = favClass.tags
-                nextStation  = favClass.nextStation
-                previousStation  = favClass.previousStation
+                nextStation = favClass.nextStation
+                previousStation = favClass.previousStation
             }
-
         }
     }
 
@@ -147,12 +146,7 @@ class DetailFragment : Fragment() {
         }
 
         if (currentStation != null) {
-            //Hier holen wir einen Boolean aus der Favoritenliste und
-            // verknüpfen ihn mit der "currentStation"
-            // um "is Favorite" für die Optische Anzeige der Favoriten zu benutzen.
-
-
-
+            // Mit .find finden wir die Radiostationen in den Favoriten.
             // .find gibt den Wert eines Elements einer Liste zurück wenn er ihn findet, ansonsten "null"
             // .find such anhand einer Kondition in diesem Fall "it.stationuuid == serverid"
             val foundStationInFavorites = viewModel.favRadios.value?.find {
@@ -161,10 +155,10 @@ class DetailFragment : Fragment() {
 
             val isFavorite: Boolean = openingFav or foundStationInFavorites
 
-            binding.radioNameDetail.text = currentStation!!.name
-            binding.headerTextDialogDetail.text = currentStation!!.name
-            binding.countryTextDialogDetail.text = currentStation!!.country
-            binding.genreTextDialogDetail.text = currentStation!!.tags
+            binding.radioNameDetail.text = currentStation.name
+            binding.headerTextDialogDetail.text = currentStation.name
+            binding.countryTextDialogDetail.text = currentStation.country
+            binding.genreTextDialogDetail.text = currentStation.tags
 
             viewModel.fillText(binding.countryTextDialogDetail)
             viewModel.fillText(binding.genreTextDialogDetail)
@@ -177,7 +171,7 @@ class DetailFragment : Fragment() {
             gif.start()
 
             Glide.with(requireContext())
-                .load(currentStation!!.favicon)
+                .load(currentStation.favicon)
                 .placeholder(gif)
                 .into(binding.iconImageDetail)
 
@@ -199,10 +193,10 @@ class DetailFragment : Fragment() {
             }
             // Durch diese Variable sagen wir der Uri das sie anstatt "http" -> "https:" laden soll.
             // Da die normale "http" nicht in der Lage war "https" Url abzurufen.
-            val uri = if (currentStation!!.radioUrl.contains("https:")) {
-                currentStation!!.radioUrl
+            val uri = if (currentStation.radioUrl.contains("https:")) {
+                currentStation.radioUrl
             } else {
-                currentStation!!.radioUrl.replace("http:", "https:")
+                currentStation.radioUrl.replace("http:", "https:")
             }
 
             mediaPlayer!!.setDataSource(requireContext(), uri.toUri())
@@ -324,16 +318,16 @@ class DetailFragment : Fragment() {
                 mediaPlayer!!.pause()
             }
             binding.skipNextImageDetail.setOnClickListener {
-                if (currentStation!!.nextStation.isNotEmpty()) {
+                if (currentStation.nextStation.isNotEmpty()) {
                     findNavController().navigate(
-                        DetailFragmentDirections.actionDetailFragmentSelf(currentStation!!.nextStation)
+                        DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation)
                     )
                 }
             }
             binding.skipPreviousImageDetail.setOnClickListener {
-                if (currentStation!!.previousStation.isNotEmpty()) {
+                if (currentStation.previousStation.isNotEmpty()) {
                     findNavController().navigate(
-                        DetailFragmentDirections.actionDetailFragmentSelf(currentStation!!.previousStation)
+                        DetailFragmentDirections.actionDetailFragmentSelf(currentStation.previousStation)
                     )
                 }
             }
@@ -355,12 +349,12 @@ class DetailFragment : Fragment() {
                 toggleFav(false)
                 viewModel.removeFav(
                     FavClass(
-                        currentStation!!.stationuuid,
-                        currentStation!!.country,
-                        currentStation!!.name,
-                        currentStation!!.radioUrl,
-                        currentStation!!.favicon,
-                        currentStation!!.tags
+                        currentStation.stationuuid,
+                        currentStation.country,
+                        currentStation.name,
+                        currentStation.radioUrl,
+                        currentStation.favicon,
+                        currentStation.tags
                     )
                 )
             }
@@ -368,12 +362,12 @@ class DetailFragment : Fragment() {
                 toggleFav(true)
                 viewModel.addFav(
                     FavClass(
-                        currentStation!!.stationuuid,
-                        currentStation!!.country,
-                        currentStation!!.name,
-                        currentStation!!.radioUrl,
-                        currentStation!!.favicon,
-                        currentStation!!.tags
+                        currentStation.stationuuid,
+                        currentStation.country,
+                        currentStation.name,
+                        currentStation.radioUrl,
+                        currentStation.favicon,
+                        currentStation.tags
                     )
                 )
             }

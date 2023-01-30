@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.radiosharp.local.getDatabase
 import com.example.radiosharp.model.FavClass
@@ -16,6 +18,7 @@ import com.example.radiosharp.remote.RadioApiService
 import com.example.radiosharp.remote.Repository
 import kotlinx.coroutines.launch
 
+enum class ApiStatus { LOADING, DONE, ERROR }
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -32,14 +35,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val favoritenListeRadioClass = repository.favoritesList
 
 
+    private var _apiStatus = MutableLiveData<ApiStatus>()
+    val apiStatus : LiveData<ApiStatus>
+        get() = _apiStatus
+
 
     fun searchRadio(format: String, term: String) {
         viewModelScope.launch {
             try {
+                _apiStatus.value = ApiStatus.LOADING
                 Log.d("MVVM", "CHECK")
                 repository.getConnection(format, term)
+                _apiStatus.value = ApiStatus.DONE
             } catch (e: Exception) {
                 Log.d("MainViewModel", "$e")
+                _apiStatus.value = ApiStatus.ERROR
             }
         }
     }

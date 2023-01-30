@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.radiosharp.ApiStatus
 import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
 import com.example.radiosharp.adapter.RadioAdapter
@@ -58,6 +58,28 @@ class HomeFragment : Fragment() {
 
         binding.radioRecyclerView.adapter = radioAdapter
 
+
+        viewModel.apiStatus.observe(viewLifecycleOwner) {
+
+            when(it) {
+                ApiStatus.LOADING -> {
+                    binding.progressBarHome.visibility = View.VISIBLE
+                    binding.radioRecyclerView.visibility = View.GONE
+                    binding.noConnectionHome.visibility = View.GONE
+                }
+                ApiStatus.DONE -> {
+                    binding.progressBarHome.visibility = View.GONE
+                    binding.radioRecyclerView.visibility = View.VISIBLE
+                    binding.noConnectionHome.visibility = View.GONE
+                }
+                ApiStatus.ERROR -> {
+                    binding.progressBarHome.visibility = View.GONE
+                    binding.radioRecyclerView.visibility = View.GONE
+                    binding.noConnectionHome.visibility = View.VISIBLE
+                }
+            }
+
+        }
 
         viewModel.allRadios.observe(viewLifecycleOwner, Observer {
             radioAdapter.submitlist(it)

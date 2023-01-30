@@ -1,5 +1,6 @@
 package com.example.radiosharp.remote
 
+import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

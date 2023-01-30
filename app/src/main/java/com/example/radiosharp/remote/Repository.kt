@@ -23,7 +23,6 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
     suspend fun getConnection(format: String, term: String) {
         val response = api.retrofitService.getServerResponse(format, term)
         dB.deleteAll()
-        setPrevAndNext(response)
         dB.insert(response as MutableList<RadioClass>)
     }
 
@@ -54,6 +53,29 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
     // das wir VOR der aktuellen "position" und NACH der aktuellen "position" eine weitere "position" haben.
     // Und wir ermöglichen es somit, die Ausführung der Previous und Next Wiedergabe.
     fun setPrevAndNext(radioStations: List<RadioClass>) {
+
+        if (!radioStations.isNullOrEmpty()) {
+
+            for (position in radioStations.indices) {
+                val currentStation = radioStations[position]
+
+                if (position < radioStations.size - 1) {
+                    // Damit die Liste nicht "out of Bounds" geht
+                    // geben wir der "position" +1 und der "radioStation" -1
+                    // somit kann mann vor schalten ohne Absturz.
+                    val nextStation = radioStations[position + 1]
+                    currentStation.nextStation = nextStation.stationuuid
+                }
+                // Das selbe für zurück schalten.
+                if (position > 0) {
+                    val previousRadio = radioStations[position - 1]
+                    currentStation.previousStation = previousRadio.stationuuid
+                }
+            }
+        }
+    }
+
+    fun setFavPrevAndNext(radioStations: List<FavClass>) {
 
         if (!radioStations.isNullOrEmpty()) {
 
