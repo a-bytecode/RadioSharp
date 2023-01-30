@@ -75,6 +75,55 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputSearchText" />
 
+        <LinearLayout
+            android:id="@+id/linearLayout_intro_home"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="50dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_button">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/speakerImage_home2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:rotation="-27"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toTopOf="@+id/placeholderText"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/unknown" />
+
+                <TextView
+                    android:id="@+id/placeholderText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="50dp"
+                    android:fontFamily="@font/fugaz_one"
+                    android:rotationY="338"
+                    android:text="Stöbern Sie ihr Lieblingsradio auf Radiosharp"
+                    android:textAlignment="center"
+                    android:textColor="#F6F6F6"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
         <ProgressBar
             android:id="@+id/progressBar_home"
             style="?android:attr/progressBarStyle"

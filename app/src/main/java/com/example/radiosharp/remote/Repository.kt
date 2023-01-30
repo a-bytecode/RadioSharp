@@ -23,6 +23,7 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
     suspend fun getConnection(format: String, term: String) {
         val response = api.retrofitService.getServerResponse(format, term)
         dB.deleteAll()
+        setPrevAndNext(response)
         dB.insert(response as MutableList<RadioClass>)
     }
 

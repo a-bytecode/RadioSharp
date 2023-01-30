@@ -2,6 +2,7 @@ package com.example.radiosharp.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.drawable.AnimatedImageDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -11,7 +12,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.radiosharp.ApiStatus
 import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
@@ -66,24 +69,27 @@ class HomeFragment : Fragment() {
                     binding.progressBarHome.visibility = View.VISIBLE
                     binding.radioRecyclerView.visibility = View.GONE
                     binding.noConnectionHome.visibility = View.GONE
+                    binding.linearLayoutIntroHome.visibility = View.GONE
                 }
                 ApiStatus.DONE -> {
                     binding.progressBarHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.VISIBLE
                     binding.noConnectionHome.visibility = View.GONE
+                    binding.linearLayoutIntroHome.visibility = View.GONE
                 }
                 ApiStatus.ERROR -> {
                     binding.progressBarHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.GONE
                     binding.noConnectionHome.visibility = View.VISIBLE
+                    binding.linearLayoutIntroHome.visibility = View.GONE
                 }
             }
 
         }
 
         viewModel.allRadios.observe(viewLifecycleOwner, Observer {
-            radioAdapter.submitlist(it)
-            Log.d("HomeFragment","$it")
+                radioAdapter.submitlist(it)
+                Log.d("HomeFragment","$it")
         })
 
         binding.searchButton.setOnClickListener {
@@ -111,6 +117,7 @@ class HomeFragment : Fragment() {
 
                 R.id.pop_up_deleteAll_home -> {
                     viewModel.deleteAll()
+                    binding.linearLayoutIntroHome.visibility = View.VISIBLE
                 }
 
                 R.id.pop_up_end_home -> {
