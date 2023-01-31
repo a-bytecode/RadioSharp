@@ -49,23 +49,27 @@ class DetailFragment : Fragment() {
         var radioUrl: String = "",
         var favicon: String = "",
         var tags: String = "",
-        var nextStation : String = "",
-        var previousStation : String = ""
-    ){
-        fun fromRadioClass(radioClass: RadioClass?){
-            if(radioClass != null){
+        var nextStation: String = "",
+        var previousStation: String = "",
+        var currentIndex: Int? = null
+    ) {
+        //"fromRadioClass" Falls wir aus der RadioClass kommen
+        fun fromRadioClass(radioClass: RadioClass?) {
+            if (radioClass != null) {
                 stationuuid = radioClass.stationuuid
                 country = radioClass.country
                 name = radioClass.name
                 radioUrl = radioClass.radioUrl
                 favicon = radioClass.favicon
                 tags = radioClass.tags
-                nextStation  = radioClass.nextStation
-                previousStation  = radioClass.previousStation
+                nextStation = radioClass.nextStation
+                previousStation = radioClass.previousStation
             }
 
         }
-        fun fromFavClass(favClass: FavClass?){
+
+        //"fromFavClass" Falls wir aus der FavClass kommen
+        fun fromFavClass(favClass: FavClass?) {
             if (favClass != null) {
                 stationuuid = favClass.stationuuid
                 country = favClass.country
@@ -128,13 +132,28 @@ class DetailFragment : Fragment() {
         //Das Laden bzw. finden der Radios im Homescreen. (search funktion)
         //TODO Favoriten müssen aus der FavoritenTabelle geladen werden, nicht bedingungslos aus der "RadioClass"
         //      Grund: eine neue Suche kann einen Favoriten aus der RadioClass löschen
-        if(openingFav){
+        if (openingFav) {
             //Wir kommen aus der Favoritenliste
-            currentStation.fromFavClass(
-                viewModel.favRadios.value?.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
-                    radiostation.stationuuid == serverid
-                }
-            )
+
+            val favorites = viewModel.favRadios.value!!
+            // Mit currentIndex -> "indexOfFirst" wollen wir das nächste Element auslesen.
+            val currentIndex = favorites.indexOfFirst { it.stationuuid == serverid }
+
+            //setzen die jetzige Station auf den jeweiligen Favoriten
+            currentStation.fromFavClass(favorites[currentIndex])
+            //Berechnen den nächsten Index der "stationuuid"
+            val nextStationIndex = (currentIndex + 1) % favorites.size
+            val previousStationIndex =
+                if (currentIndex == 0){
+                favorites.size - 1 // Binäre Minus durch Leertaste vor dem Symbol
+            } else {
+                currentIndex - 1 // Binäre Minus durch Leertaste vor dem Symbol
+            }
+            currentStation.nextStation = favorites[nextStationIndex].stationuuid
+            currentStation.previousStation = favorites[previousStationIndex].stationuuid
+
+            //
+
 
         } else {
             // Wir kommen aus der Suchergebnis Liste (RadioClass)
@@ -318,18 +337,14 @@ class DetailFragment : Fragment() {
                 mediaPlayer!!.pause()
             }
             binding.skipNextImageDetail.setOnClickListener {
-                if (currentStation.nextStation.isNotEmpty()) {
-                    findNavController().navigate(
-                        DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation)
-                    )
-                }
+                findNavController().navigate(
+                    DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation)
+                )
             }
             binding.skipPreviousImageDetail.setOnClickListener {
-                if (currentStation.previousStation.isNotEmpty()) {
-                    findNavController().navigate(
-                        DetailFragmentDirections.actionDetailFragmentSelf(currentStation.previousStation)
-                    )
-                }
+                findNavController().navigate(
+                    DetailFragmentDirections.actionDetailFragmentSelf(currentStation.previousStation)
+                )
             }
             binding.favListImageDetail.setOnClickListener {
                 findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToFavFragment())
@@ -354,9 +369,7 @@ class DetailFragment : Fragment() {
                         currentStation.name,
                         currentStation.radioUrl,
                         currentStation.favicon,
-                        currentStation.tags,
-                        currentStation.nextStation,
-                        currentStation.previousStation
+                        currentStation.tags
                     )
                 )
             }
@@ -369,9 +382,7 @@ class DetailFragment : Fragment() {
                         currentStation.name,
                         currentStation.radioUrl,
                         currentStation.favicon,
-                        currentStation.tags,
-                        currentStation.nextStation,
-                        currentStation.previousStation
+                        currentStation.tags
                     )
                 )
             }
