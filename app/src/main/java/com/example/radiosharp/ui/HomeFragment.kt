@@ -45,6 +45,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
 
@@ -118,6 +119,7 @@ class HomeFragment : Fragment() {
                 R.id.pop_up_deleteAll_home -> {
                     viewModel.deleteAll()
                     binding.linearLayoutIntroHome.visibility = View.VISIBLE
+                    binding.noConnectionHome.visibility = View.GONE
                 }
 
                 R.id.pop_up_end_home -> {

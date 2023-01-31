@@ -1,6 +1,5 @@
 package com.example.radiosharp.remote
 
-import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -13,7 +12,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 
-const val BASE_URL = "https://de1.api.radio-browser.info/"
+const val BASE_URL = "https://at1.api.radio-browser.info/"
 
 val API_TOKEN = "d841fadc6emshcff481dd4ef3e2cp148a97jsnd6be3c3c51b1"
 

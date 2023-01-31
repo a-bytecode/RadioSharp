@@ -355,8 +355,8 @@ class DetailFragment : Fragment() {
                         currentStation.radioUrl,
                         currentStation.favicon,
                         currentStation.tags,
-//                        currentStation.nextStation,
-//                        currentStation.previousStation
+                        currentStation.nextStation,
+                        currentStation.previousStation
                     )
                 )
             }
@@ -370,8 +370,8 @@ class DetailFragment : Fragment() {
                         currentStation.radioUrl,
                         currentStation.favicon,
                         currentStation.tags,
-//                        currentStation.nextStation,
-//                        currentStation.previousStation
+                        currentStation.nextStation,
+                        currentStation.previousStation
                     )
                 )
             }
