@@ -64,6 +64,8 @@ class HomeFragment : Fragment() {
 
         binding.radioRecyclerView.adapter = radioAdapter
 
+        binding.linearlayoutErrorHome.visibility = View.GONE
+
 
 
         viewModel.apiStatus.observe(viewLifecycleOwner) {
@@ -81,8 +83,11 @@ class HomeFragment : Fragment() {
                     binding.radioRecyclerView.visibility = View.VISIBLE
                     if(radioAdapter.itemCount > 0) {
                         binding.linearLayoutIntroHome.visibility = View.GONE
+                        binding.linearlayoutErrorHome.visibility = View.GONE
+
                     } else {
                         binding.radioRecyclerView.visibility = View.VISIBLE
+                        binding.linearlayoutErrorHome.visibility = View.GONE
                     }
                 }
                 ApiStatus.ERROR -> {
@@ -132,8 +137,6 @@ class HomeFragment : Fragment() {
 
                 R.id.pop_up_deleteAll_home -> {
                     viewModel.deleteAll()
-                    binding.noConnectionHome.visibility = View.GONE
-                    binding.linearLayoutIntroHome.visibility = View.VISIBLE
                 }
 
                 R.id.pop_up_end_home -> {

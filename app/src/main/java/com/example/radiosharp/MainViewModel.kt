@@ -134,9 +134,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun resetApiStatus(){
+        _apiStatus.value = ApiStatus.DONE
+    }
+
     fun deleteAll(){
         viewModelScope.launch {
             repository.dB.deleteAll()
+            resetApiStatus()
         }
     }
 
