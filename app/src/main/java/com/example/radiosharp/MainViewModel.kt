@@ -16,6 +16,7 @@ import com.example.radiosharp.local.getDatabase
 import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.remote.RadioApiService
 import com.example.radiosharp.remote.Repository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.internal.wait
 
@@ -51,6 +52,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 Log.d("MainViewModel", "$e")
                 errortext.text = "Error: $e"
                 _apiStatus.value = ApiStatus.ERROR
+                if (apiStatus.value!! == ApiStatus.ERROR) {
+                    delay(5000)
+                    resetApiStatus()
+                }
             }
         }
     }

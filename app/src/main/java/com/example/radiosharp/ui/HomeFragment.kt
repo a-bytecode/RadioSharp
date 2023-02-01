@@ -69,34 +69,40 @@ class HomeFragment : Fragment() {
                     binding.radioRecyclerView.visibility = View.GONE
                     binding.linearlayoutErrorHome.visibility = View.GONE
                     binding.linearLayoutIntroHome.visibility = View.GONE
+                    binding.linearLayoutNoResultHome.visibility = View.GONE
+
                 }
 
-                //Wir interpretieren "DONE" als "es liegen Ergebnisse an."
+                //Wir interpretieren "START" als "es liegen Ergebnisse an."
                 ApiStatus.FOUND_RESULTS -> {
                     binding.progressBarHome.visibility = View.GONE
-                    binding.linearLayoutIntroHome.visibility = View.GONE
+                    binding.linearLayoutIntroHome.visibility = View.VISIBLE
                     binding.linearlayoutErrorHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.VISIBLE
+                    binding.linearLayoutNoResultHome.visibility = View.GONE
+
                 }
                 ApiStatus.ERROR -> {
                     binding.progressBarHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.GONE
                     binding.linearlayoutErrorHome.visibility = View.VISIBLE
                     binding.linearLayoutIntroHome.visibility = View.GONE
+                    binding.linearLayoutNoResultHome.visibility = View.GONE
                 }
                 ApiStatus.START -> {
                     binding.progressBarHome.visibility = View.GONE
                     binding.linearLayoutIntroHome.visibility = View.VISIBLE
                     binding.linearlayoutErrorHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.GONE
+                    binding.linearLayoutNoResultHome.visibility = View.GONE
+
                 }
                 ApiStatus.FOUND_NO_RESULTS -> {
                     binding.progressBarHome.visibility = View.GONE
                     binding.linearLayoutIntroHome.visibility = View.GONE
-                    binding.linearlayoutErrorHome.visibility = View.VISIBLE
+                    binding.linearLayoutNoResultHome.visibility = View.VISIBLE
                     binding.radioRecyclerView.visibility = View.GONE
-                    //TODO Eigenes binding für NO_RESULT
-                    binding.errortextHome.text = "No Result"
+                    binding.noResultTextHome.text = "We´re Sorry, nothing found in our database"
                 }
             }
 
@@ -104,11 +110,6 @@ class HomeFragment : Fragment() {
 
 
         viewModel.allRadios.observe(viewLifecycleOwner, Observer {
-//            if(it.size > 0) {
-//                binding.linearLayoutIntroHome.visibility = View.VISIBLE
-//            } else {
-//                binding.linearLayoutIntroHome.visibility = View.GONE
-//            }
                 radioAdapter.submitlist(it)
                 Log.d("HomeFragment","$it")
         })

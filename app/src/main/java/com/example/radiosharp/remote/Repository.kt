@@ -34,6 +34,7 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
         val results = response as MutableList<RadioClass>
         dB.insert(results)
 
+
         if (results.size > 0) {
             viewModel.setApiStatus(ApiStatus.FOUND_RESULTS)
         } else {
