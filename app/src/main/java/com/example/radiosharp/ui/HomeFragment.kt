@@ -9,6 +9,7 @@ import android.view.*
 import android.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -42,6 +43,7 @@ class HomeFragment : Fragment() {
 
         binding = HomeFragmentBinding.inflate(inflater)
 
+
         return binding.root
     }
 
@@ -63,44 +65,56 @@ class HomeFragment : Fragment() {
         binding.radioRecyclerView.adapter = radioAdapter
 
 
+
         viewModel.apiStatus.observe(viewLifecycleOwner) {
 
             when(it) {
                 ApiStatus.LOADING -> {
                     binding.progressBarHome.visibility = View.VISIBLE
                     binding.radioRecyclerView.visibility = View.GONE
-                    binding.noConnectionHome.visibility = View.GONE
+                    binding.linearlayoutErrorHome.visibility = View.GONE
                     binding.linearLayoutIntroHome.visibility = View.GONE
                 }
                 ApiStatus.DONE -> {
                     binding.progressBarHome.visibility = View.GONE
+                    binding.linearlayoutErrorHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.VISIBLE
-                    binding.noConnectionHome.visibility = View.GONE
-                    binding.linearLayoutIntroHome.visibility = View.GONE
+                    if(radioAdapter.itemCount > 0) {
+                        binding.linearLayoutIntroHome.visibility = View.GONE
+                    } else {
+                        binding.radioRecyclerView.visibility = View.VISIBLE
+                    }
                 }
                 ApiStatus.ERROR -> {
                     binding.progressBarHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.GONE
-                    binding.noConnectionHome.visibility = View.VISIBLE
+                    binding.linearlayoutErrorHome.visibility = View.VISIBLE
                     binding.linearLayoutIntroHome.visibility = View.GONE
                 }
             }
 
         }
 
+
         viewModel.allRadios.observe(viewLifecycleOwner, Observer {
+//            if(it.size > 0) {
+//                binding.linearLayoutIntroHome.visibility = View.VISIBLE
+//            } else {
+//                binding.linearLayoutIntroHome.visibility = View.GONE
+//            }
                 radioAdapter.submitlist(it)
                 Log.d("HomeFragment","$it")
         })
 
         binding.searchButton.setOnClickListener {
             viewModel.buttonAnimator(binding.searchButton)
-            viewModel.loadText(binding.inputSearchText,requireContext())
+            viewModel.loadText(binding.inputSearchText,requireContext(),binding.errortextHome)
         }
 
         binding.favListImageHome.setOnClickListener{
             showPopUp(binding.favListImageHome)
         }
+
 }
 
     fun showPopUp(view: View) {
@@ -118,8 +132,8 @@ class HomeFragment : Fragment() {
 
                 R.id.pop_up_deleteAll_home -> {
                     viewModel.deleteAll()
-                    binding.linearLayoutIntroHome.visibility = View.VISIBLE
                     binding.noConnectionHome.visibility = View.GONE
+                    binding.linearLayoutIntroHome.visibility = View.VISIBLE
                 }
 
                 R.id.pop_up_end_home -> {

@@ -39,16 +39,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val apiStatus : LiveData<ApiStatus>
         get() = _apiStatus
 
-
-    fun searchRadio(format: String, term: String) {
+    fun searchRadio(format: String, term: String,errortext: TextView) {
         viewModelScope.launch {
             try {
                 _apiStatus.value = ApiStatus.LOADING
                 Log.d("MVVM", "CHECK")
                 repository.getConnection(format, term)
                 _apiStatus.value = ApiStatus.DONE
+
             } catch (e: Exception) {
                 Log.d("MainViewModel", "$e")
+                errortext.text = "Error: $e"
                 _apiStatus.value = ApiStatus.ERROR
             }
         }
@@ -89,12 +90,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         animatorTwo.start()
     }
 
-    fun loadText(text: TextView, context: Context) {
+    fun loadText(text: TextView, context: Context,errortext: TextView) {
 
         val searchyourRadiotext = text.text.toString()
 
         if (searchyourRadiotext != "") {
-            searchRadio("json", searchyourRadiotext)
+            searchRadio("json", searchyourRadiotext,errortext)
             Log.d("MainViewModel", "Test")
         } else {
             Toast

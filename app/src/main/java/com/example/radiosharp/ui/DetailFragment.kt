@@ -22,7 +22,6 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.chibde.visualizer.BarVisualizer
 import com.chibde.visualizer.CircleBarVisualizer
-import com.chibde.visualizer.CircleBarVisualizerSmooth
 import com.chibde.visualizer.LineVisualizer
 import com.chibde.visualizer.SquareBarVisualizer
 import com.example.radiosharp.MainViewModel
@@ -30,7 +29,6 @@ import com.example.radiosharp.R
 import com.example.radiosharp.databinding.DetailFragmentBinding
 import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
-import com.squareup.moshi.Json
 
 class DetailFragment : Fragment() {
 
@@ -114,6 +112,7 @@ class DetailFragment : Fragment() {
         stopPlaying()
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         // Das definieren des Audio Managers um den Sound in der SeekBar zu regulieren
@@ -141,27 +140,63 @@ class DetailFragment : Fragment() {
 
             //setzen die jetzige Station auf den jeweiligen Favoriten
             currentStation.fromFavClass(favorites[currentIndex])
+
             //Berechnen den nächsten Index der "stationuuid"
-            val nextStationIndex = (currentIndex + 1) % favorites.size
-            val previousStationIndex =
-                if (currentIndex == 0){
-                favorites.size - 1 // Binäre Minus durch Leertaste vor dem Symbol
+            val nextStationIndex = if (currentIndex == favorites.size - 1) { // Der Wert des letzten Elemnts
+                // beim letzten "next" drücken fängt wieder vom Anfang der Liste an.
+                0
             } else {
-                currentIndex - 1 // Binäre Minus durch Leertaste vor dem Symbol
+                currentIndex + 1
             }
+
+            // Lösung mit Modulo Operator -->
+//            val nextStationIndex = (currentIndex + 1) % favorites.size // Der Modulo-Operator (%),
+            // auch Modulo-Funktion genannt,
+            // berechnet den Rest einer Division von zwei Zahlen.
+            // Der Ausdruck a % b gibt den Rest zurück, wenn man a durch b teilt.
+
+            val previousStationIndex = if (currentIndex == 0) { // Der Wert des Ersten Elements
+                // beim ersten Element "previous" drücken fängt wieder vom Ende der Liste an.
+                favorites.size - 1 // Binäre Minus
+            } else {
+                currentIndex - 1
+            }
+
             currentStation.nextStation = favorites[nextStationIndex].stationuuid
             currentStation.previousStation = favorites[previousStationIndex].stationuuid
 
-            //
-
-
         } else {
-            // Wir kommen aus der Suchergebnis Liste (RadioClass)
-            currentStation.fromRadioClass(
-                viewModel.allRadios.value?.find { radiostation -> // "radiostation" ist die Betitelung der jeweiligen Variable um die es sich handelt ersatz für "it"
-                    radiostation.stationuuid == serverid
-                }
-            )
+
+            val searchResults = viewModel.allRadios.value!!
+            // Mit currentIndex -> "indexOfFirst" wollen wir das nächste Element auslesen.
+            val currentIndex = searchResults.indexOfFirst { it.stationuuid == serverid }
+
+            //setzen die jetzige Station auf den jeweiligen Favoriten
+            currentStation.fromRadioClass(searchResults[currentIndex])
+
+            //Berechnen den nächsten Index der "stationuuid"
+            val nextStationIndex = if (currentIndex == searchResults.size - 1) { // Der Wert des letzten Elemnts
+                // beim letzten "next" drücken fängt wieder vom Anfang der Liste an.
+                0
+            } else {
+                currentIndex + 1
+            }
+
+            // Lösung mit Modulo Operator -->
+//            val nextStationIndex = (currentIndex + 1) % favorites.size // Der Modulo-Operator (%),
+            // auch Modulo-Funktion genannt,
+            // berechnet den Rest einer Division von zwei Zahlen.
+            // Der Ausdruck a % b gibt den Rest zurück, wenn man a durch b teilt.
+
+            val previousStationIndex = if (currentIndex == 0) { // Der Wert des Ersten Elements
+                // beim ersten Element "previous" drücken fängt wieder vom Ende der Liste an.
+                searchResults.size - 1
+            } else {
+                currentIndex - 1
+            }
+
+            currentStation.nextStation = searchResults[nextStationIndex].stationuuid
+            currentStation.previousStation = searchResults[previousStationIndex].stationuuid
         }
 
         if (currentStation != null) {
@@ -338,12 +373,13 @@ class DetailFragment : Fragment() {
             }
             binding.skipNextImageDetail.setOnClickListener {
                 findNavController().navigate(
-                    DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation)
+                    DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation,openingFav = openingFav)
+                    //<<< openingFav Argument wird benötigt um von der RadioClass zu unterscheiden >>>
                 )
             }
             binding.skipPreviousImageDetail.setOnClickListener {
                 findNavController().navigate(
-                    DetailFragmentDirections.actionDetailFragmentSelf(currentStation.previousStation)
+                    DetailFragmentDirections.actionDetailFragmentSelf(currentStation.previousStation, openingFav = openingFav)
                 )
             }
             binding.favListImageDetail.setOnClickListener {

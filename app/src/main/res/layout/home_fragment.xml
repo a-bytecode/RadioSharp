@@ -78,13 +78,12 @@
         <LinearLayout
             android:id="@+id/linearLayout_intro_home"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="400dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginBottom="50dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_button">
@@ -94,7 +93,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/speakerImage_home2"
+                    android:id="@+id/backroundImage_home"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:rotation="-27"
@@ -136,17 +135,54 @@
             app:layout_constraintTop_toBottomOf="@+id/search_button"
             app:layout_constraintVertical_bias="0.38" />
 
-        <ImageView
-            android:id="@+id/no_connection_home"
-            android:layout_width="179dp"
-            android:layout_height="159dp"
+        <LinearLayout
+            android:id="@+id/linearlayout_error_home"
+            android:layout_width="413dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:orientation="horizontal"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_button"
-            app:layout_constraintVertical_bias="0.31"
-            app:srcCompat="@drawable/ic_baseline_signal_wifi_statusbar_connected_no_internet_4_24" />
+            app:layout_constraintVertical_bias="0.18">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/no_connection_home"
+                    android:layout_width="179dp"
+                    android:layout_height="159dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="39dp"
+                    app:layout_constraintBottom_toTopOf="@+id/errortext_home"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_baseline_signal_wifi_statusbar_connected_no_internet_4_24" />
+
+                <TextView
+                    android:id="@+id/errortext_home"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginBottom="32dp"
+                    android:fontFamily="@font/fugaz_one"
+                    android:text="placeholder"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/radioRecyclerView"
