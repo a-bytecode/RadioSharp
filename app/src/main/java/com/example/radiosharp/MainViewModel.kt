@@ -17,8 +17,9 @@ import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.remote.RadioApiService
 import com.example.radiosharp.remote.Repository
 import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 
-enum class ApiStatus { LOADING, DONE, ERROR }
+enum class ApiStatus { START, LOADING, FOUND_RESULTS, FOUND_NO_RESULTS, ERROR }
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -44,8 +45,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 _apiStatus.value = ApiStatus.LOADING
                 Log.d("MVVM", "CHECK")
-                repository.getConnection(format, term)
-                _apiStatus.value = ApiStatus.DONE
+                repository.getConnection(format, term,this@MainViewModel)
 
             } catch (e: Exception) {
                 Log.d("MainViewModel", "$e")
@@ -135,7 +135,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun resetApiStatus(){
-        _apiStatus.value = ApiStatus.DONE
+        setApiStatus(ApiStatus.START)
+    }
+
+    fun setApiStatus(status: ApiStatus){
+        _apiStatus.value = status
     }
 
     fun deleteAll(){

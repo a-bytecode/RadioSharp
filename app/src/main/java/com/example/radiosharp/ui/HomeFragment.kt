@@ -2,20 +2,16 @@ package com.example.radiosharp.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.drawable.AnimatedImageDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.example.radiosharp.ApiStatus
 import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
@@ -64,9 +60,6 @@ class HomeFragment : Fragment() {
 
         binding.radioRecyclerView.adapter = radioAdapter
 
-        binding.linearlayoutErrorHome.visibility = View.GONE
-
-
 
         viewModel.apiStatus.observe(viewLifecycleOwner) {
 
@@ -77,24 +70,33 @@ class HomeFragment : Fragment() {
                     binding.linearlayoutErrorHome.visibility = View.GONE
                     binding.linearLayoutIntroHome.visibility = View.GONE
                 }
-                ApiStatus.DONE -> {
+
+                //Wir interpretieren "DONE" als "es liegen Ergebnisse an."
+                ApiStatus.FOUND_RESULTS -> {
                     binding.progressBarHome.visibility = View.GONE
+                    binding.linearLayoutIntroHome.visibility = View.GONE
                     binding.linearlayoutErrorHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.VISIBLE
-                    if(radioAdapter.itemCount > 0) {
-                        binding.linearLayoutIntroHome.visibility = View.GONE
-                        binding.linearlayoutErrorHome.visibility = View.GONE
-
-                    } else {
-                        binding.radioRecyclerView.visibility = View.VISIBLE
-                        binding.linearlayoutErrorHome.visibility = View.GONE
-                    }
                 }
                 ApiStatus.ERROR -> {
                     binding.progressBarHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.GONE
                     binding.linearlayoutErrorHome.visibility = View.VISIBLE
                     binding.linearLayoutIntroHome.visibility = View.GONE
+                }
+                ApiStatus.START -> {
+                    binding.progressBarHome.visibility = View.GONE
+                    binding.linearLayoutIntroHome.visibility = View.VISIBLE
+                    binding.linearlayoutErrorHome.visibility = View.GONE
+                    binding.radioRecyclerView.visibility = View.GONE
+                }
+                ApiStatus.FOUND_NO_RESULTS -> {
+                    binding.progressBarHome.visibility = View.GONE
+                    binding.linearLayoutIntroHome.visibility = View.GONE
+                    binding.linearlayoutErrorHome.visibility = View.VISIBLE
+                    binding.radioRecyclerView.visibility = View.GONE
+                    //TODO Eigenes binding für NO_RESULT
+                    binding.errortextHome.text = "No Result"
                 }
             }
 

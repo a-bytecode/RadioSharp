@@ -1,14 +1,21 @@
 package com.example.radiosharp.remote
 
+import android.app.Application
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.radiosharp.ApiStatus
 import com.example.radiosharp.local.RadioDatabase
 import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
+import com.example.radiosharp.MainViewModel
+import androidx.fragment.app.activityViewModels
+
+import okhttp3.internal.wait
 
 
 class Repository(private val api: RadioApiService.UserApi, private val database: RadioDatabase) {
-
 
     // Eine leere Favoriten-Liste erstellt damit der User
     // zukünftige Favoriten in dieser Liste abspeichern kann.
@@ -20,11 +27,18 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
     val getFavDatabase = dB.getAllFav() //FAV List
     val getAllDatabase = dB.getAll()
 
-    suspend fun getConnection(format: String, term: String) {
+    suspend fun getConnection(format: String, term: String, viewModel: MainViewModel) {
         val response = api.retrofitService.getServerResponse(format, term)
         dB.deleteAll()
         setPrevAndNext(response)
-        dB.insert(response as MutableList<RadioClass>)
+        val results = response as MutableList<RadioClass>
+        dB.insert(results)
+
+        if (results.size > 0) {
+            viewModel.setApiStatus(ApiStatus.FOUND_RESULTS)
+        } else {
+            viewModel.setApiStatus(ApiStatus.FOUND_NO_RESULTS)
+        }
     }
 
     // Die Funktion add und remove, bereitgestellt und sie ungleich "null" gesetzt
