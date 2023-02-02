@@ -53,7 +53,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 errortext.text = "Error: $e"
                 _apiStatus.value = ApiStatus.ERROR
                 if (apiStatus.value!! == ApiStatus.ERROR) {
-                    delay(5000)
+                    delay(6000)
                     resetApiStatus()
                 }
             }
@@ -62,13 +62,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun searchFav(text: TextView,context: Context) {
         val searchFavRadiotext = text.text.toString()
-
         if (searchFavRadiotext != "") {
-            repository.getFavDatabase
-            favoritenListeRadioClass.value!!.filter {
-                it.name.contains(searchFavRadiotext)
-            }
-        } else {
+            favRadios.value!!.sortByDescending { it.stationuuid }
+            } else {
             Toast
                 .makeText(
                     context, "Bitte Suchbegriff eingeben",

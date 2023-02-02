@@ -94,7 +94,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout_fav"
+            android:id="@+id/linearLayout_home"
             android:layout_width="406dp"
             android:layout_height="55dp"
             android:layout_marginTop="8dp"
@@ -106,6 +106,22 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/homeTotal_text_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/fugaz_one"
+                    android:text="placeholder"
+                    android:textColor="#000000"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/headline_textView"
@@ -332,6 +348,6 @@
             android:textColorLink="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout_fav" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout_home" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

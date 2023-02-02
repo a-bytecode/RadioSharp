@@ -13,7 +13,7 @@
         android:background="@drawable/gradient_270v2">
 
         <LinearLayout
-            android:id="@+id/linearLayout_fav"
+            android:id="@+id/linearLayout_home"
             android:layout_width="406dp"
             android:layout_height="55dp"
             android:layout_marginTop="8dp"
@@ -56,6 +56,21 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_baseline_menu_24"
                     tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                <TextView
+                    android:id="@+id/favTotal_text_Fav"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/fugaz_one"
+                    android:text="placeholder"
+                    android:textColor="#FAFAFA"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
@@ -107,6 +122,6 @@
             android:textColorLink="#9F00FF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout_fav" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout_home" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

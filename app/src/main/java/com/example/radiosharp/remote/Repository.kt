@@ -11,6 +11,7 @@ import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.MainViewModel
 import androidx.fragment.app.activityViewModels
+import kotlinx.coroutines.delay
 
 import okhttp3.internal.wait
 
@@ -39,6 +40,10 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
             viewModel.setApiStatus(ApiStatus.FOUND_RESULTS)
         } else {
             viewModel.setApiStatus(ApiStatus.FOUND_NO_RESULTS)
+            if (viewModel.apiStatus.value!! == ApiStatus.FOUND_NO_RESULTS) {
+                delay(6000)
+                viewModel.resetApiStatus()
+            }
         }
     }
 

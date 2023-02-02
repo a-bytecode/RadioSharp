@@ -1,11 +1,15 @@
 package com.example.radiosharp.ui
 
 import android.Manifest
+import android.content.ClipData
+import android.content.ClipData.Item
 import android.content.pm.PackageManager
+import android.icu.text.CaseMap.Title
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -17,12 +21,17 @@ import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
 import com.example.radiosharp.adapter.RadioAdapter
 import com.example.radiosharp.databinding.HomeFragmentBinding
+import com.example.radiosharp.remote.Repository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class HomeFragment : Fragment() {
 
 
     private lateinit var binding: HomeFragmentBinding
+
+    private lateinit var repository: Repository
+
+    private lateinit var popupMenu: PopupMenu
 
     private val viewModel: MainViewModel by activityViewModels()
 
@@ -80,6 +89,7 @@ class HomeFragment : Fragment() {
                     binding.linearlayoutErrorHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.VISIBLE
                     binding.linearLayoutNoResultHome.visibility = View.GONE
+                    binding.homeTotalTextHome.visibility = View.VISIBLE
 
                 }
                 ApiStatus.ERROR -> {
@@ -88,6 +98,8 @@ class HomeFragment : Fragment() {
                     binding.linearlayoutErrorHome.visibility = View.VISIBLE
                     binding.linearLayoutIntroHome.visibility = View.GONE
                     binding.linearLayoutNoResultHome.visibility = View.GONE
+                    binding.homeTotalTextHome.visibility = View.GONE
+
                 }
                 ApiStatus.START -> {
                     binding.progressBarHome.visibility = View.GONE
@@ -95,6 +107,7 @@ class HomeFragment : Fragment() {
                     binding.linearlayoutErrorHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.GONE
                     binding.linearLayoutNoResultHome.visibility = View.GONE
+                    binding.homeTotalTextHome.visibility = View.GONE
 
                 }
                 ApiStatus.FOUND_NO_RESULTS -> {
@@ -102,16 +115,21 @@ class HomeFragment : Fragment() {
                     binding.linearLayoutIntroHome.visibility = View.GONE
                     binding.linearLayoutNoResultHome.visibility = View.VISIBLE
                     binding.radioRecyclerView.visibility = View.GONE
-                    binding.noResultTextHome.text = "We´re Sorry, nothing found in our database"
+                    binding.homeTotalTextHome.visibility = View.GONE
+                    binding.noResultTextHome.text = "We´re sorry, nothing found in our database"
                 }
             }
-
         }
 
 
         viewModel.allRadios.observe(viewLifecycleOwner, Observer {
-                radioAdapter.submitlist(it)
-                Log.d("HomeFragment","$it")
+            radioAdapter.submitlist(it)
+            if(radioAdapter.itemCount == 0) {
+                binding.homeTotalTextHome.visibility = View.GONE
+            } else {
+                binding.homeTotalTextHome.text = "woof: ${radioAdapter.itemCount}"
+            }
+            Log.d("HomeFragment","$it")
         })
 
         binding.searchButton.setOnClickListener {

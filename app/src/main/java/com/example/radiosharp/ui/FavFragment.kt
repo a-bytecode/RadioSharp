@@ -47,7 +47,13 @@ class FavFragment : Fragment() {
 
         viewModel.favRadios.observe(viewLifecycleOwner, Observer {
             favAdapter.submitlist(it)
-            Log.d("Wurde Aktualisiert", "Wurde Aktualisiert")
+            if(it.size == 0) {
+                binding.favTotalTextFav.visibility = View.GONE
+            } else {
+                binding.favTotalTextFav.visibility = View.VISIBLE
+                binding.favTotalTextFav.text = "woof: ${it.size}"
+            }
+            Log.d("LISTE", "FAVRADIOLISTE: ${it.size}")
         })
 
 
@@ -59,6 +65,8 @@ class FavFragment : Fragment() {
         binding.favListImageFav.setOnClickListener {
             showPopUp(binding.favListImageFav)
         }
+
+
 
         // Swipe to Delete Funktion
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
