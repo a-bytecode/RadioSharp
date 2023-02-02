@@ -18,7 +18,6 @@ import com.example.radiosharp.remote.RadioApiService
 import com.example.radiosharp.remote.Repository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.internal.wait
 
 enum class ApiStatus { START, LOADING, FOUND_RESULTS, FOUND_NO_RESULTS, ERROR }
 
@@ -33,8 +32,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val allRadios = repository.getAllDatabase
 
     val favRadios = repository.getFavDatabase
-
-    val favoritenListeRadioClass = repository.favoritesList
 
 
     private var _apiStatus = MutableLiveData<ApiStatus>()
@@ -60,25 +57,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun searchFav(text: TextView,context: Context) {
-        val searchFavRadiotext = text.text.toString()
-        if (searchFavRadiotext != "") {
-            favRadios.value!!.sortByDescending { it.stationuuid }
-            } else {
+    fun getAllFavByName(name:String,context:Context){
+        if (name != "") {
+            repository.getAllFavByName(name)
+        } else {
             Toast
                 .makeText(
                     context, "Bitte Suchbegriff eingeben",
                     Toast.LENGTH_SHORT
                 )
                 .show()
-        }
-
-    }
-
-    fun findAllFav(text: String){
-        favoritenListeRadioClass.value!!.filter {
-            it.name.contains(text)
-        }
+                }
     }
 
     fun buttonAnimator(button: Button) {

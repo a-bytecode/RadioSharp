@@ -117,6 +117,7 @@
             android:minHeight="48dp"
             android:outlineAmbientShadowColor="@color/white"
             android:textAlignment="textStart"
+            android:textColor="#FFFFFF"
             android:textColorHighlight="#DCA4FF"
             android:textColorHint="#FFFFFF"
             android:textColorLink="#9F00FF"

@@ -23,6 +23,7 @@ import com.example.radiosharp.adapter.RadioAdapter
 import com.example.radiosharp.databinding.HomeFragmentBinding
 import com.example.radiosharp.remote.Repository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.util.Objects
 
 class HomeFragment : Fragment() {
 
@@ -124,11 +125,13 @@ class HomeFragment : Fragment() {
 
         viewModel.allRadios.observe(viewLifecycleOwner, Observer {
             radioAdapter.submitlist(it)
-            if(radioAdapter.itemCount == 0) {
-                binding.homeTotalTextHome.visibility = View.GONE
-            } else {
-                binding.homeTotalTextHome.text = "woof: ${radioAdapter.itemCount}"
+
+            if (radioAdapter.itemCount == 1){
+                binding.homeTotalTextHome.text = "item: ${radioAdapter.itemCount}"
+            } else{
+                binding.homeTotalTextHome.text = "items: ${radioAdapter.itemCount}"
             }
+
             Log.d("HomeFragment","$it")
         })
 

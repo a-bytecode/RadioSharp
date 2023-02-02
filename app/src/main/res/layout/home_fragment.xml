@@ -195,14 +195,14 @@
                     android:layout_height="0dp"
                     android:rotation="-27"
                     android:scaleType="fitCenter"
-                    app:layout_constraintBottom_toTopOf="@+id/placeholderText"
+                    app:layout_constraintBottom_toTopOf="@+id/placeholderText_Home"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/unknown" />
 
                 <TextView
-                    android:id="@+id/placeholderText"
+                    android:id="@+id/placeholderText_Home"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"

@@ -11,7 +11,9 @@ import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.MainViewModel
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 import okhttp3.internal.wait
 
@@ -20,13 +22,20 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
 
     // Eine leere Favoriten-Liste erstellt damit der User
     // zukünftige Favoriten in dieser Liste abspeichern kann.
-    private var _favoritesList = MutableLiveData<MutableList<RadioClass>>(mutableListOf())
-    val favoritesList: LiveData<MutableList<RadioClass>>
-        get() = _favoritesList
+
+//    private var _favoritesList = MutableLiveData<MutableList<RadioClass>>(mutableListOf())
+//    val favoritesList: LiveData<MutableList<RadioClass>>
+//        get() = _favoritesList
 
     val dB = database.radioDatabaseDao
     val getFavDatabase = dB.getAllFav() //FAV List
     val getAllDatabase = dB.getAll()
+//    val getAllFavByName = { name:String -> dB.getAllFavByName(name) }
+
+    fun getAllFavByName(name:String){
+        dB.getAllFavByName(name)
+    }
+
 
     suspend fun getConnection(format: String, term: String, viewModel: MainViewModel) {
         val response = api.retrofitService.getServerResponse(format, term)
@@ -55,7 +64,7 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
             it.stationuuid == favorite.stationuuid
         }
         if (radioStation != null) {
-            _favoritesList.value?.add(radioStation)
+//            _favoritesList.value?.add(radioStation)
             dB.insertFav(favorite)
         }
     }
@@ -65,7 +74,7 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
             it.stationuuid == favorite.stationuuid
         }
         if (radioStation != null) {
-            _favoritesList.value?.remove(radioStation)
+//            _favoritesList.value?.remove(radioStation)
             dB.deleteFav(favorite)
         }
     }
