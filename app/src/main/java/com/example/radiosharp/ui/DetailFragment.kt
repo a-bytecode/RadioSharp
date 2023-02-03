@@ -140,53 +140,6 @@ class DetailFragment : Fragment() {
         currentStation.nextStation = radios[nextStationIndex].stationuuid
         currentStation.previousStation = radios[previousStationIndex].stationuuid
 
-//
-//        if (openingFav) {
-//            //Wir kommen aus der Favoritenliste
-//
-//            val favorites = viewModel.favRadios.value!!
-//            // Mit currentIndex -> "indexOfFirst" wollen wir das nächste Element auslesen.
-//            val currentIndex = favorites.indexOfFirst { it.stationuuid == serverid }
-//
-//            //setzen die jetzige Station auf den jeweiligen Favoriten
-//            currentStation.fromRadio(favorites[currentIndex])
-//
-//            //Berechnen den nächsten Index der "stationuuid"
-//
-//        } else {
-//
-//            val searchResults = viewModel.allRadios.value!!
-//            // Mit currentIndex -> "indexOfFirst" wollen wir das nächste Element auslesen.
-//            val currentIndex = searchResults.indexOfFirst { it.stationuuid == serverid }
-//
-//            //setzen die jetzige Station auf den jeweiligen Favoriten
-//            currentStation.fromRadio(searchResults[currentIndex])
-//
-//            //Berechnen den nächsten Index der "stationuuid"
-//            val nextStationIndex = if (currentIndex == searchResults.size - 1) { // Der Wert des letzten Elemnts
-//                // beim letzten "next" drücken fängt wieder vom Anfang der Liste an.
-//                0
-//            } else {
-//                currentIndex + 1
-//            }
-//
-//            // Lösung mit Modulo Operator -->
-////            val nextStationIndex = (currentIndex + 1) % favorites.size // Der Modulo-Operator (%),
-//            // auch Modulo-Funktion genannt,
-//            // berechnet den Rest einer Division von zwei Zahlen.
-//            // Der Ausdruck a % b gibt den Rest zurück, wenn man a durch b teilt.
-//
-//            val previousStationIndex = if (currentIndex == 0) { // Der Wert des Ersten Elements
-//                // beim ersten Element "previous" drücken fängt wieder vom Ende der Liste an.
-//                searchResults.size - 1
-//            } else {
-//                currentIndex - 1
-//            }
-//
-//            currentStation.nextStation = searchResults[nextStationIndex].stationuuid
-//            currentStation.previousStation = searchResults[previousStationIndex].stationuuid
-//        }
-
         // Mit .find finden wir die Radiostationen in den Favoriten.
         // .find gibt den Wert eines Elements einer Liste zurück wenn er ihn findet, ansonsten "null"
         // .find such anhand einer Kondition in diesem Fall "it.stationuuid == serverid"
@@ -497,5 +450,56 @@ class DetailFragment : Fragment() {
 }
 
 //TODO Durch Blidschirmtimeout verursachten Soundstop fixen. Lösung suchen!
+
+//===============================================================================================================
+// -------------- eine weitere Methode zur Lösung für die Funktion "skip & privious" --------------
+//===============================================================================================================
+
+//
+//        if (openingFav) {
+//            //Wir kommen aus der Favoritenliste
+//
+//            val favorites = viewModel.favRadios.value!!
+//            // Mit currentIndex -> "indexOfFirst" wollen wir das nächste Element auslesen.
+//            val currentIndex = favorites.indexOfFirst { it.stationuuid == serverid }
+//
+//            //setzen die jetzige Station auf den jeweiligen Favoriten
+//            currentStation.fromRadio(favorites[currentIndex])
+//
+//            //Berechnen den nächsten Index der "stationuuid"
+//
+//        } else {
+//
+//            val searchResults = viewModel.allRadios.value!!
+//            // Mit currentIndex -> "indexOfFirst" wollen wir das nächste Element auslesen.
+//            val currentIndex = searchResults.indexOfFirst { it.stationuuid == serverid }
+//
+//            //setzen die jetzige Station auf den jeweiligen Favoriten
+//            currentStation.fromRadio(searchResults[currentIndex])
+//
+//            //Berechnen den nächsten Index der "stationuuid"
+//            val nextStationIndex = if (currentIndex == searchResults.size - 1) { // Der Wert des letzten Elemnts
+//                // beim letzten "next" drücken fängt wieder vom Anfang der Liste an.
+//                0
+//            } else {
+//                currentIndex + 1
+//            }
+
+//            // Lösung mit Modulo Operator -->
+////            val nextStationIndex = (currentIndex + 1) % favorites.size // Der Modulo-Operator (%),
+//            // auch Modulo-Funktion genannt,
+//            // berechnet den Rest einer Division von zwei Zahlen.
+//            // Der Ausdruck a % b gibt den Rest zurück, wenn man a durch b teilt.
+//
+//            val previousStationIndex = if (currentIndex == 0) { // Der Wert des Ersten Elements
+//                // beim ersten Element "previous" drücken fängt wieder vom Ende der Liste an.
+//                searchResults.size - 1
+//            } else {
+//                currentIndex - 1
+//            }
+//
+//            currentStation.nextStation = searchResults[nextStationIndex].stationuuid
+//            currentStation.previousStation = searchResults[previousStationIndex].stationuuid
+//        }
 
 
