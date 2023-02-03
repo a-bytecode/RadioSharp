@@ -12,7 +12,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 
-const val BASE_URL = "https://de1.api.radio-browser.info/"
+const val BASE_URL = "https://at1.api.radio-browser.info/"
 
 val API_TOKEN = "d841fadc6emshcff481dd4ef3e2cp148a97jsnd6be3c3c51b1"
 

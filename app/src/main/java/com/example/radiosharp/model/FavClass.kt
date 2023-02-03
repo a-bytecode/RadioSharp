@@ -9,24 +9,26 @@ data class FavClass(
 
     @PrimaryKey
     @Json(name = "stationuuid")
-    val stationuuid: String,
+    override val stationuuid: String,
 
     @Json(name = "country")
-    val country: String,
+    override val country: String,
 
     @Json(name = "name")
-    val name: String,
+    override val name: String,
 
     @Json(name = "url")
-    val radioUrl: String,
+    override val radioUrl: String,
 
     @Json(name = "favicon")
-    val favicon: String,
+    override val favicon: String,
 
     @Json(name = "tags")
-    val tags: String,
+    override val tags: String,
 
-    var nextStation : String = "",
+    override var nextStation : String = "",
 
-    var previousStation : String = ""
-    )
+    override var previousStation : String = "",
+
+
+    ):IRadio // FavClass implementiert das Interface von "IRadio"

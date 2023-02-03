@@ -1,5 +1,6 @@
 package com.example.radiosharp.local
 
+import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.radiosharp.model.FavClass
@@ -26,6 +27,9 @@ interface RadioDatabaseDao {
 
     @Query ("SELECT * FROM FavClass")
     fun getAllFav(): LiveData<MutableList<FavClass>>
+
+    @Query ("SELECT * FROM FavClass WHERE name = :name")
+    fun getAllFavByName(name:String): LiveData<MutableList<FavClass>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFav(station: FavClass)

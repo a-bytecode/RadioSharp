@@ -44,21 +44,30 @@ class FavFragment : Fragment() {
 
         binding.radioRecyclerViewFav.adapter = favAdapter
 
-
         viewModel.favRadios.observe(viewLifecycleOwner, Observer {
             favAdapter.submitlist(it)
-            Log.d("Wurde Aktualisiert", "Wurde Aktualisiert")
+
+            if(it.size == 0) {
+                binding.favTotalTextFav.visibility = View.GONE
+            } else {
+                binding.favTotalTextFav.visibility = View.VISIBLE
+            }
+            if(it.size == 1){
+                binding.favTotalTextFav.text = "item: ${it.size}"
+            } else {
+                binding.favTotalTextFav.text = "items: ${it.size}"
+            }
         })
 
-
         binding.searchButtonFav.setOnClickListener {
-            viewModel.searchFav(binding.inputSearchTextFav,requireContext())
+            val searchText = binding.inputSearchTextFav.text.toString()
+            viewModel.getAllFavByName(searchText,requireContext())
         }
-
 
         binding.favListImageFav.setOnClickListener {
             showPopUp(binding.favListImageFav)
         }
+
 
         // Swipe to Delete Funktion
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -73,7 +82,7 @@ class FavFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
                 val deletedCourse: FavClass =
-                    viewModel.favRadios.value!!.get(viewHolder.adapterPosition)
+                    viewModel.favRadios.value!![viewHolder.adapterPosition]
                 val position = viewHolder.adapterPosition
 
                 if (viewModel.favRadios.value != null) {
@@ -86,7 +95,9 @@ class FavFragment : Fragment() {
                             deletedCourse.name,
                             deletedCourse.radioUrl,
                             deletedCourse.favicon,
-                            deletedCourse.tags
+                            deletedCourse.tags,
+                            deletedCourse.nextStation,
+                            deletedCourse.previousStation
                         )
                     )
                     favAdapter.notifyItemRemoved(viewHolder.adapterPosition)
