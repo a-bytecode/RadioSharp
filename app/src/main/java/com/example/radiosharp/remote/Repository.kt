@@ -28,12 +28,16 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
 //        get() = _favoritesList
 
     val dB = database.radioDatabaseDao
-    val getFavDatabase = dB.getAllFav() //FAV List
+//FAV List
     val getAllDatabase = dB.getAll()
 //    val getAllFavByName = { name:String -> dB.getAllFavByName(name) }
 
-    fun getAllFavByName(name:String){
-        dB.getAllFavByName(name)
+    suspend fun getAllFav() : MutableList<FavClass> {
+        return dB.getAllFav()
+    }
+
+    suspend fun getAllFavByName(name: String) : MutableList<FavClass> {
+        return dB.getAllFavByName(name)
     }
 
 

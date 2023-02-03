@@ -31,10 +31,10 @@ interface RadioDatabaseDao {
 //============================================================
 
     @Query ("SELECT * FROM FavClass")
-    fun getAllFav(): LiveData<MutableList<FavClass>>
+    suspend fun getAllFav(): MutableList<FavClass>
 
-    @Query ("SELECT * FROM FavClass WHERE name = :name")
-    fun getAllFavByName(name:String): LiveData<MutableList<FavClass>>
+    @Query ("SELECT * FROM FavClass WHERE name LIKE '%' || :name || '%'")
+    suspend fun getAllFavByName(name:String): MutableList<FavClass>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFav(station: FavClass)
@@ -44,20 +44,6 @@ interface RadioDatabaseDao {
 
     @Query("DELETE FROM FavClass")
     suspend fun deleteAllFav()
-
-//============================================================
-// ------------ DATABASE: "FavoritesSearchResults" ------------
-//============================================================
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFav(station: FavoritesSearchResults)
-
-    @Query ("SELECT * FROM FavClass WHERE name = :name")
-    fun searchFavByName(name:String): LiveData<MutableList<FavoritesSearchResults>>
-
-    @Query("DELETE FROM FavoritesSearchResults")
-    suspend fun deleteAllFavSearchResults()
-
 
 //    @Update
 //    suspend fun updateFav(favoritesList: LiveData<MutableList<RadioClass>>)

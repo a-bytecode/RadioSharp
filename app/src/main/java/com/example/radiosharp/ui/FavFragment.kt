@@ -33,7 +33,7 @@ class FavFragment : Fragment() {
     ): View? {
 
         binding = FavFragmentBinding.inflate(inflater)
-
+        viewModel.getFav()
         return binding.root
     }
 
@@ -45,23 +45,29 @@ class FavFragment : Fragment() {
         binding.radioRecyclerViewFav.adapter = favAdapter
 
         viewModel.favRadios.observe(viewLifecycleOwner, Observer {
-            favAdapter.submitlist(it)
+            if(it != null) {
+                favAdapter.submitlist(it)
 
-            if(it.size == 0) {
-                binding.favTotalTextFav.visibility = View.GONE
-            } else {
-                binding.favTotalTextFav.visibility = View.VISIBLE
-            }
-            if(it.size == 1){
-                binding.favTotalTextFav.text = "item: ${it.size}"
-            } else {
-                binding.favTotalTextFav.text = "items: ${it.size}"
+                if(it.size == 0) {
+                    binding.favTotalTextFav.visibility = View.GONE
+                } else {
+                    binding.favTotalTextFav.visibility = View.VISIBLE
+                }
+                if(it.size == 1){
+                    binding.favTotalTextFav.text = "item: ${it.size}"
+                } else {
+                    binding.favTotalTextFav.text = "items: ${it.size}"
+                }
             }
         })
 
         binding.searchButtonFav.setOnClickListener {
             val searchText = binding.inputSearchTextFav.text.toString()
-            viewModel.getAllFavByName(searchText,requireContext())
+            if(searchText == "") {
+                viewModel.getFav()
+            } else {
+                viewModel.getFavSearch(searchText)
+            }
         }
 
         binding.favListImageFav.setOnClickListener {

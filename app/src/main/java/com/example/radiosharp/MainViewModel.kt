@@ -31,8 +31,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val allRadios = repository.getAllDatabase
 
-    val favRadios = repository.getFavDatabase
+    val favRadios = MutableLiveData<MutableList<FavClass>>(mutableListOf())
 
+    fun getFav() {
+        viewModelScope.launch {
+            favRadios.value = repository.getAllFav()
+        }
+    }
+
+    fun getFavSearch(term : String) {
+        viewModelScope.launch {
+            favRadios.value = repository.getAllFavByName(term)
+        }
+    }
 
     private var _apiStatus = MutableLiveData<ApiStatus>()
     val apiStatus : LiveData<ApiStatus>
@@ -55,19 +66,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
         }
-    }
-
-    fun getAllFavByName(name:String,context:Context){
-        if (name != "") {
-            repository.getAllFavByName(name)
-        } else {
-            Toast
-                .makeText(
-                    context, "Bitte Suchbegriff eingeben",
-                    Toast.LENGTH_SHORT
-                )
-                .show()
-                }
     }
 
     fun buttonAnimator(button: Button) {
