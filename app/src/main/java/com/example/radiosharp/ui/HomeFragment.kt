@@ -173,6 +173,7 @@ class HomeFragment : Fragment() {
             // Respond to popup being dismissed.
         }
         // Show the popup menu.
+
         popupMenu.show()
     }
 }
