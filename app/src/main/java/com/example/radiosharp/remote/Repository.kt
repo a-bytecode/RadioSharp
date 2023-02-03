@@ -1,45 +1,27 @@
 package com.example.radiosharp.remote
 
-import android.app.Application
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.radiosharp.ApiStatus
 import com.example.radiosharp.local.RadioDatabase
 import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.MainViewModel
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-
-import okhttp3.internal.wait
 
 
 class Repository(private val api: RadioApiService.UserApi, private val database: RadioDatabase) {
 
-    // Eine leere Favoriten-Liste erstellt damit der User
-    // zukünftige Favoriten in dieser Liste abspeichern kann.
-
-//    private var _favoritesList = MutableLiveData<MutableList<RadioClass>>(mutableListOf())
-//    val favoritesList: LiveData<MutableList<RadioClass>>
-//        get() = _favoritesList
 
     val dB = database.radioDatabaseDao
-//FAV List
     val getAllDatabase = dB.getAll()
 //    val getAllFavByName = { name:String -> dB.getAllFavByName(name) }
 
-    suspend fun getAllFav() : MutableList<FavClass> {
-        return dB.getAllFav()
-    }
-
-    suspend fun getAllFavByName(name: String) : MutableList<FavClass> {
+    suspend fun searchFavByName(name : String):MutableList<FavClass>{
         return dB.getAllFavByName(name)
     }
 
+    suspend fun getAllFav():MutableList<FavClass>{
+        return dB.getAllFav()
+    }
 
     suspend fun getConnection(format: String, term: String, viewModel: MainViewModel) {
         val response = api.retrofitService.getServerResponse(format, term)
@@ -68,7 +50,6 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
             it.stationuuid == favorite.stationuuid
         }
         if (radioStation != null) {
-//            _favoritesList.value?.add(radioStation)
             dB.insertFav(favorite)
         }
     }
@@ -78,7 +59,6 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
             it.stationuuid == favorite.stationuuid
         }
         if (radioStation != null) {
-//            _favoritesList.value?.remove(radioStation)
             dB.deleteFav(favorite)
         }
     }

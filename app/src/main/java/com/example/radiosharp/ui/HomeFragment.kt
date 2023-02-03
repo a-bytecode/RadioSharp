@@ -80,7 +80,6 @@ class HomeFragment : Fragment() {
                     binding.linearlayoutErrorHome.visibility = View.GONE
                     binding.linearLayoutIntroHome.visibility = View.GONE
                     binding.linearLayoutNoResultHome.visibility = View.GONE
-
                 }
 
                 //Wir interpretieren "START" als "es liegen Ergebnisse an."
@@ -91,8 +90,8 @@ class HomeFragment : Fragment() {
                     binding.radioRecyclerView.visibility = View.VISIBLE
                     binding.linearLayoutNoResultHome.visibility = View.GONE
                     binding.homeTotalTextHome.visibility = View.VISIBLE
-
                 }
+
                 ApiStatus.ERROR -> {
                     binding.progressBarHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.GONE
@@ -100,28 +99,27 @@ class HomeFragment : Fragment() {
                     binding.linearLayoutIntroHome.visibility = View.GONE
                     binding.linearLayoutNoResultHome.visibility = View.GONE
                     binding.homeTotalTextHome.visibility = View.GONE
-
                 }
+
                 ApiStatus.START -> {
                     binding.progressBarHome.visibility = View.GONE
-                    binding.linearLayoutIntroHome.visibility = View.VISIBLE
                     binding.linearlayoutErrorHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.GONE
                     binding.linearLayoutNoResultHome.visibility = View.GONE
                     binding.homeTotalTextHome.visibility = View.GONE
-
+                    binding.linearLayoutIntroHome.visibility = View.VISIBLE
                 }
+
                 ApiStatus.FOUND_NO_RESULTS -> {
                     binding.progressBarHome.visibility = View.GONE
                     binding.linearLayoutIntroHome.visibility = View.GONE
-                    binding.linearLayoutNoResultHome.visibility = View.VISIBLE
                     binding.radioRecyclerView.visibility = View.GONE
                     binding.homeTotalTextHome.visibility = View.GONE
+                    binding.linearLayoutNoResultHome.visibility = View.VISIBLE
                     binding.noResultTextHome.text = "We´re sorry, nothing found in our database"
                 }
             }
         }
-
 
         viewModel.allRadios.observe(viewLifecycleOwner, Observer {
             radioAdapter.submitlist(it)
@@ -187,5 +185,9 @@ class HomeFragment : Fragment() {
         // Show the popup menu.
 
         popupMenu.show()
+    }
+
+    fun hide(view: View){
+        view.visibility = View.GONE
     }
 }

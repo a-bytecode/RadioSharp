@@ -45,28 +45,28 @@ class FavFragment : Fragment() {
         binding.radioRecyclerViewFav.adapter = favAdapter
 
         viewModel.favRadios.observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                favAdapter.submitlist(it)
+            favAdapter.submitlist(it)
 
-                if(it.size == 0) {
-                    binding.favTotalTextFav.visibility = View.GONE
-                } else {
-                    binding.favTotalTextFav.visibility = View.VISIBLE
-                }
-                if(it.size == 1){
-                    binding.favTotalTextFav.text = "item: ${it.size}"
-                } else {
-                    binding.favTotalTextFav.text = "items: ${it.size}"
-                }
+            if(it.size == 0) {
+                binding.favTotalTextFav.visibility = View.GONE
+            } else {
+                binding.favTotalTextFav.visibility = View.VISIBLE
+            }
+            if(it.size == 1){
+                binding.favTotalTextFav.text = "item: ${it.size}"
+            } else {
+                binding.favTotalTextFav.text = "items: ${it.size}"
             }
         })
 
+
         binding.searchButtonFav.setOnClickListener {
-            val searchText = binding.inputSearchTextFav.text.toString()
-            if(searchText == "") {
+            val inputText = binding.inputSearchTextFav.text.toString()
+
+            if (inputText == "") {
                 viewModel.getFav()
             } else {
-                viewModel.getFavSearch(searchText)
+                viewModel.getAllFavByName(inputText)
             }
         }
 
@@ -173,7 +173,6 @@ class FavFragment : Fragment() {
             // Respond to popup being dismissed.
         }
         // Show the popup menu.
-
         popupMenu.show()
     }
 }

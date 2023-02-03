@@ -185,6 +185,7 @@ class DetailFragment : Fragment() {
                     .build()
             )
         }
+
         // Durch diese Variable sagen wir der Uri das sie anstatt "http" -> "https:" laden soll.
         // Da die normale "http" nicht in der Lage war "https" Url abzurufen.
         val uri = if (currentStation.radioUrl.contains("https:")) {
@@ -207,6 +208,7 @@ class DetailFragment : Fragment() {
             }
 
         }
+
         //Visualizer prüft ob die permissions "Granted" sind und gibt bei der Wiedergabe des
         // Media Players den Effekt frei.
         if (mediaPlayer != null &&
@@ -335,7 +337,7 @@ class DetailFragment : Fragment() {
 
             toggleFav(false)
         }
-        //  Implementierung der remove & add Funktionen an dem Favoriten Symbol
+        // Implementierung der remove & add Funktionen an dem Favoriten Symbol
         binding.favOnImageDetail.setOnClickListener {
             toggleFav(false)
             viewModel.removeFav(
@@ -438,15 +440,6 @@ class DetailFragment : Fragment() {
         }
     }
 
-    fun createVisualizer() {
-        barVisualizer = barVisualizer.apply {
-            isEnabled
-            setColor(requireContext().getColor(R.color.white))
-//            setDensity(15F)
-//                    setStrokeWidth(1)
-            setPlayer(mediaPlayer!!.audioSessionId)
-        }
-    }
 }
 
 //TODO Durch Blidschirmtimeout verursachten Soundstop fixen. Lösung suchen!

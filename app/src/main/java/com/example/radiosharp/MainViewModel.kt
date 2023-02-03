@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.radiosharp.local.getDatabase
 import com.example.radiosharp.model.FavClass
+import com.example.radiosharp.model.FavoritesSearchResults
 import com.example.radiosharp.remote.RadioApiService
 import com.example.radiosharp.remote.Repository
 import kotlinx.coroutines.delay
@@ -33,15 +34,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val favRadios = MutableLiveData<MutableList<FavClass>>(mutableListOf())
 
-    fun getFav() {
+
+    fun getFav(){
         viewModelScope.launch {
             favRadios.value = repository.getAllFav()
         }
     }
 
-    fun getFavSearch(term : String) {
+    fun getAllFavByName(name: String){
         viewModelScope.launch {
-            favRadios.value = repository.getAllFavByName(term)
+            favRadios.value = repository.searchFavByName(name)
         }
     }
 
@@ -67,6 +69,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+
 
     fun buttonAnimator(button: Button) {
         // animatorTwo verändert ROTATION_X (X-Achse)
