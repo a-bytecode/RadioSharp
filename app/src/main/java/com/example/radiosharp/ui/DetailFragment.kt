@@ -2,17 +2,20 @@ package com.example.radiosharp.ui
 
 import android.Manifest
 import android.content.Context
+import android.content.Context.POWER_SERVICE
 import android.content.pm.PackageManager
 import android.graphics.drawable.AnimatedImageDrawable
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.media.audiofx.Visualizer
+import android.net.wifi.WifiManager
+import android.net.wifi.WifiManager.WifiLock
 import android.os.Bundle
+import android.os.PowerManager
+import android.os.PowerManager.WakeLock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.MediaController
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -80,6 +83,15 @@ class DetailFragment : Fragment() {
 
     private lateinit var circleBarVisualizer: CircleBarVisualizer
 
+    private lateinit var powerManager: PowerManager
+
+    private lateinit var wakeLock: WakeLock
+
+    private lateinit var wifiManager: WifiManager
+
+    private lateinit var wifiLock: WifiLock
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -95,23 +107,37 @@ class DetailFragment : Fragment() {
     }
 
 
-    //==============================================================================
-    // **** DetailFragment: Skip & Previous Funktion, Argumentenübergabe ***********
-    // **** erstellen des MediaPlayers, Visualizers & der SeekBar ******************
-    //==============================================================================
+    //============================================================================= * * * *
+    //    - DetailFragment: "Skip & Previous Funktion, Argumentenübergabe für Navigation -
+    //             - erstellen des MediaPlayers, Visualizers & der SeekBar" -
+    //============================================================================= * * * *
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        // Das Instatiieren des "powerManagers" dient dazu den mediaPlayer nicht in den ruhestand zu versetzten
+        powerManager = requireActivity().getSystemService(POWER_SERVICE) as PowerManager
+
+        // Mit "wakelock" schließen wir den aktuellen Zustand mit einer funktion des PowerManagers zu.
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"radiosharp:wakelockv1")
+
+        // Das instatiieren des WifiManager dient dazu der WIFI Verbindung nicht in den Ruhestand zu versetzten
+        // und eine Kontinuirliche Verbindungsaktivität zu gewährleisten.
+        wifiManager = requireActivity().getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+        // Mit "wifiLock" schließen wir den voreingestellten Zustand "WIFI_MODE_FULL_HIGH_PERF" ab.
+        wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "radiosharp:wifilockv1")
 
         // Das definieren des Audio Managers um den Sound in der SeekBar zu regulieren
         audioManager = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         // Um die Argumete zu übergeben, speichern wir den Station-key in der variable serverid
         val serverid = requireArguments().getString("stationuuid")
+
         //Wir haben ein Boolean Argument erstellt um die Klassen voneinander schließen zu können woher das Radio kommt.
         //"FavClass oder RadioClass" -> OpeningFav Gibt an ob wir aus der Favoritenliste kommen.
         val openingFav = requireArguments().getBoolean("openingFav")
         //Favoriten müssen aus der FavoritenTabelle geladen werden, nicht bedingungslos aus der "RadioClass"
-        //      Grund: eine neue Suche kann einen Favoriten aus der RadioClass löschen
+        //  ---->   Grund: eine neue Suche kann einen Favoriten aus der RadioClass löschen
 
         //Wenn wir aus dem Fragment kommen unterscheiden wir durch die "if" Abfrage in der Variable "radios":
         // "FavClass" und "RadioClass" voneinander, bzw. wählen eines aus.
@@ -176,6 +202,8 @@ class DetailFragment : Fragment() {
         squareBarVisualizer = view.findViewById(R.id.SquareBarVisualizer)
         circleBarVisualizer = view.findViewById(R.id.CircleBarVisualizer)
 
+
+
         mediaPlayer = MediaPlayer().apply {
             binding.playImageDetail.visibility = View.GONE
             binding.progressBarDetail.visibility = View.VISIBLE
@@ -196,6 +224,7 @@ class DetailFragment : Fragment() {
         }
 
         mediaPlayer!!.setDataSource(requireContext(), uri.toUri())
+        mediaPlayer!!.setWakeMode(requireContext(),PowerManager.PARTIAL_WAKE_LOCK)
         mediaPlayer!!.prepareAsync()
         mediaPlayer!!.setOnPreparedListener {
 
@@ -203,7 +232,10 @@ class DetailFragment : Fragment() {
             binding.playImageDetail.visibility = View.VISIBLE
 
             binding.playImageDetail.setOnClickListener {
+                wifiLock.acquire()
+                wakeLock.acquire(30*60*1000L /*30 minutes*/)
                 mediaPlayer!!.start()
+                mediaPlayer!!.setScreenOnWhilePlaying(true)
                 binding.playImageDetail.visibility = View.GONE
                 binding.stopImageDetail.visibility = View.VISIBLE
             }
@@ -313,7 +345,11 @@ class DetailFragment : Fragment() {
             binding.stopImageDetail.visibility = View.GONE
             binding.playImageDetail.visibility = View.VISIBLE
             mediaPlayer!!.pause()
+            mediaPlayer!!.setScreenOnWhilePlaying(false)
+            wifiLock.release()
+            wakeLock.release()
         }
+
         binding.skipNextImageDetail.setOnClickListener {
             findNavController().navigate(
                 DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation,openingFav = openingFav)

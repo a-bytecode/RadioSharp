@@ -19,6 +19,10 @@ import com.example.radiosharp.remote.Repository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+//====================================================================================//
+//-------------- MainViewModel: "Globale Schnittstelle für Funktionen" --------------
+//====================================================================================//
+
 enum class ApiStatus { START, LOADING, FOUND_RESULTS, FOUND_NO_RESULTS, ERROR }
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
