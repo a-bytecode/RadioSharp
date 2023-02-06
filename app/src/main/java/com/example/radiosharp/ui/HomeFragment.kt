@@ -46,6 +46,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+       //* um die Funktionalität des Visualizers zu gewährleisten setzten wir hier die benötigten Permissions.
 
         if (ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
 
@@ -56,10 +57,14 @@ class HomeFragment : Fragment() {
                 Manifest.permission.RECORD_AUDIO)
         }
 
+        //* initializierung bei des RadioAdapters
+
         val radioAdapter = RadioAdapter(requireContext(),viewModel::fillText)
 
         binding.radioRecyclerView.adapter = radioAdapter
 
+        //* hier setzten wir unseren ApiStatus um mögliche
+        // Verbindungsabbrüche und leere Suchergebnisse mit visuellen Kennzeichnungen abzudecken
 
         viewModel.apiStatus.observe(viewLifecycleOwner) {
 
@@ -110,7 +115,7 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
+        //* hier beobachten wir die Radioliste mit und setzten unserem item Count für die Suchergebnisse
         viewModel.allRadios.observe(viewLifecycleOwner, Observer {
             radioAdapter.submitlist(it)
 
@@ -119,7 +124,6 @@ class HomeFragment : Fragment() {
             } else{
                 binding.homeTotalTextHome.text = "items: ${radioAdapter.itemCount}"
             }
-
             Log.d("HomeFragment","$it")
         })
 
@@ -133,7 +137,7 @@ class HomeFragment : Fragment() {
         }
 
 }
-
+    //* in der Funktion "showPopUp" inflaten wir das Popup Menu und setzten verschiedene output Bedingungen
     fun showPopUp(view: View) {
         val popupMenu = PopupMenu(requireContext(), view)
         val inflater = popupMenu.menuInflater

@@ -33,6 +33,7 @@ class FavFragment : Fragment() {
     ): View? {
 
         binding = FavFragmentBinding.inflate(inflater)
+        //* die .getFav initilalisierung des FavRadios
         viewModel.getFav()
         return binding.root
     }

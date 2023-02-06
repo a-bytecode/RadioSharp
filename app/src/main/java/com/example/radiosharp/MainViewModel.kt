@@ -14,7 +14,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.radiosharp.local.getDatabase
 import com.example.radiosharp.model.FavClass
-import com.example.radiosharp.model.FavoritesSearchResults
 import com.example.radiosharp.remote.RadioApiService
 import com.example.radiosharp.remote.Repository
 import kotlinx.coroutines.delay
@@ -122,6 +121,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             Log.d("DeletedFav","DeleteAllFav")
             repository.dB.deleteAllFav()
+            favRadios.value = mutableListOf()
         }
     }
 

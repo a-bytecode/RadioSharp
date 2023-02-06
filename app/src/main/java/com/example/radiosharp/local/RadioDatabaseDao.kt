@@ -1,10 +1,8 @@
 package com.example.radiosharp.local
 
-import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.radiosharp.model.FavClass
-import com.example.radiosharp.model.FavoritesSearchResults
 import com.example.radiosharp.model.RadioClass
 
 @Dao
