@@ -70,8 +70,6 @@ class DetailFragment : Fragment() {
     // Hier erstellen wir ein leeres Objekt um es später zu füllen.
     private var currentStation: Radio = Radio()
 
-    private lateinit var mediaController: MediaController
-
     private lateinit var audioManager: AudioManager
 
     private lateinit var lineVisualizer: LineVisualizer
@@ -81,8 +79,6 @@ class DetailFragment : Fragment() {
     private lateinit var squareBarVisualizer: SquareBarVisualizer
 
     private lateinit var circleBarVisualizer: CircleBarVisualizer
-
-    private lateinit var visualizer: Visualizer
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -98,6 +94,11 @@ class DetailFragment : Fragment() {
         stopPlaying()
     }
 
+
+    //==============================================================================
+    // **** DetailFragment: Skip & Previous Funktion, Argumentenübergabe ***********
+    // **** erstellen des MediaPlayers, Visualizers & der SeekBar ******************
+    //==============================================================================
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -403,7 +404,7 @@ class DetailFragment : Fragment() {
     }
 
     // Um Abstürze beim drücken vom Stop des Tracks zu beseitigen definieren wir hier eine Funktion
-    // die den Mediaplayer stoppt und weiterspielen lässt wenn es nicht "null" ist.
+    // die den Mediaplayer neu Ladet, stoppt & weiterspielen lässt wenn es nicht "null" ist.
     private fun stopPlaying() {
         if (mediaPlayer != null) {
             mediaPlayer!!.stop()
@@ -429,7 +430,7 @@ class DetailFragment : Fragment() {
             mediaPlayer.start()
         }
     }
-
+    // durch "ToggleFav" kontrollieren wir die Sichtbarkeit des Favoriten Elementes.
     fun toggleFav(on: Boolean) {
         if (on) {
             binding.favOnImageDetail.visibility = View.VISIBLE

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -66,6 +67,10 @@ class FavFragment : Fragment() {
 
             if (inputText == "") {
                 viewModel.getFav()
+                Toast.makeText(requireContext(),
+                    "Bitte Suchbegriff eingeben",
+                    Toast.LENGTH_SHORT)
+                    .show()
             } else {
                 viewModel.getAllFavByName(inputText)
             }
@@ -128,6 +133,7 @@ class FavFragment : Fragment() {
                     Log.d("PositionLog", "$position")
                     Log.d("DeletedCourseLog_Name", "${deletedCourse.name}")
                     Log.d("DeletedCourseLog_UID", "${deletedCourse.stationuuid}")
+                    viewModel.getFav()
                 }
             }
         }).attachToRecyclerView(binding.radioRecyclerViewFav)

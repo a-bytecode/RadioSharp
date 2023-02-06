@@ -25,8 +25,8 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
         return dB.getAllFavByName(name)
     }
 
-    //Mit "getAllFav" initialisieren wir die Liste
-    // und prüfen sie auf ihre Größe.
+    //Mit "getAllFav" initialisieren o. aktualisieren wir die Liste
+    // und holen alles was aus den Favoriten ist heraus.
     suspend fun getAllFav():MutableList<FavClass>{
         return dB.getAllFav()
     }
@@ -71,6 +71,7 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
         }
         if (radioStation != null) {
             dB.deleteFav(favorite)
+
         }
     }
 
