@@ -1,5 +1,6 @@
 package com.example.radiosharp.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -40,6 +42,7 @@ class FavFragment : Fragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val favAdapter = FavAdapter(requireContext(), viewModel::fillText)
@@ -140,10 +143,15 @@ class FavFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     fun showPopUp(view: View) {
         val popupMenu = PopupMenu(requireContext(), view)
         val inflater = popupMenu.menuInflater
         inflater.inflate(R.menu.popup_menu_fav, popupMenu.menu)
+        popupMenu.menu.findItem(R.id.pop_up_home_fav).setIcon(R.drawable.ic_baseline_home_24)
+        popupMenu.menu.findItem(R.id.pop_up_deleteAll_fav).setIcon(R.drawable.ic_baseline_delete_24)
+        popupMenu.menu.findItem(R.id.pop_up_end_home).setIcon(R.drawable.ic_baseline_exit_to_app_24)
+        popupMenu.setForceShowIcon(true)
 
         popupMenu.setOnMenuItemClickListener {
 
@@ -162,7 +170,8 @@ class FavFragment : Fragment() {
                         MaterialAlertDialogBuilder(requireContext())
                             .setTitle("Beenden")
                             .setMessage("App wirklich Beenden?")
-                            .setCancelable(false)
+                            .setIcon(R.drawable.ic_baseline_exit_to_app_24)
+                            .setCancelable(true)
                             .setNegativeButton("Nein") { _, _ ->
                                 findNavController().navigate(FavFragmentDirections.actionFavFragmentSelf())
                             }

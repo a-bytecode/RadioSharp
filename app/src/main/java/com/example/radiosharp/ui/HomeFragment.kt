@@ -2,10 +2,12 @@ package com.example.radiosharp.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -43,6 +45,7 @@ class HomeFragment : Fragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
        //* um die Funktionalität des Visualizers zu gewährleisten setzten wir hier die benötigten Permissions.
@@ -139,10 +142,15 @@ class HomeFragment : Fragment() {
 
 }
     //* in der Funktion "showPopUp" inflaten wir das Popup Menu und setzten verschiedene output Bedingungen
+    @RequiresApi(Build.VERSION_CODES.Q)
     fun showPopUp(view: View) {
         val popupMenu = PopupMenu(requireContext(), view)
         val inflater = popupMenu.menuInflater
         inflater.inflate(R.menu.popup_menu, popupMenu.menu)
+        popupMenu.menu.findItem(R.id.pop_up_fav_home).setIcon(R.drawable.ic_baseline_favorite_24)
+        popupMenu.menu.findItem(R.id.pop_up_deleteAll_home).setIcon(R.drawable.ic_baseline_delete_24)
+        popupMenu.menu.findItem(R.id.pop_up_end_home).setIcon(R.drawable.ic_baseline_exit_to_app_24)
+        popupMenu.setForceShowIcon(true)
 
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
@@ -161,7 +169,8 @@ class HomeFragment : Fragment() {
                         MaterialAlertDialogBuilder(requireContext())
                             .setTitle("Beenden")
                             .setMessage("App wirklich Beenden?")
-                            .setCancelable(false)
+                            .setIcon(R.drawable.ic_baseline_exit_to_app_24)
+                            .setCancelable(true)
                             .setNegativeButton("Nein") { _,_ ->
                                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentSelf())
                             }
@@ -178,7 +187,6 @@ class HomeFragment : Fragment() {
             // Respond to popup being dismissed.
         }
         // Show the popup menu.
-
         popupMenu.show()
     }
 
