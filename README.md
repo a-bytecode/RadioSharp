@@ -10,7 +10,7 @@ It´s a small internet radio player written with "kotlin"
 + Repository
 - Api Call: "OkHttpClient"
 * RoomDataBase (SQL)
-+ Database Dao
++ Data Access Object (DAO)
 - Interface
 
 
