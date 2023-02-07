@@ -1,5 +1,6 @@
 package com.example.radiosharp.remote
 
+import com.example.radiosharp.BuildConfig
 import com.example.radiosharp.model.RadioClass
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -14,7 +15,7 @@ import retrofit2.http.Query
 
 const val BASE_URL = "https://at1.api.radio-browser.info/"
 
-val API_TOKEN = "d841fadc6emshcff481dd4ef3e2cp148a97jsnd6be3c3c51b1"
+val API_TOKEN = BuildConfig.API_TOKEN
 
 
 private val client:OkHttpClient = OkHttpClient.Builder()
