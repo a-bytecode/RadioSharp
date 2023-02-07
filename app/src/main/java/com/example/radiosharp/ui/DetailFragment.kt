@@ -2,17 +2,20 @@ package com.example.radiosharp.ui
 
 import android.Manifest
 import android.content.Context
+import android.content.Context.POWER_SERVICE
 import android.content.pm.PackageManager
 import android.graphics.drawable.AnimatedImageDrawable
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.media.audiofx.Visualizer
+import android.net.wifi.WifiManager
+import android.net.wifi.WifiManager.WifiLock
 import android.os.Bundle
+import android.os.PowerManager
+import android.os.PowerManager.WakeLock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.MediaController
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -70,8 +73,6 @@ class DetailFragment : Fragment() {
     // Hier erstellen wir ein leeres Objekt um es später zu füllen.
     private var currentStation: Radio = Radio()
 
-    private lateinit var mediaController: MediaController
-
     private lateinit var audioManager: AudioManager
 
     private lateinit var lineVisualizer: LineVisualizer
@@ -82,7 +83,14 @@ class DetailFragment : Fragment() {
 
     private lateinit var circleBarVisualizer: CircleBarVisualizer
 
-    private lateinit var visualizer: Visualizer
+    private lateinit var powerManager: PowerManager
+
+    private lateinit var wakeLock: WakeLock
+
+    private lateinit var wifiManager: WifiManager
+
+    private lateinit var wifiLock: WifiLock
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,18 +107,37 @@ class DetailFragment : Fragment() {
     }
 
 
+    //============================================================================= * * * *
+    //    - DetailFragment: "Skip & Previous Funktion, Argumentenübergabe für Navigation -
+    //             - erstellen des MediaPlayers, Visualizers & der SeekBar" -
+    //============================================================================= * * * *
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        // Das Instatiieren des "powerManagers" dient dazu den mediaPlayer nicht in den ruhestand zu versetzten
+        powerManager = requireActivity().getSystemService(POWER_SERVICE) as PowerManager
+
+        // Mit "wakelock" schließen wir den aktuellen Zustand mit einer funktion des PowerManagers zu.
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"radiosharp:wakelockv1")
+
+        // Das instatiieren des WifiManager dient dazu der WIFI Verbindung nicht in den Ruhestand zu versetzten
+        // und eine Kontinuirliche Verbindungsaktivität zu gewährleisten.
+        wifiManager = requireActivity().getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+        // Mit "wifiLock" schließen wir den voreingestellten Zustand "WIFI_MODE_FULL_HIGH_PERF" ab.
+        wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "radiosharp:wifilockv1")
 
         // Das definieren des Audio Managers um den Sound in der SeekBar zu regulieren
         audioManager = requireActivity().getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         // Um die Argumete zu übergeben, speichern wir den Station-key in der variable serverid
         val serverid = requireArguments().getString("stationuuid")
+
         //Wir haben ein Boolean Argument erstellt um die Klassen voneinander schließen zu können woher das Radio kommt.
         //"FavClass oder RadioClass" -> OpeningFav Gibt an ob wir aus der Favoritenliste kommen.
         val openingFav = requireArguments().getBoolean("openingFav")
         //Favoriten müssen aus der FavoritenTabelle geladen werden, nicht bedingungslos aus der "RadioClass"
-        //      Grund: eine neue Suche kann einen Favoriten aus der RadioClass löschen
+        //  ---->   Grund: eine neue Suche kann einen Favoriten aus der RadioClass löschen
 
         //Wenn wir aus dem Fragment kommen unterscheiden wir durch die "if" Abfrage in der Variable "radios":
         // "FavClass" und "RadioClass" voneinander, bzw. wählen eines aus.
@@ -139,53 +166,6 @@ class DetailFragment : Fragment() {
         currentStation.fromRadio(radios[currentRadioIndex])
         currentStation.nextStation = radios[nextStationIndex].stationuuid
         currentStation.previousStation = radios[previousStationIndex].stationuuid
-
-//
-//        if (openingFav) {
-//            //Wir kommen aus der Favoritenliste
-//
-//            val favorites = viewModel.favRadios.value!!
-//            // Mit currentIndex -> "indexOfFirst" wollen wir das nächste Element auslesen.
-//            val currentIndex = favorites.indexOfFirst { it.stationuuid == serverid }
-//
-//            //setzen die jetzige Station auf den jeweiligen Favoriten
-//            currentStation.fromRadio(favorites[currentIndex])
-//
-//            //Berechnen den nächsten Index der "stationuuid"
-//
-//        } else {
-//
-//            val searchResults = viewModel.allRadios.value!!
-//            // Mit currentIndex -> "indexOfFirst" wollen wir das nächste Element auslesen.
-//            val currentIndex = searchResults.indexOfFirst { it.stationuuid == serverid }
-//
-//            //setzen die jetzige Station auf den jeweiligen Favoriten
-//            currentStation.fromRadio(searchResults[currentIndex])
-//
-//            //Berechnen den nächsten Index der "stationuuid"
-//            val nextStationIndex = if (currentIndex == searchResults.size - 1) { // Der Wert des letzten Elemnts
-//                // beim letzten "next" drücken fängt wieder vom Anfang der Liste an.
-//                0
-//            } else {
-//                currentIndex + 1
-//            }
-//
-//            // Lösung mit Modulo Operator -->
-////            val nextStationIndex = (currentIndex + 1) % favorites.size // Der Modulo-Operator (%),
-//            // auch Modulo-Funktion genannt,
-//            // berechnet den Rest einer Division von zwei Zahlen.
-//            // Der Ausdruck a % b gibt den Rest zurück, wenn man a durch b teilt.
-//
-//            val previousStationIndex = if (currentIndex == 0) { // Der Wert des Ersten Elements
-//                // beim ersten Element "previous" drücken fängt wieder vom Ende der Liste an.
-//                searchResults.size - 1
-//            } else {
-//                currentIndex - 1
-//            }
-//
-//            currentStation.nextStation = searchResults[nextStationIndex].stationuuid
-//            currentStation.previousStation = searchResults[previousStationIndex].stationuuid
-//        }
 
         // Mit .find finden wir die Radiostationen in den Favoriten.
         // .find gibt den Wert eines Elements einer Liste zurück wenn er ihn findet, ansonsten "null"
@@ -222,6 +202,8 @@ class DetailFragment : Fragment() {
         squareBarVisualizer = view.findViewById(R.id.SquareBarVisualizer)
         circleBarVisualizer = view.findViewById(R.id.CircleBarVisualizer)
 
+
+
         mediaPlayer = MediaPlayer().apply {
             binding.playImageDetail.visibility = View.GONE
             binding.progressBarDetail.visibility = View.VISIBLE
@@ -232,6 +214,7 @@ class DetailFragment : Fragment() {
                     .build()
             )
         }
+
         // Durch diese Variable sagen wir der Uri das sie anstatt "http" -> "https:" laden soll.
         // Da die normale "http" nicht in der Lage war "https" Url abzurufen.
         val uri = if (currentStation.radioUrl.contains("https:")) {
@@ -241,6 +224,7 @@ class DetailFragment : Fragment() {
         }
 
         mediaPlayer!!.setDataSource(requireContext(), uri.toUri())
+        mediaPlayer!!.setWakeMode(requireContext(),PowerManager.PARTIAL_WAKE_LOCK)
         mediaPlayer!!.prepareAsync()
         mediaPlayer!!.setOnPreparedListener {
 
@@ -248,12 +232,16 @@ class DetailFragment : Fragment() {
             binding.playImageDetail.visibility = View.VISIBLE
 
             binding.playImageDetail.setOnClickListener {
+                wifiLock.acquire()
+                wakeLock.acquire(30*60*1000L /*30 minutes*/)
                 mediaPlayer!!.start()
+                mediaPlayer!!.setScreenOnWhilePlaying(true)
                 binding.playImageDetail.visibility = View.GONE
                 binding.stopImageDetail.visibility = View.VISIBLE
             }
 
         }
+
         //Visualizer prüft ob die permissions "Granted" sind und gibt bei der Wiedergabe des
         // Media Players den Effekt frei.
         if (mediaPlayer != null &&
@@ -357,7 +345,11 @@ class DetailFragment : Fragment() {
             binding.stopImageDetail.visibility = View.GONE
             binding.playImageDetail.visibility = View.VISIBLE
             mediaPlayer!!.pause()
+            mediaPlayer!!.setScreenOnWhilePlaying(false)
+            wifiLock.release()
+            wakeLock.release()
         }
+
         binding.skipNextImageDetail.setOnClickListener {
             findNavController().navigate(
                 DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation,openingFav = openingFav)
@@ -382,7 +374,7 @@ class DetailFragment : Fragment() {
 
             toggleFav(false)
         }
-        //  Implementierung der remove & add Funktionen an dem Favoriten Symbol
+        // Implementierung der remove & add Funktionen an dem Favoriten Symbol
         binding.favOnImageDetail.setOnClickListener {
             toggleFav(false)
             viewModel.removeFav(
@@ -448,7 +440,7 @@ class DetailFragment : Fragment() {
     }
 
     // Um Abstürze beim drücken vom Stop des Tracks zu beseitigen definieren wir hier eine Funktion
-    // die den Mediaplayer stoppt und weiterspielen lässt wenn es nicht "null" ist.
+    // die den Mediaplayer neu Ladet, stoppt & weiterspielen lässt wenn es nicht "null" ist.
     private fun stopPlaying() {
         if (mediaPlayer != null) {
             mediaPlayer!!.stop()
@@ -474,7 +466,7 @@ class DetailFragment : Fragment() {
             mediaPlayer.start()
         }
     }
-
+    // durch "ToggleFav" kontrollieren wir die Sichtbarkeit des Favoriten Elementes.
     fun toggleFav(on: Boolean) {
         if (on) {
             binding.favOnImageDetail.visibility = View.VISIBLE
@@ -485,17 +477,59 @@ class DetailFragment : Fragment() {
         }
     }
 
-    fun createVisualizer() {
-        barVisualizer = barVisualizer.apply {
-            isEnabled
-            setColor(requireContext().getColor(R.color.white))
-//            setDensity(15F)
-//                    setStrokeWidth(1)
-            setPlayer(mediaPlayer!!.audioSessionId)
-        }
-    }
 }
 
 //TODO Durch Blidschirmtimeout verursachten Soundstop fixen. Lösung suchen!
+
+//===============================================================================================================
+// -------------- eine weitere Methode zur Lösung für die Funktion "skip & privious" --------------
+//===============================================================================================================
+
+//
+//        if (openingFav) {
+//            //Wir kommen aus der Favoritenliste
+//
+//            val favorites = viewModel.favRadios.value!!
+//            // Mit currentIndex -> "indexOfFirst" wollen wir das nächste Element auslesen.
+//            val currentIndex = favorites.indexOfFirst { it.stationuuid == serverid }
+//
+//            //setzen die jetzige Station auf den jeweiligen Favoriten
+//            currentStation.fromRadio(favorites[currentIndex])
+//
+//            //Berechnen den nächsten Index der "stationuuid"
+//
+//        } else {
+//
+//            val searchResults = viewModel.allRadios.value!!
+//            // Mit currentIndex -> "indexOfFirst" wollen wir das nächste Element auslesen.
+//            val currentIndex = searchResults.indexOfFirst { it.stationuuid == serverid }
+//
+//            //setzen die jetzige Station auf den jeweiligen Favoriten
+//            currentStation.fromRadio(searchResults[currentIndex])
+//
+//            //Berechnen den nächsten Index der "stationuuid"
+//            val nextStationIndex = if (currentIndex == searchResults.size - 1) { // Der Wert des letzten Elemnts
+//                // beim letzten "next" drücken fängt wieder vom Anfang der Liste an.
+//                0
+//            } else {
+//                currentIndex + 1
+//            }
+
+//            // Lösung mit Modulo Operator -->
+////            val nextStationIndex = (currentIndex + 1) % favorites.size // Der Modulo-Operator (%),
+//            // auch Modulo-Funktion genannt,
+//            // berechnet den Rest einer Division von zwei Zahlen.
+//            // Der Ausdruck a % b gibt den Rest zurück, wenn man a durch b teilt.
+//
+//            val previousStationIndex = if (currentIndex == 0) { // Der Wert des Ersten Elements
+//                // beim ersten Element "previous" drücken fängt wieder vom Ende der Liste an.
+//                searchResults.size - 1
+//            } else {
+//                currentIndex - 1
+//            }
+//
+//            currentStation.nextStation = searchResults[nextStationIndex].stationuuid
+//            currentStation.previousStation = searchResults[previousStationIndex].stationuuid
+//        }
 
 

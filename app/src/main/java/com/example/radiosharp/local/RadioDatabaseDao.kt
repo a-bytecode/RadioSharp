@@ -1,6 +1,5 @@
 package com.example.radiosharp.local
 
-import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.radiosharp.model.FavClass
@@ -9,7 +8,9 @@ import com.example.radiosharp.model.RadioClass
 @Dao
 interface RadioDatabaseDao {
 
-    //DATABASE RadioClass
+//============================================================
+// -------------- DATABASE: "RadioClass" --------------
+//============================================================
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(station: MutableList<RadioClass>)
@@ -23,13 +24,15 @@ interface RadioDatabaseDao {
     @Query("DELETE FROM RadioClass")
     suspend fun deleteAll()
 
-    //DATABASE FavClass
+//============================================================
+// -------------- DATABASE: "FavClass" --------------
+//============================================================
 
     @Query ("SELECT * FROM FavClass")
-    fun getAllFav(): LiveData<MutableList<FavClass>>
+    suspend fun getAllFav(): MutableList<FavClass>
 
-    @Query ("SELECT * FROM FavClass WHERE name = :name")
-    fun getAllFavByName(name:String): LiveData<MutableList<FavClass>>
+    @Query ("SELECT * FROM FavClass WHERE name LIKE '%' || :name || '%'")
+    suspend fun getAllFavByName(name:String): MutableList<FavClass>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFav(station: FavClass)

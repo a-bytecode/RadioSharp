@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -33,7 +34,8 @@ class FavFragment : Fragment() {
     ): View? {
 
         binding = FavFragmentBinding.inflate(inflater)
-
+        //* die .getFav initilalisierung des FavRadios
+        viewModel.getFav()
         return binding.root
     }
 
@@ -59,9 +61,19 @@ class FavFragment : Fragment() {
             }
         })
 
+
         binding.searchButtonFav.setOnClickListener {
-            val searchText = binding.inputSearchTextFav.text.toString()
-            viewModel.getAllFavByName(searchText,requireContext())
+            val inputText = binding.inputSearchTextFav.text.toString()
+
+            if (inputText == "") {
+                viewModel.getFav()
+                Toast.makeText(requireContext(),
+                    "Bitte Suchbegriff eingeben",
+                    Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                viewModel.getAllFavByName(inputText)
+            }
         }
 
         binding.favListImageFav.setOnClickListener {
@@ -121,6 +133,7 @@ class FavFragment : Fragment() {
                     Log.d("PositionLog", "$position")
                     Log.d("DeletedCourseLog_Name", "${deletedCourse.name}")
                     Log.d("DeletedCourseLog_UID", "${deletedCourse.stationuuid}")
+                    viewModel.getFav()
                 }
             }
         }).attachToRecyclerView(binding.radioRecyclerViewFav)
@@ -167,7 +180,6 @@ class FavFragment : Fragment() {
             // Respond to popup being dismissed.
         }
         // Show the popup menu.
-
         popupMenu.show()
     }
 }

@@ -1,46 +1,41 @@
 package com.example.radiosharp.remote
 
-import android.app.Application
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.radiosharp.ApiStatus
 import com.example.radiosharp.local.RadioDatabase
 import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.MainViewModel
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-
-import okhttp3.internal.wait
 
 
 class Repository(private val api: RadioApiService.UserApi, private val database: RadioDatabase) {
 
-    // Eine leere Favoriten-Liste erstellt damit der User
-    // zukünftige Favoriten in dieser Liste abspeichern kann.
+//================================================================================================//
+// -------------- Repository: "ApiCall, ApiStatus & Favoriten Funktionen" --------------
+//================================================================================================//
 
-//    private var _favoritesList = MutableLiveData<MutableList<RadioClass>>(mutableListOf())
-//    val favoritesList: LiveData<MutableList<RadioClass>>
-//        get() = _favoritesList
-
+    //Hier erstellen wir Variablen damit wir aus der Repository aus, auf die
+    // "Query" von der "RoomDatabase" zugreifen können.
     val dB = database.radioDatabaseDao
-    val getFavDatabase = dB.getAllFav() //FAV List
     val getAllDatabase = dB.getAll()
-//    val getAllFavByName = { name:String -> dB.getAllFavByName(name) }
 
-    fun getAllFavByName(name:String){
-        dB.getAllFavByName(name)
+    //hier holen wir die Query für die "search" funktion in den Favoriten,
+    // um sie dann in der Mutable Liste "FavClass" anwenden zu können.
+    suspend fun searchFavByName(name : String):MutableList<FavClass>{
+        return dB.getAllFavByName(name)
     }
 
+    //Mit "getAllFav" initialisieren o. aktualisieren wir die Liste
+    // und holen alles was aus den Favoriten ist heraus.
+    suspend fun getAllFav():MutableList<FavClass>{
+        return dB.getAllFav()
+    }
 
+    //Mit dieser Funktion starten wir den Api Call
+    // und setzten unseren ApiStatus aus dem "ViewModel" aus.
     suspend fun getConnection(format: String, term: String, viewModel: MainViewModel) {
         val response = api.retrofitService.getServerResponse(format, term)
         dB.deleteAll()
-        setPrevAndNext(response)
         val results = response as MutableList<RadioClass>
         dB.insert(results)
 
@@ -56,15 +51,16 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
         }
     }
 
-    // Die Funktion add und remove, bereitgestellt und sie ungleich "null" gesetzt
-    // damit bei der Aktivierung der funktion die App nicht abstürzt
+    // In der Add und remove Favorites Funktion,
+    // suchen wir die id der Station heraus
+    // und geben diese im Parameter "favorites" weiter.
+    // um Favoriten löschen oder hinzufügen zu können.
     suspend fun addFavorites(favorite: FavClass) {
 
         val radioStation = getAllDatabase.value!!.find {
             it.stationuuid == favorite.stationuuid
         }
         if (radioStation != null) {
-//            _favoritesList.value?.add(radioStation)
             dB.insertFav(favorite)
         }
     }
@@ -74,59 +70,67 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
             it.stationuuid == favorite.stationuuid
         }
         if (radioStation != null) {
-//            _favoritesList.value?.remove(radioStation)
             dB.deleteFav(favorite)
-        }
-    }
 
-    // mit diesen Zeilen geben wir der "RadioClass" Bescheid, dass sie erkennen soll
-    // das wir VOR der aktuellen "position" und NACH der aktuellen "position" eine weitere "position" haben.
-    // Und wir ermöglichen es somit, die Ausführung der Previous und Next Wiedergabe.
-    fun setPrevAndNext(radioStations: List<RadioClass>) {
-
-        if (!radioStations.isNullOrEmpty()) {
-
-            for (position in radioStations.indices) {
-                val currentStation = radioStations[position]
-
-                if (position < radioStations.size - 1) {
-                    // Damit die Liste nicht "out of Bounds" geht
-                    // geben wir der "position" +1 und der "radioStation" -1
-                    // somit kann mann vor schalten ohne Absturz.
-                    val nextStation = radioStations[position + 1]
-                    currentStation.nextStation = nextStation.stationuuid
-                }
-                // Das selbe für zurück schalten.
-                if (position > 0) {
-                    val previousRadio = radioStations[position - 1]
-                    currentStation.previousStation = previousRadio.stationuuid
-                }
-            }
-        }
-    }
-
-    fun setFavPrevAndNext(radioStations: List<FavClass>) {
-
-        if (!radioStations.isNullOrEmpty()) {
-
-            for (position in radioStations.indices) {
-                val currentStation = radioStations[position]
-
-                if (position < radioStations.size - 1) {
-                    // Damit die Liste nicht "out of Bounds" geht
-                    // geben wir der "position" +1 und der "radioStation" -1
-                    // somit kann mann vor schalten ohne Absturz.
-                    val nextStation = radioStations[position + 1]
-                    currentStation.nextStation = nextStation.stationuuid
-                }
-                // Das selbe für zurück schalten.
-                if (position > 0) {
-                    val previousRadio = radioStations[position - 1]
-                    currentStation.previousStation = previousRadio.stationuuid
-                }
-            }
         }
     }
 
 }
+
+
+
+
+//===============================================================================================================
+// ----- eine weitere Methode zur Lösung für die Funktion "skip & privious" aus der Repository aus -----
+//===============================================================================================================
+
+// mit diesen Zeilen geben wir der "RadioClass" Bescheid, dass sie erkennen soll
+// das wir VOR der aktuellen "position" und NACH der aktuellen "position" eine weitere "position" haben.
+// Und wir ermöglichen es somit, die Ausführung der Previous und Next Wiedergabe.
+
+//fun setPrevAndNext(radioStations: List<RadioClass>) {
+//
+//    if (!radioStations.isNullOrEmpty()) {
+//
+//        for (position in radioStations.indices) {
+//            val currentStation = radioStations[position]
+//
+//            if (position < radioStations.size - 1) {
+//                // Damit die Liste nicht "out of Bounds" geht
+//                // geben wir der "position" +1 und der "radioStation" -1
+//                // somit kann mann vor schalten ohne Absturz.
+//                val nextStation = radioStations[position + 1]
+//                currentStation.nextStation = nextStation.stationuuid
+//            }
+//            // Das selbe für zurück schalten.
+//            if (position > 0) {
+//                val previousRadio = radioStations[position - 1]
+//                currentStation.previousStation = previousRadio.stationuuid
+//            }
+//        }
+//    }
+//}
+//
+//fun setFavPrevAndNext(radioStations: List<FavClass>) {
+//
+//    if (!radioStations.isNullOrEmpty()) {
+//
+//        for (position in radioStations.indices) {
+//            val currentStation = radioStations[position]
+//
+//            if (position < radioStations.size - 1) {
+//                // Damit die Liste nicht "out of Bounds" geht
+//                // geben wir der "position" +1 und der "radioStation" -1
+//                // somit kann mann vor schalten ohne Absturz.
+//                val nextStation = radioStations[position + 1]
+//                currentStation.nextStation = nextStation.stationuuid
+//            }
+//            // Das selbe für zurück schalten.
+//            if (position > 0) {
+//                val previousRadio = radioStations[position - 1]
+//                currentStation.previousStation = previousRadio.stationuuid
+//            }
+//        }
+//    }
+//}
 

@@ -1,15 +1,11 @@
 package com.example.radiosharp.ui
 
 import android.Manifest
-import android.content.ClipData
-import android.content.ClipData.Item
 import android.content.pm.PackageManager
-import android.icu.text.CaseMap.Title
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
-import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -21,18 +17,12 @@ import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
 import com.example.radiosharp.adapter.RadioAdapter
 import com.example.radiosharp.databinding.HomeFragmentBinding
-import com.example.radiosharp.remote.Repository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.Objects
 
 class HomeFragment : Fragment() {
 
 
     private lateinit var binding: HomeFragmentBinding
-
-    private lateinit var repository: Repository
-
-    private lateinit var popupMenu: PopupMenu
 
     private val viewModel: MainViewModel by activityViewModels()
 
@@ -56,6 +46,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+       //* um die Funktionalität des Visualizers zu gewährleisten setzten wir hier die benötigten Permissions.
 
         if (ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
 
@@ -66,10 +57,14 @@ class HomeFragment : Fragment() {
                 Manifest.permission.RECORD_AUDIO)
         }
 
+        //* initializierung bei des RadioAdapters
+
         val radioAdapter = RadioAdapter(requireContext(),viewModel::fillText)
 
         binding.radioRecyclerView.adapter = radioAdapter
 
+        //* hier setzten wir unseren ApiStatus um mögliche
+        // Verbindungsabbrüche und leere Suchergebnisse mit visuellen Kennzeichnungen abzudecken
 
         viewModel.apiStatus.observe(viewLifecycleOwner) {
 
@@ -80,7 +75,6 @@ class HomeFragment : Fragment() {
                     binding.linearlayoutErrorHome.visibility = View.GONE
                     binding.linearLayoutIntroHome.visibility = View.GONE
                     binding.linearLayoutNoResultHome.visibility = View.GONE
-
                 }
 
                 //Wir interpretieren "START" als "es liegen Ergebnisse an."
@@ -91,8 +85,8 @@ class HomeFragment : Fragment() {
                     binding.radioRecyclerView.visibility = View.VISIBLE
                     binding.linearLayoutNoResultHome.visibility = View.GONE
                     binding.homeTotalTextHome.visibility = View.VISIBLE
-
                 }
+
                 ApiStatus.ERROR -> {
                     binding.progressBarHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.GONE
@@ -100,29 +94,28 @@ class HomeFragment : Fragment() {
                     binding.linearLayoutIntroHome.visibility = View.GONE
                     binding.linearLayoutNoResultHome.visibility = View.GONE
                     binding.homeTotalTextHome.visibility = View.GONE
-
                 }
+
                 ApiStatus.START -> {
                     binding.progressBarHome.visibility = View.GONE
-                    binding.linearLayoutIntroHome.visibility = View.VISIBLE
                     binding.linearlayoutErrorHome.visibility = View.GONE
                     binding.radioRecyclerView.visibility = View.GONE
                     binding.linearLayoutNoResultHome.visibility = View.GONE
                     binding.homeTotalTextHome.visibility = View.GONE
-
+                    binding.linearLayoutIntroHome.visibility = View.VISIBLE
                 }
+
                 ApiStatus.FOUND_NO_RESULTS -> {
                     binding.progressBarHome.visibility = View.GONE
                     binding.linearLayoutIntroHome.visibility = View.GONE
-                    binding.linearLayoutNoResultHome.visibility = View.VISIBLE
                     binding.radioRecyclerView.visibility = View.GONE
                     binding.homeTotalTextHome.visibility = View.GONE
+                    binding.linearLayoutNoResultHome.visibility = View.VISIBLE
                     binding.noResultTextHome.text = "We´re sorry, nothing found in our database"
                 }
             }
         }
-
-
+        //* hier beobachten wir die Radioliste mit und setzten unserem item Count für die Suchergebnisse
         viewModel.allRadios.observe(viewLifecycleOwner, Observer {
             radioAdapter.submitlist(it)
 
@@ -131,7 +124,6 @@ class HomeFragment : Fragment() {
             } else{
                 binding.homeTotalTextHome.text = "items: ${radioAdapter.itemCount}"
             }
-
             Log.d("HomeFragment","$it")
         })
 
@@ -145,7 +137,7 @@ class HomeFragment : Fragment() {
         }
 
 }
-
+    //* in der Funktion "showPopUp" inflaten wir das Popup Menu und setzten verschiedene output Bedingungen
     fun showPopUp(view: View) {
         val popupMenu = PopupMenu(requireContext(), view)
         val inflater = popupMenu.menuInflater

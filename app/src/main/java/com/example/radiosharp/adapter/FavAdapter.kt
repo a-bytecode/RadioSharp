@@ -11,14 +11,11 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.radiosharp.MainViewModel
 import com.example.radiosharp.R
 import com.example.radiosharp.model.FavClass
-import com.example.radiosharp.model.RadioClass
 import com.example.radiosharp.ui.FavFragmentDirections
 
 class FavAdapter(val context: Context, val defaultText: (text: TextView) -> Unit) :

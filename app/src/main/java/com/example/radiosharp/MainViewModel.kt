@@ -19,6 +19,10 @@ import com.example.radiosharp.remote.Repository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+//====================================================================================//
+//-------------- MainViewModel: "Globale Schnittstelle für Funktionen" --------------
+//====================================================================================//
+
 enum class ApiStatus { START, LOADING, FOUND_RESULTS, FOUND_NO_RESULTS, ERROR }
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -31,8 +35,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val allRadios = repository.getAllDatabase
 
-    val favRadios = repository.getFavDatabase
+    val favRadios = MutableLiveData<MutableList<FavClass>>(mutableListOf())
 
+
+    fun getFav(){
+        viewModelScope.launch {
+            favRadios.value = repository.getAllFav()
+        }
+    }
+
+    fun getAllFavByName(name: String){
+        viewModelScope.launch {
+            favRadios.value = repository.searchFavByName(name)
+        }
+    }
 
     private var _apiStatus = MutableLiveData<ApiStatus>()
     val apiStatus : LiveData<ApiStatus>
@@ -57,18 +73,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getAllFavByName(name:String,context:Context){
-        if (name != "") {
-            repository.getAllFavByName(name)
-        } else {
-            Toast
-                .makeText(
-                    context, "Bitte Suchbegriff eingeben",
-                    Toast.LENGTH_SHORT
-                )
-                .show()
-                }
-    }
 
     fun buttonAnimator(button: Button) {
         // animatorTwo verändert ROTATION_X (X-Achse)
@@ -121,6 +125,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             Log.d("DeletedFav","DeleteAllFav")
             repository.dB.deleteAllFav()
+            favRadios.value = mutableListOf()
         }
     }
 
