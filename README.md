@@ -23,8 +23,8 @@ It´s a small internet radio player written with "kotlin"
 * Volume regulation (Seekbar) 
 + Informations about Radiostations
 - Motion Layout (SplashActivity)
-* Swipe to Delete
-+ Pop Up Menu
+* Pop Up Menu
++ Swipe to Delete
    
    
    
