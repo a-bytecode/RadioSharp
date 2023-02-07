@@ -13,6 +13,7 @@ import android.net.wifi.WifiManager.WifiLock
 import android.os.Bundle
 import android.os.PowerManager
 import android.os.PowerManager.WakeLock
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,9 @@ import com.example.radiosharp.databinding.DetailFragmentBinding
 import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.IRadio
 
+/**
+ *
+ */
 class DetailFragment : Fragment() {
 
     private lateinit var binding: DetailFragmentBinding
@@ -74,23 +78,14 @@ class DetailFragment : Fragment() {
     private var currentStation: Radio = Radio()
 
     private lateinit var audioManager: AudioManager
-
     private lateinit var lineVisualizer: LineVisualizer
-
     private lateinit var barVisualizer: BarVisualizer
-
     private lateinit var squareBarVisualizer: SquareBarVisualizer
-
     private lateinit var circleBarVisualizer: CircleBarVisualizer
-
     private lateinit var powerManager: PowerManager
-
     private lateinit var wakeLock: WakeLock
-
     private lateinit var wifiManager: WifiManager
-
     private lateinit var wifiLock: WifiLock
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -135,14 +130,15 @@ class DetailFragment : Fragment() {
 
         //Wir haben ein Boolean Argument erstellt um die Klassen voneinander schließen zu können woher das Radio kommt.
         //"FavClass oder RadioClass" -> OpeningFav Gibt an ob wir aus der Favoritenliste kommen.
-        val openingFav = requireArguments().getBoolean("openingFav")
         //Favoriten müssen aus der FavoritenTabelle geladen werden, nicht bedingungslos aus der "RadioClass"
         //  ---->   Grund: eine neue Suche kann einen Favoriten aus der RadioClass löschen
+        val openingFav = requireArguments().getBoolean("openingFav")
 
         //Wenn wir aus dem Fragment kommen unterscheiden wir durch die "if" Abfrage in der Variable "radios":
         // "FavClass" und "RadioClass" voneinander, bzw. wählen eines aus.
         // Dadurch das wir "FavClass" und "RadioClass" die zusammendfassen wird es automatisch zum ---> Interface "IRadio"
         val radios = (if (openingFav) { viewModel.favRadios } else { viewModel.allRadios }).value!!
+
         // mit .indexOfFirst suchen wir den aktuellen Index durch die stationuuid.
         // Nachfolger wird hier berechnet.
         val currentRadioIndex = radios.indexOfFirst{ it.stationuuid == serverid } // .indexOfFirst erkennt wo er den Index findet,
@@ -202,8 +198,6 @@ class DetailFragment : Fragment() {
         squareBarVisualizer = view.findViewById(R.id.SquareBarVisualizer)
         circleBarVisualizer = view.findViewById(R.id.CircleBarVisualizer)
 
-
-
         mediaPlayer = MediaPlayer().apply {
             binding.playImageDetail.visibility = View.GONE
             binding.progressBarDetail.visibility = View.VISIBLE
@@ -233,7 +227,9 @@ class DetailFragment : Fragment() {
 
             binding.playImageDetail.setOnClickListener {
                 wifiLock.acquire()
+                Log.d("WIFILOCK","WIFILOCK ${wifiLock.isHeld}")
                 wakeLock.acquire(30*60*1000L /*30 minutes*/)
+                Log.d("WAKELOCK","WAKELOCK: ${wakeLock.isHeld}")
                 mediaPlayer!!.start()
                 mediaPlayer!!.setScreenOnWhilePlaying(true)
                 binding.playImageDetail.visibility = View.GONE

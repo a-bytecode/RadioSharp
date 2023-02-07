@@ -39,7 +39,6 @@ class HomeFragment : Fragment() {
 
         binding = HomeFragmentBinding.inflate(inflater)
 
-
         return binding.root
     }
 
@@ -115,6 +114,8 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+
+
         //* hier beobachten wir die Radioliste mit und setzten unserem item Count für die Suchergebnisse
         viewModel.allRadios.observe(viewLifecycleOwner, Observer {
             radioAdapter.submitlist(it)
@@ -180,4 +181,5 @@ class HomeFragment : Fragment() {
 
         popupMenu.show()
     }
+
 }
