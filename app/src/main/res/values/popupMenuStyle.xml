@@ -4,7 +4,7 @@
     <style name="popupMenuStyle" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textColor">#FFC800</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:itemBackground">#000000</item>
+        <item name="android:itemBackground">@color/black</item>
     </style>
 
 </resources>
