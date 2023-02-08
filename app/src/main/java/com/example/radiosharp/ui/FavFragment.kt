@@ -142,7 +142,7 @@ class FavFragment : Fragment() {
                     Log.d("PositionLog", "$position")
                     Log.d("DeletedCourseLog_Name", "${deletedCourse.name}")
                     Log.d("DeletedCourseLog_UID", "${deletedCourse.stationuuid}")
-                    viewModel.getFav()
+
                 }
             }
         }).attachToRecyclerView(binding.radioRecyclerViewFav)
