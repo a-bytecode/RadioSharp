@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/popup_Menu"
-    android:popupBackground="@drawable/custom_popup_backround">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/pop_up_fav_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_baseline_favorite_24"
+        android:iconTint="#FFFFFF"
         android:title="Favoriten" />
     <item
         android:id="@+id/pop_up_deleteAll_home"
         android:icon="@drawable/ic_baseline_delete_24"
+        android:iconTint="#FFFFFF"
         android:title="Löschen" />
     <item
         android:id="@+id/pop_up_end_home"
         android:icon="@drawable/ic_baseline_exit_to_app_24"
+        android:iconTint="#FFFFFF"
         android:iconTintMode="src_atop"
         android:title="Beenden" />
 </menu>

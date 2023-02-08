@@ -228,7 +228,7 @@ class DetailFragment : Fragment() {
             binding.playImageDetail.setOnClickListener {
                 wifiLock.acquire()
                 Log.d("WIFILOCK","WIFILOCK ${wifiLock.isHeld}")
-                wakeLock.acquire(30*60*1000L /*30 minutes*/)
+                wakeLock.acquire(60*60*1000L /*60 minutes*/)
                 Log.d("WAKELOCK","WAKELOCK: ${wakeLock.isHeld}")
                 mediaPlayer!!.start()
                 mediaPlayer!!.setScreenOnWhilePlaying(true)

@@ -142,14 +142,19 @@ class HomeFragment : Fragment() {
 
 }
     //* in der Funktion "showPopUp" inflaten wir das Popup Menu und setzten verschiedene output Bedingungen
+
+
     @RequiresApi(Build.VERSION_CODES.Q)
     fun showPopUp(view: View) {
-        val popupMenu = PopupMenu(requireContext(), view)
+
+        val wrapper = ContextThemeWrapper(requireContext(),R.style.popupMenuStyle)
+        val popupMenu = PopupMenu(wrapper, view)
         val inflater = popupMenu.menuInflater
         inflater.inflate(R.menu.popup_menu, popupMenu.menu)
         popupMenu.menu.findItem(R.id.pop_up_fav_home).setIcon(R.drawable.ic_baseline_favorite_24)
         popupMenu.menu.findItem(R.id.pop_up_deleteAll_home).setIcon(R.drawable.ic_baseline_delete_24)
         popupMenu.menu.findItem(R.id.pop_up_end_home).setIcon(R.drawable.ic_baseline_exit_to_app_24)
+
         popupMenu.setForceShowIcon(true)
 
         popupMenu.setOnMenuItemClickListener {
