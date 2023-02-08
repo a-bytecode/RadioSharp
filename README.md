@@ -1,10 +1,11 @@
-# 🎵🎶 RadioSharp 🎵🎶
 
 ![image](https://user-images.githubusercontent.com/115455827/217231122-317a7e3f-d150-4c66-8468-41357762f540.png)
 
-It´s a small internet radio player written with kotlin
+# RadioSharp :tm:
 
-# Architecture patterns
+It´s a small open source internet radio player written with kotlin
+
+## Architecture patterns :white_check_mark:
 
 - LiveData
 * MainViewModel
@@ -15,7 +16,7 @@ It´s a small internet radio player written with kotlin
 - Interface
 
 
-# Features
+## Features :rocket:
 
 - 27000 Radiostations
 * Visualizer
