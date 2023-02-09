@@ -220,6 +220,12 @@ class DetailFragment : Fragment() {
         mediaPlayer!!.setDataSource(requireContext(), uri.toUri())
         mediaPlayer!!.setWakeMode(requireContext(),PowerManager.PARTIAL_WAKE_LOCK)
         mediaPlayer!!.prepareAsync()
+        // .setOnCompletionListener muss nach Wiedergabe des Mediaplayers verwendet werden
+        // um zur Überwachung des Abschlusses eines Medienbezogenen Inhaltes zu registrieren.
+        mediaPlayer!!.setOnCompletionListener{
+            mediaPlayer!!.release()
+        }
+
         mediaPlayer!!.setOnPreparedListener {
 
             binding.progressBarDetail.visibility = View.GONE
