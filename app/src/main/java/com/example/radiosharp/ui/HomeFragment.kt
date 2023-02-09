@@ -174,6 +174,7 @@ class HomeFragment : Fragment() {
                         MaterialAlertDialogBuilder(requireContext())
                             .setTitle("Beenden")
                             .setMessage("App wirklich Beenden?")
+                            .setBackground(ContextCompat.getDrawable(requireContext(),R.drawable.gradient_270v4))
                             .setIcon(R.drawable.ic_baseline_exit_to_app_24)
                             .setCancelable(true)
                             .setNegativeButton("Nein") { _,_ ->

@@ -1,14 +1,18 @@
 package com.example.radiosharp.ui
 
+import android.graphics.fonts.Font
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -22,6 +26,8 @@ import com.example.radiosharp.databinding.FavFragmentBinding
 import com.example.radiosharp.model.FavClass
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import org.w3c.dom.Text
+import kotlin.math.sqrt
 
 class FavFragment : Fragment() {
 
@@ -136,7 +142,7 @@ class FavFragment : Fragment() {
                     Log.d("PositionLog", "$position")
                     Log.d("DeletedCourseLog_Name", "${deletedCourse.name}")
                     Log.d("DeletedCourseLog_UID", "${deletedCourse.stationuuid}")
-                    viewModel.getFav()
+
                 }
             }
         }).attachToRecyclerView(binding.radioRecyclerViewFav)
@@ -145,7 +151,8 @@ class FavFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     fun showPopUp(view: View) {
-        val popupMenu = PopupMenu(requireContext(), view)
+        val wrapper = ContextThemeWrapper(requireContext(),R.style.popupMenuStyle)
+        val popupMenu = PopupMenu(wrapper, view)
         val inflater = popupMenu.menuInflater
         inflater.inflate(R.menu.popup_menu_fav, popupMenu.menu)
         popupMenu.menu.findItem(R.id.pop_up_home_fav).setIcon(R.drawable.ic_baseline_home_24)
@@ -166,11 +173,14 @@ class FavFragment : Fragment() {
                 }
 
                 R.id.pop_up_end_home -> {
+
                     fun showEndDialog() {
+
                         MaterialAlertDialogBuilder(requireContext())
                             .setTitle("Beenden")
                             .setMessage("App wirklich Beenden?")
                             .setIcon(R.drawable.ic_baseline_exit_to_app_24)
+                            .setBackground(ContextCompat.getDrawable(requireContext(),R.drawable.gradient_270v4))
                             .setCancelable(true)
                             .setNegativeButton("Nein") { _, _ ->
                                 findNavController().navigate(FavFragmentDirections.actionFavFragmentSelf())
