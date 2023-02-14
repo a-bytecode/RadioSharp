@@ -142,58 +142,104 @@ class HomeFragment : Fragment() {
 
 }
     //* in der Funktion "showPopUp" inflaten wir das Popup Menu und setzten verschiedene output Bedingungen
-
-
     @RequiresApi(Build.VERSION_CODES.Q)
     fun showPopUp(view: View) {
+        // Überprüfung der Android Version (SDK_INT) Verallgemeinert die Handy SDK
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q){
+            val wrapper = ContextThemeWrapper(requireContext(),R.style.popupMenuStyle)
+            val popupMenu = PopupMenu(wrapper, view)
+            val inflater = popupMenu.menuInflater
+            inflater.inflate(R.menu.popup_menu, popupMenu.menu)
 
-        val wrapper = ContextThemeWrapper(requireContext(),R.style.popupMenuStyle)
-        val popupMenu = PopupMenu(wrapper, view)
-        val inflater = popupMenu.menuInflater
-        inflater.inflate(R.menu.popup_menu, popupMenu.menu)
-        popupMenu.menu.findItem(R.id.pop_up_fav_home).setIcon(R.drawable.ic_baseline_favorite_24)
-        popupMenu.menu.findItem(R.id.pop_up_deleteAll_home).setIcon(R.drawable.ic_baseline_delete_24)
-        popupMenu.menu.findItem(R.id.pop_up_end_home).setIcon(R.drawable.ic_baseline_exit_to_app_24)
+            popupMenu.setOnMenuItemClickListener {
+                when(it.itemId){
 
-        popupMenu.setForceShowIcon(true)
+                    R.id.pop_up_fav_home -> {
+                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToFavFragment())
+                    }
 
-        popupMenu.setOnMenuItemClickListener {
-            when(it.itemId){
+                    R.id.pop_up_deleteAll_home -> {
+                        viewModel.deleteAll()
+                    }
 
-
-                R.id.pop_up_fav_home -> {
-                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToFavFragment())
+                    R.id.pop_up_end_home -> {
+                        fun showEndDialog() {
+                            MaterialAlertDialogBuilder(requireContext())
+                                .setTitle("Beenden")
+                                .setMessage("App wirklich Beenden?")
+                                .setBackground(ContextCompat.getDrawable(requireContext(),R.drawable.gradient_270v4))
+                                .setIcon(R.drawable.ic_baseline_exit_to_app_24)
+                                .setCancelable(true)
+                                .setNegativeButton("Nein") { _,_ ->
+                                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentSelf())
+                                }
+                                .setPositiveButton("Ja") { _,_ ->
+                                    activity?.finish()
+                                }
+                                .show() }
+                        showEndDialog()
+                    }
                 }
-
-                R.id.pop_up_deleteAll_home -> {
-                    viewModel.deleteAll()
-                }
-
-                R.id.pop_up_end_home -> {
-                    fun showEndDialog() {
-                        MaterialAlertDialogBuilder(requireContext())
-                            .setTitle("Beenden")
-                            .setMessage("App wirklich Beenden?")
-                            .setBackground(ContextCompat.getDrawable(requireContext(),R.drawable.gradient_270v4))
-                            .setIcon(R.drawable.ic_baseline_exit_to_app_24)
-                            .setCancelable(true)
-                            .setNegativeButton("Nein") { _,_ ->
-                                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentSelf())
-                            }
-                            .setPositiveButton("Ja") { _,_ ->
-                                activity?.finish()
-                            }
-                            .show() }
-                    showEndDialog()
-                }
+                true
             }
-            true
-        }
-        popupMenu.setOnDismissListener {
-            // Respond to popup being dismissed.
-        }
-        // Show the popup menu.
-        popupMenu.show()
-    }
+            popupMenu.setOnDismissListener {
+                // Respond to popup being dismissed.
+            }
+            // Show the popup menu.
+            popupMenu.show()
 
-}
+        } else {
+
+            val wrapper = ContextThemeWrapper(requireContext(),R.style.popupMenuStyle)
+            val popupMenu = PopupMenu(wrapper, view)
+            val inflater = popupMenu.menuInflater
+            inflater.inflate(R.menu.popup_menu, popupMenu.menu)
+            popupMenu.menu.findItem(R.id.pop_up_fav_home).setIcon(R.drawable.ic_baseline_favorite_24)
+            popupMenu.menu.findItem(R.id.pop_up_deleteAll_home).setIcon(R.drawable.ic_baseline_delete_24)
+            popupMenu.menu.findItem(R.id.pop_up_end_home).setIcon(R.drawable.ic_baseline_exit_to_app_24)
+
+            popupMenu.setForceShowIcon(true)
+
+            popupMenu.setOnMenuItemClickListener {
+                when(it.itemId){
+
+
+                    R.id.pop_up_fav_home -> {
+                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToFavFragment())
+                    }
+
+                    R.id.pop_up_deleteAll_home -> {
+                        viewModel.deleteAll()
+                    }
+
+                    R.id.pop_up_end_home -> {
+                        fun showEndDialog() {
+                            MaterialAlertDialogBuilder(requireContext())
+                                .setTitle("Beenden")
+                                .setMessage("App wirklich Beenden?")
+                                .setBackground(ContextCompat.getDrawable(requireContext(),R.drawable.gradient_270v4))
+                                .setIcon(R.drawable.ic_baseline_exit_to_app_24)
+                                .setCancelable(true)
+                                .setNegativeButton("Nein") { _,_ ->
+                                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentSelf())
+                                }
+                                .setPositiveButton("Ja") { _,_ ->
+                                    activity?.finish()
+                                }
+                                .show() }
+                        showEndDialog()
+                    }
+                }
+                true
+            }
+            popupMenu.setOnDismissListener {
+                // Respond to popup being dismissed.
+            }
+            // Show the popup menu.
+            popupMenu.show()
+        }
+        }
+        }
+
+
+

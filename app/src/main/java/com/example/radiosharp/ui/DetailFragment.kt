@@ -219,15 +219,11 @@ class DetailFragment : Fragment() {
 
         mediaPlayer!!.setDataSource(requireContext(), uri.toUri())
         mediaPlayer!!.setWakeMode(requireContext(),PowerManager.PARTIAL_WAKE_LOCK)
-        mediaPlayer!!.prepareAsync()
-        // .setOnCompletionListener muss nach Wiedergabe des Mediaplayers verwendet werden
-        // um zur Überwachung des Abschlusses eines Medienbezogenen Inhaltes zu registrieren.
-        mediaPlayer!!.setOnCompletionListener{
-            mediaPlayer!!.release()
-        }
+        mediaPlayer!!.prepareAsync()// .prepareAsync() bereitet die Mediendatei asynchron vor, was bedeutet,
+        // dass das Abspielen bereits beginnen kann, während die Datei noch geladen wird.
 
+        //OnPreparedListener wird ausgelöst um das Abspielen tatsächlich zu starten.
         mediaPlayer!!.setOnPreparedListener {
-
             binding.progressBarDetail.visibility = View.GONE
             binding.playImageDetail.visibility = View.VISIBLE
 
@@ -237,11 +233,17 @@ class DetailFragment : Fragment() {
                 wakeLock.acquire(60*60*1000L /*60 minutes*/)
                 Log.d("WAKELOCK","WAKELOCK: ${wakeLock.isHeld}")
                 mediaPlayer!!.start()
-                mediaPlayer!!.setScreenOnWhilePlaying(true)
+
+                //.setOnCompletionListener muss nach Wiedergabe des Mediaplayers verwendet werden
+                // um zur Überwachung des Abschlusses eines Medienbezogenen Inhaltes zu registrieren.
+                mediaPlayer!!.setOnCompletionListener{
+                    mediaPlayer!!.release()
+                }
+//                mediaPlayer!!.setScreenOnWhilePlaying(true) // .setScreenOnWhilePlaying kann nur
+//                mit SurfaceView aktiviert werden ansonsten hat es keine Auswirkungen auf den mediaplayer!!
                 binding.playImageDetail.visibility = View.GONE
                 binding.stopImageDetail.visibility = View.VISIBLE
             }
-
         }
 
         //Visualizer prüft ob die permissions "Granted" sind und gibt bei der Wiedergabe des
@@ -347,7 +349,6 @@ class DetailFragment : Fragment() {
             binding.stopImageDetail.visibility = View.GONE
             binding.playImageDetail.visibility = View.VISIBLE
             mediaPlayer!!.pause()
-            mediaPlayer!!.setScreenOnWhilePlaying(false)
             wifiLock.release()
             wakeLock.release()
         }
@@ -445,9 +446,12 @@ class DetailFragment : Fragment() {
     // die den Mediaplayer neu Ladet, stoppt & weiterspielen lässt wenn es nicht "null" ist.
     private fun stopPlaying() {
         if (mediaPlayer != null) {
-            mediaPlayer!!.stop()
-            mediaPlayer!!.release()
-            mediaPlayer = null
+            mediaPlayer!!.setOnCompletionListener {
+                mediaPlayer!!.stop()
+                mediaPlayer!!.release()
+                mediaPlayer = null
+            }
+
         }
     }
 
