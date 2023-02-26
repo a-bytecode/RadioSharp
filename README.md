@@ -1,5 +1,5 @@
 
-![image](https://user-images.githubusercontent.com/115455827/217231122-317a7e3f-d150-4c66-8468-41357762f540.png)
+![image](https://github.com/a-bytecode/RadioSharp/blob/main/app/src/main/res/drawable/radio_sharp_symbol_remake_1.png?raw=true)
 
 # RadioSharp :tm:
 
