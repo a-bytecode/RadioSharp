@@ -109,13 +109,13 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        // Das Instatiieren des "powerManagers" dient dazu den mediaPlayer nicht in den ruhestand zu versetzten
+        // Das instanziieren des "powerManagers" dient dazu den mediaPlayer nicht in den ruhestand zu versetzten
         powerManager = requireActivity().getSystemService(POWER_SERVICE) as PowerManager
 
         // Mit "wakelock" schließen wir den aktuellen Zustand mit einer funktion des PowerManagers zu.
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"radiosharp:wakelockv1")
 
-        // Das instatiieren des WifiManager dient dazu der WIFI Verbindung nicht in den Ruhestand zu versetzten
+        // Das instanziieren des WifiManager dient dazu der WIFI Verbindung nicht in den Ruhestand zu versetzten
         // und eine Kontinuirliche Verbindungsaktivität zu gewährleisten.
         wifiManager = requireActivity().getSystemService(Context.WIFI_SERVICE) as WifiManager
 
@@ -232,13 +232,13 @@ class DetailFragment : Fragment() {
                 Log.d("WIFILOCK","WIFILOCK ${wifiLock.isHeld}")
                 wakeLock.acquire(60*60*1000L /*60 minutes*/)
                 Log.d("WAKELOCK","WAKELOCK: ${wakeLock.isHeld}")
-                mediaPlayer!!.start()
+                play()
 
                 //.setOnCompletionListener muss nach Wiedergabe des Mediaplayers verwendet werden
                 // um zur Überwachung des Abschlusses eines Medienbezogenen Inhaltes zu registrieren.
-                mediaPlayer!!.setOnCompletionListener{
-                    mediaPlayer!!.release()
-                }
+//                mediaPlayer!!.setOnCompletionListener{
+//                    mediaPlayer!!.release()
+//                }
 //                mediaPlayer!!.setScreenOnWhilePlaying(true) // .setScreenOnWhilePlaying kann nur
 //                mit SurfaceView aktiviert werden ansonsten hat es keine Auswirkungen auf den mediaplayer!!
                 binding.playImageDetail.visibility = View.GONE
@@ -342,13 +342,13 @@ class DetailFragment : Fragment() {
                 setDensity(15F)
                 setPlayer(mediaPlayer!!.audioSessionId)
             }
-
         }
 
         binding.stopImageDetail.setOnClickListener {
             binding.stopImageDetail.visibility = View.GONE
             binding.playImageDetail.visibility = View.VISIBLE
             mediaPlayer!!.pause()
+//            stopPlaying()
             wifiLock.release()
             wakeLock.release()
         }
@@ -457,9 +457,15 @@ class DetailFragment : Fragment() {
 
     private fun resetPlaying() {
         if (mediaPlayer != null) {
-            mediaPlayer!!.reset()
-            mediaPlayer!!.release()
-            mediaPlayer = null
+                mediaPlayer!!.reset()
+                mediaPlayer!!.release()
+                mediaPlayer = null
+            }
+        }
+
+    private fun play(){
+        if (mediaPlayer != null) {
+            mediaPlayer!!.start()
         }
     }
 
@@ -484,6 +490,8 @@ class DetailFragment : Fragment() {
     }
 
 }
+
+
 
 //TODO Durch Blidschirmtimeout verursachten Soundstop fixen. Lösung suchen!
 
