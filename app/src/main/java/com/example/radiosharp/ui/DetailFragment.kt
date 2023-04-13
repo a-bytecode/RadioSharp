@@ -7,6 +7,10 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.AnimatedImageDrawable
 import android.media.AudioAttributes
 import android.media.AudioManager
+import android.media.MediaCodec
+import android.media.MediaCodecInfo
+import android.media.MediaExtractor
+import android.media.MediaFormat
 import android.media.MediaPlayer
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiManager.WifiLock
@@ -101,11 +105,12 @@ class DetailFragment : Fragment() {
         stopPlaying()
     }
 
-
     //============================================================================= * * * *
     //    - DetailFragment: "Skip & Previous Funktion, Argumentenübergabe für Navigation -
     //             - erstellen des MediaPlayers, Visualizers & der SeekBar" -
     //============================================================================= * * * *
+
+    // TODO: App im Hintergrund laufen lassen, um Timeout problem zu beheben. (Lifecycle)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -217,6 +222,15 @@ class DetailFragment : Fragment() {
             currentStation.radioUrl.replace("http:", "https:")
         }
 
+        val onInfoListener = MediaPlayer.OnInfoListener { mp, what, extra ->
+            when(what) {
+                MediaPlayer.MEDIA_INFO_STARTED_AS_NEXT -> {
+                    Log.d("MediaPlayerOnInfo","Nächster Stream gestartet")
+                }
+            }
+            return@OnInfoListener true
+        }
+
         mediaPlayer!!.setDataSource(requireContext(), uri.toUri())
         mediaPlayer!!.setWakeMode(requireContext(),PowerManager.PARTIAL_WAKE_LOCK)
         mediaPlayer!!.prepareAsync()// .prepareAsync() bereitet die Mediendatei asynchron vor, was bedeutet,
@@ -245,6 +259,34 @@ class DetailFragment : Fragment() {
                 binding.stopImageDetail.visibility = View.VISIBLE
             }
         }
+
+
+        // TODO: Audio Encodierung bezüglich des Error Stream -Timout -Problems
+        val mimeType = "audio/mp4a-latm"
+        val codec = MediaCodec.createEncoderByType(mimeType)
+        val testBitrate = 128000
+
+        val extractor = MediaExtractor()
+        extractor.setDataSource(uri)
+
+        val trackFormat = currentStation.currentIndex?.let { extractor.getTrackFormat(it) }
+        val sampleRate = trackFormat?.getInteger(MediaFormat.KEY_SAMPLE_RATE)
+        val channelCount = trackFormat?.getInteger(MediaFormat.KEY_CHANNEL_COUNT)
+        val mediaFormat = MediaFormat.createAudioFormat(mimeType, sampleRate?:0, channelCount?:0)
+
+        mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE ,testBitrate)
+        mediaFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC)
+        codec.configure(mediaFormat,null,null, MediaCodec.CONFIGURE_FLAG_ENCODE)
+        codec.start()
+
+        val inputBuffers = codec.inputBuffers
+        val timeoutUS = 10000000 // 10 Sekunden
+        val inputBufferIndex = codec.dequeueInputBuffer(timeoutUS.toLong())
+        val inputBuffer = inputBuffers[inputBufferIndex]
+        inputBuffer.clear()
+//        inputBuffer.put()
+
+        mediaPlayer!!.setOnInfoListener(onInfoListener)
 
         //Visualizer prüft ob die permissions "Granted" sind und gibt bei der Wiedergabe des
         // Media Players den Effekt frei.
@@ -446,12 +488,9 @@ class DetailFragment : Fragment() {
     // die den Mediaplayer neu Ladet, stoppt & weiterspielen lässt wenn es nicht "null" ist.
     private fun stopPlaying() {
         if (mediaPlayer != null) {
-            mediaPlayer!!.setOnCompletionListener {
                 mediaPlayer!!.stop()
                 mediaPlayer!!.release()
                 mediaPlayer = null
-            }
-
         }
     }
 
