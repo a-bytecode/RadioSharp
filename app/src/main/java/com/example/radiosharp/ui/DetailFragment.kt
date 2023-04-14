@@ -231,36 +231,6 @@ class DetailFragment : Fragment() {
             return@OnInfoListener true
         }
 
-        mediaPlayer!!.setDataSource(requireContext(), uri.toUri())
-        mediaPlayer!!.setWakeMode(requireContext(),PowerManager.PARTIAL_WAKE_LOCK)
-        mediaPlayer!!.prepareAsync()// .prepareAsync() bereitet die Mediendatei asynchron vor, was bedeutet,
-        // dass das Abspielen bereits beginnen kann, während die Datei noch geladen wird.
-
-        //OnPreparedListener wird ausgelöst um das Abspielen tatsächlich zu starten.
-        mediaPlayer!!.setOnPreparedListener {
-            binding.progressBarDetail.visibility = View.GONE
-            binding.playImageDetail.visibility = View.VISIBLE
-
-            binding.playImageDetail.setOnClickListener {
-                wifiLock.acquire()
-                Log.d("WIFILOCK","WIFILOCK ${wifiLock.isHeld}")
-                wakeLock.acquire(60*60*1000L /*60 minutes*/)
-                Log.d("WAKELOCK","WAKELOCK: ${wakeLock.isHeld}")
-                play()
-
-                //.setOnCompletionListener muss nach Wiedergabe des Mediaplayers verwendet werden
-                // um zur Überwachung des Abschlusses eines Medienbezogenen Inhaltes zu registrieren.
-//                mediaPlayer!!.setOnCompletionListener{
-//                    mediaPlayer!!.release()
-//                }
-//                mediaPlayer!!.setScreenOnWhilePlaying(true) // .setScreenOnWhilePlaying kann nur
-//                mit SurfaceView aktiviert werden ansonsten hat es keine Auswirkungen auf den mediaplayer!!
-                binding.playImageDetail.visibility = View.GONE
-                binding.stopImageDetail.visibility = View.VISIBLE
-            }
-        }
-
-
         // TODO: Audio Encodierung bezüglich des Error Stream -Timout -Problems
         val mimeType = "audio/mp4a-latm"
         val codec = MediaCodec.createEncoderByType(mimeType)
@@ -287,6 +257,28 @@ class DetailFragment : Fragment() {
 //        inputBuffer.put()
 
         mediaPlayer!!.setOnInfoListener(onInfoListener)
+
+        mediaPlayer!!.setDataSource(requireContext(), uri.toUri())
+        mediaPlayer!!.setWakeMode(requireContext(),PowerManager.PARTIAL_WAKE_LOCK)
+        mediaPlayer!!.prepareAsync()// .prepareAsync() bereitet die Mediendatei asynchron vor, was bedeutet,
+        // dass das Abspielen bereits beginnen kann, während die Datei noch geladen wird.
+
+        //OnPreparedListener wird ausgelöst um das Abspielen tatsächlich zu starten.
+        mediaPlayer!!.setOnPreparedListener {
+            binding.progressBarDetail.visibility = View.GONE
+            binding.playImageDetail.visibility = View.VISIBLE
+
+            binding.playImageDetail.setOnClickListener {
+                wifiLock.acquire()
+                Log.d("WIFILOCK","WIFILOCK ${wifiLock.isHeld}")
+                wakeLock.acquire(60*60*1000L /*60 minutes*/)
+                Log.d("WAKELOCK","WAKELOCK: ${wakeLock.isHeld}")
+                play()
+
+                binding.playImageDetail.visibility = View.GONE
+                binding.stopImageDetail.visibility = View.VISIBLE
+            }
+        }
 
         //Visualizer prüft ob die permissions "Granted" sind und gibt bei der Wiedergabe des
         // Media Players den Effekt frei.
@@ -537,6 +529,15 @@ class DetailFragment : Fragment() {
 //===============================================================================================================
 // -------------- eine weitere Methode zur Lösung für die Funktion "skip & privious" --------------
 //===============================================================================================================
+
+//Wichtig: ->
+//.setOnCompletionListener muss nach Wiedergabe des Mediaplayers verwendet werden
+// um zur Überwachung des Abschlusses eines Medienbezogenen Inhaltes zu registrieren.
+//                mediaPlayer!!.setOnCompletionListener{
+//                    mediaPlayer!!.release()
+//                }
+//                mediaPlayer!!.setScreenOnWhilePlaying(true) // .setScreenOnWhilePlaying kann nur
+//                mit SurfaceView aktiviert werden ansonsten hat es keine Auswirkungen auf den mediaplayer!!
 
 //
 //        if (openingFav) {
