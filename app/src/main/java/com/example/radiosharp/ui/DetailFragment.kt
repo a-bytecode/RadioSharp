@@ -38,9 +38,6 @@ import com.example.radiosharp.databinding.DetailFragmentBinding
 import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.IRadio
 
-/**
- *
- */
 class DetailFragment : Fragment() {
 
     private lateinit var binding: DetailFragmentBinding
@@ -382,15 +379,14 @@ class DetailFragment : Fragment() {
             binding.stopImageDetail.visibility = View.GONE
             binding.playImageDetail.visibility = View.VISIBLE
             mediaPlayer!!.pause()
-//            stopPlaying()
             wifiLock.release()
             wakeLock.release()
         }
 
         binding.skipNextImageDetail.setOnClickListener {
             findNavController().navigate(
-                DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation,openingFav = openingFav)
                 //<<< openingFav Argument wird benötigt um von der RadioClass zu unterscheiden >>>
+                DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation,openingFav = openingFav)
             )
         }
         binding.skipPreviousImageDetail.setOnClickListener {
@@ -521,8 +517,6 @@ class DetailFragment : Fragment() {
     }
 
 }
-
-
 
 //TODO Durch Blidschirmtimeout verursachten Soundstop fixen. Lösung suchen!
 
