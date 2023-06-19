@@ -262,31 +262,31 @@ class DetailFragment : Fragment() {
 
 
         // TODO: Audio Encodierung bezüglich des Error Stream -Timout -Problems
-        val mimeType = "audio/mp4a-latm"
-        val codec = MediaCodec.createEncoderByType(mimeType)
-        val testBitrate = 128000
-
-        val extractor = MediaExtractor()
-        extractor.setDataSource(uri)
-
-        val trackFormat = currentStation.currentIndex?.let { extractor.getTrackFormat(it) }
-        val sampleRate = trackFormat?.getInteger(MediaFormat.KEY_SAMPLE_RATE)
-        val channelCount = trackFormat?.getInteger(MediaFormat.KEY_CHANNEL_COUNT)
-        val mediaFormat = MediaFormat.createAudioFormat(mimeType, sampleRate?:0, channelCount?:0)
-
-        mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE ,testBitrate)
-        mediaFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC)
-        codec.configure(mediaFormat,null,null, MediaCodec.CONFIGURE_FLAG_ENCODE)
-        codec.start()
-
-        val inputBuffers = codec.inputBuffers
-        val timeoutUS = 10000000 // 10 Sekunden
-        val inputBufferIndex = codec.dequeueInputBuffer(timeoutUS.toLong())
-        val inputBuffer = inputBuffers[inputBufferIndex]
-        inputBuffer.clear()
-//        inputBuffer.put()
-
-        mediaPlayer!!.setOnInfoListener(onInfoListener)
+//        val mimeType = "audio/mp4a-latm"
+//        val codec = MediaCodec.createEncoderByType(mimeType)
+//        val testBitrate = 128000
+//
+//        val extractor = MediaExtractor()
+//        extractor.setDataSource(uri)
+//
+//        val trackFormat = currentStation.currentIndex?.let { extractor.getTrackFormat(it) }
+//        val sampleRate = trackFormat?.getInteger(MediaFormat.KEY_SAMPLE_RATE)
+//        val channelCount = trackFormat?.getInteger(MediaFormat.KEY_CHANNEL_COUNT)
+//        val mediaFormat = MediaFormat.createAudioFormat(mimeType, sampleRate?:0, channelCount?:0)
+//
+//        mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE ,testBitrate)
+//        mediaFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC)
+//        codec.configure(mediaFormat,null,null, MediaCodec.CONFIGURE_FLAG_ENCODE)
+//        codec.start()
+//
+//        val inputBuffers = codec.inputBuffers
+//        val timeoutUS = 10000000 // 10 Sekunden
+//        val inputBufferIndex = codec.dequeueInputBuffer(timeoutUS.toLong())
+//        val inputBuffer = inputBuffers[inputBufferIndex]
+//        inputBuffer.clear()
+////        inputBuffer.put()
+//
+//        mediaPlayer!!.setOnInfoListener(onInfoListener)
 
         //Visualizer prüft ob die permissions "Granted" sind und gibt bei der Wiedergabe des
         // Media Players den Effekt frei.
