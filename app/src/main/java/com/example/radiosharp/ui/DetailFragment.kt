@@ -233,9 +233,12 @@ class DetailFragment : Fragment() {
             binding.playImageDetail.visibility = View.VISIBLE
 
             binding.playImageDetail.setOnClickListener {
-                wifiLock.acquire()
+                wifiLock.acquire() // Der Aufruf von "wifiLock.acquire()" bewirkt, dass das
+                // WiFi-Lock-Objekt aktiviert wird, um sicherzustellen, dass die WLAN-Verbindung stabil bleibt.
+                // Dadurch wird verhindert, dass das Gerät die WLAN-Verbindung ausschaltet,
+                // wenn es in den Ruhezustand geht.
                 Log.d("WIFILOCK","WIFILOCK ${wifiLock.isHeld}")
-                wakeLock.acquire(60*60*1000L /*60 minutes*/)
+                wakeLock.acquire(60*60*1000L /* WifiLock ist für 60 minutes aktiv!!*/)
                 Log.d("WAKELOCK","WAKELOCK: ${wakeLock.isHeld}")
                 play()
 
