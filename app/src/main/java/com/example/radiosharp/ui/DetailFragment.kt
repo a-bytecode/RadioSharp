@@ -7,10 +7,6 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.AnimatedImageDrawable
 import android.media.AudioAttributes
 import android.media.AudioManager
-import android.media.MediaCodec
-import android.media.MediaCodecInfo
-import android.media.MediaExtractor
-import android.media.MediaFormat
 import android.media.MediaPlayer
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiManager.WifiLock
@@ -39,7 +35,28 @@ import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.IRadio
 
 /**
- *
+ Anmerk auf Designprinzipien und –guidelines:
+ Ich habe versucht die App nach Human Interaction Guidelines Design Prinzipien zu gestalten,
+ so dass Benutzer ohne große Anstrengungen mit der App interagieren können.
+ Benutzefreundlichkeit, Fingerfreundlichkeit, Fehlerinformationen für Benuztzer waren das Hauptaugenmerk der App.
+
+ Anmerk auf User Orientierung:
+ Einfache Benutzeroberfläche, Kontinuierliche Verbesserungen (Updates),
+ wichtig ist es auch Feedback einzuholen nach der Entwicklung, um verbesserungsvorschläge zu bekommen und diese Umzusetzten.
+
+ Anmerk auf Problemlösungen wie löst man ein Problem?:
+ Debugging, durch Log.d Log.e, Printstatements, durch Kommunikation und Dokumentation. Postings, Code reviews
+
+ bei Projektbearbeitung hat geholfen:
+ Versionsverwaltung GitHub, Dokumentation des Codes. MVVM Pattern zur Unterteilung des Codes.
+
+ Bei Software Architektur wurde verwendet:
+ RoomDatabase
+ RoomDatabaseDao
+ MVVM Pattern
+ Retrofit Service
+ MotionLayout
+ Navigation
  */
 class DetailFragment : Fragment() {
 
@@ -74,7 +91,6 @@ class DetailFragment : Fragment() {
                 nextStation = radio.nextStation
                 previousStation = radio.previousStation
             }
-
         }
     }
 
@@ -148,7 +164,7 @@ class DetailFragment : Fragment() {
         // Nachfolger wird hier berechnet.
         val currentRadioIndex = radios.indexOfFirst{ it.stationuuid == serverid } // .indexOfFirst erkennt wo er den Index findet,
         // er returned den aktuellen Index
-        //Hier berechnen wir in der Playlist das nächste Radio.
+        //Hier berechnen wir in der Playlist das nächste (next) Radio.
         val nextStationIndex = if (currentRadioIndex == radios.size - 1) {
             // Der Wert des letzten Elements
             // beim letzten "next" drücken fängt wieder vom Anfang der Liste an.
