@@ -212,7 +212,7 @@ class DetailFragment : Fragment() {
             .load(currentStation.favicon)
             .placeholder(gif)
             .into(binding.iconImageDetail)
-
+        
         //Initialisierung des Visualizers
         barVisualizer = view.findViewById(R.id.BarVisualizer)
         lineVisualizer = view.findViewById(R.id.LineVisualizer)
