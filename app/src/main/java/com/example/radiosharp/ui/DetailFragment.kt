@@ -7,10 +7,6 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.AnimatedImageDrawable
 import android.media.AudioAttributes
 import android.media.AudioManager
-import android.media.MediaCodec
-import android.media.MediaCodecInfo
-import android.media.MediaExtractor
-import android.media.MediaFormat
 import android.media.MediaPlayer
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiManager.WifiLock
@@ -193,7 +189,7 @@ class DetailFragment : Fragment() {
             .load(currentStation.favicon)
             .placeholder(gif)
             .into(binding.iconImageDetail)
-
+        
         //Initialisierung des Visualizers
         barVisualizer = view.findViewById(R.id.BarVisualizer)
         lineVisualizer = view.findViewById(R.id.LineVisualizer)
@@ -227,31 +223,6 @@ class DetailFragment : Fragment() {
             }
             return@OnInfoListener true
         }
-
-        // TODO: Audio Encodierung bezüglich des Error Stream -Timout -Problems
-        val mimeType = "audio/mp4a-latm"
-        val codec = MediaCodec.createEncoderByType(mimeType)
-        val testBitrate = 128000
-
-        val extractor = MediaExtractor()
-        extractor.setDataSource(uri)
-
-        val trackFormat = currentStation.currentIndex?.let { extractor.getTrackFormat(it) }
-        val sampleRate = trackFormat?.getInteger(MediaFormat.KEY_SAMPLE_RATE)
-        val channelCount = trackFormat?.getInteger(MediaFormat.KEY_CHANNEL_COUNT)
-        val mediaFormat = MediaFormat.createAudioFormat(mimeType, sampleRate?:0, channelCount?:0)
-
-        mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE ,testBitrate)
-        mediaFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC)
-        codec.configure(mediaFormat,null,null, MediaCodec.CONFIGURE_FLAG_ENCODE)
-        codec.start()
-
-        val inputBuffers = codec.inputBuffers
-        val timeoutUS = 10000000 // 10 Sekunden
-        val inputBufferIndex = codec.dequeueInputBuffer(timeoutUS.toLong())
-        val inputBuffer = inputBuffers[inputBufferIndex]
-        inputBuffer.clear()
-//        inputBuffer.put()
 
         mediaPlayer!!.setOnInfoListener(onInfoListener)
 
