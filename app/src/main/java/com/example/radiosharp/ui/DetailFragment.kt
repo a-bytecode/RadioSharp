@@ -34,6 +34,30 @@ import com.example.radiosharp.databinding.DetailFragmentBinding
 import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.IRadio
 
+/**
+ Anmerk auf Designprinzipien und –guidelines:
+ Ich habe versucht die App nach Human Interaction Guidelines Design Prinzipien zu gestalten,
+ so dass Benutzer ohne große Anstrengungen mit der App interagieren können.
+ Benutzefreundlichkeit, Fingerfreundlichkeit, Fehlerinformationen für Benuztzer waren das Hauptaugenmerk der App.
+
+ Anmerk auf User Orientierung:
+ Einfache Benutzeroberfläche, Kontinuierliche Verbesserungen (Updates),
+ wichtig ist es auch Feedback einzuholen nach der Entwicklung, um verbesserungsvorschläge zu bekommen und diese Umzusetzten.
+
+ Anmerk auf Problemlösungen wie löst man ein Problem?:
+ Debugging, durch Log.d Log.e, Printstatements, durch Kommunikation und Dokumentation. Postings, Code reviews
+
+ bei Projektbearbeitung hat geholfen:
+ Versionsverwaltung GitHub, Dokumentation des Codes. MVVM Pattern zur Unterteilung des Codes.
+
+ Bei Software Architektur wurde verwendet:
+ RoomDatabase
+ RoomDatabaseDao
+ MVVM Pattern
+ Retrofit Service
+ MotionLayout
+ Navigation
+ */
 class DetailFragment : Fragment() {
 
     private lateinit var binding: DetailFragmentBinding
@@ -67,7 +91,6 @@ class DetailFragment : Fragment() {
                 nextStation = radio.nextStation
                 previousStation = radio.previousStation
             }
-
         }
     }
 
@@ -141,7 +164,7 @@ class DetailFragment : Fragment() {
         // Nachfolger wird hier berechnet.
         val currentRadioIndex = radios.indexOfFirst{ it.stationuuid == serverid } // .indexOfFirst erkennt wo er den Index findet,
         // er returned den aktuellen Index
-        //Hier berechnen wir in der Playlist das nächste Radio.
+        //Hier berechnen wir in der Playlist das nächste (next) Radio.
         val nextStationIndex = if (currentRadioIndex == radios.size - 1) {
             // Der Wert des letzten Elements
             // beim letzten "next" drücken fängt wieder vom Anfang der Liste an.
@@ -215,17 +238,6 @@ class DetailFragment : Fragment() {
             currentStation.radioUrl.replace("http:", "https:")
         }
 
-        val onInfoListener = MediaPlayer.OnInfoListener { mp, what, extra ->
-            when(what) {
-                MediaPlayer.MEDIA_INFO_STARTED_AS_NEXT -> {
-                    Log.d("MediaPlayerOnInfo","Nächster Stream gestartet")
-                }
-            }
-            return@OnInfoListener true
-        }
-
-        mediaPlayer!!.setOnInfoListener(onInfoListener)
-
         mediaPlayer!!.setDataSource(requireContext(), uri.toUri())
         mediaPlayer!!.setWakeMode(requireContext(),PowerManager.PARTIAL_WAKE_LOCK)
         mediaPlayer!!.prepareAsync()// .prepareAsync() bereitet die Mediendatei asynchron vor, was bedeutet,
@@ -237,12 +249,22 @@ class DetailFragment : Fragment() {
             binding.playImageDetail.visibility = View.VISIBLE
 
             binding.playImageDetail.setOnClickListener {
-                wifiLock.acquire()
+                wifiLock.acquire() // Der Aufruf von "wifiLock.acquire()" bewirkt, dass das
+                // WiFi-Lock-Objekt aktiviert wird, um sicherzustellen, dass die WLAN-Verbindung stabil bleibt.
+                // Dadurch wird verhindert, dass das Gerät die WLAN-Verbindung ausschaltet,
+                // wenn es in den Ruhezustand geht.
                 Log.d("WIFILOCK","WIFILOCK ${wifiLock.isHeld}")
-                wakeLock.acquire(60*60*1000L /*60 minutes*/)
+                wakeLock.acquire(60*60*1000L /* WifiLock ist für 60 minutes aktiv!!*/)
                 Log.d("WAKELOCK","WAKELOCK: ${wakeLock.isHeld}")
                 play()
 
+                //.setOnCompletionListener muss nach Wiedergabe des Mediaplayers verwendet werden
+                // um zur Überwachung des Abschlusses eines Medienbezogenen Inhaltes zu registrieren.
+//                mediaPlayer!!.setOnCompletionListener{
+//                    mediaPlayer!!.release()
+//                }
+//                mediaPlayer!!.setScreenOnWhilePlaying(true) // .setScreenOnWhilePlaying kann nur
+//                mit SurfaceView aktiviert werden ansonsten hat es keine Auswirkungen auf den mediaplayer!!
                 binding.playImageDetail.visibility = View.GONE
                 binding.stopImageDetail.visibility = View.VISIBLE
             }
@@ -350,14 +372,15 @@ class DetailFragment : Fragment() {
             binding.stopImageDetail.visibility = View.GONE
             binding.playImageDetail.visibility = View.VISIBLE
             mediaPlayer!!.pause()
+//            stopPlaying()
             wifiLock.release()
             wakeLock.release()
         }
 
         binding.skipNextImageDetail.setOnClickListener {
             findNavController().navigate(
-                //<<< openingFav Argument wird benötigt um von der RadioClass zu unterscheiden >>>
                 DetailFragmentDirections.actionDetailFragmentSelf(currentStation.nextStation,openingFav = openingFav)
+                //<<< openingFav Argument wird benötigt um von der RadioClass zu unterscheiden >>>
             )
         }
         binding.skipPreviousImageDetail.setOnClickListener {
@@ -489,20 +512,13 @@ class DetailFragment : Fragment() {
 
 }
 
+
+
 //TODO Durch Blidschirmtimeout verursachten Soundstop fixen. Lösung suchen!
 
 //===============================================================================================================
 // -------------- eine weitere Methode zur Lösung für die Funktion "skip & privious" --------------
 //===============================================================================================================
-
-//Wichtig: ->
-//.setOnCompletionListener muss nach Wiedergabe des Mediaplayers verwendet werden
-// um zur Überwachung des Abschlusses eines Medienbezogenen Inhaltes zu registrieren.
-//                mediaPlayer!!.setOnCompletionListener{
-//                    mediaPlayer!!.release()
-//                }
-//                mediaPlayer!!.setScreenOnWhilePlaying(true) // .setScreenOnWhilePlaying kann nur
-//                mit SurfaceView aktiviert werden ansonsten hat es keine Auswirkungen auf den mediaplayer!!
 
 //
 //        if (openingFav) {

@@ -17,7 +17,6 @@ const val BASE_URL = "https://at1.api.radio-browser.info/"
 
 val API_TOKEN = BuildConfig.API_TOKEN
 
-
 private val client:OkHttpClient = OkHttpClient.Builder()
     .addInterceptor { chain ->
         val newRequest: Request = chain.request().newBuilder()
@@ -29,13 +28,11 @@ private val client:OkHttpClient = OkHttpClient.Builder()
     private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory())
         .build()
 
-
 private val retrofit = Retrofit.Builder()
     .client(client)
     .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(BASE_URL)
     .build()
-
 
 interface RadioApiService{
 
