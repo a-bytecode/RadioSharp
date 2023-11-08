@@ -1,16 +1,14 @@
 package com.example.radiosharp.ui
 
 import android.Manifest
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Context.POWER_SERVICE
 import android.content.pm.PackageManager
 import android.graphics.drawable.AnimatedImageDrawable
 import android.media.AudioAttributes
 import android.media.AudioManager
-import android.media.MediaCodec
-import android.media.MediaCodecInfo
-import android.media.MediaExtractor
-import android.media.MediaFormat
 import android.media.MediaPlayer
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiManager.WifiLock
@@ -21,6 +19,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -37,6 +36,7 @@ import com.example.radiosharp.R
 import com.example.radiosharp.databinding.DetailFragmentBinding
 import com.example.radiosharp.model.FavClass
 import com.example.radiosharp.model.IRadio
+
 
 class DetailFragment : Fragment() {
 
@@ -218,42 +218,6 @@ class DetailFragment : Fragment() {
         } else {
             currentStation.radioUrl.replace("http:", "https:")
         }
-
-        val onInfoListener = MediaPlayer.OnInfoListener { mp, what, extra ->
-            when(what) {
-                MediaPlayer.MEDIA_INFO_STARTED_AS_NEXT -> {
-                    Log.d("MediaPlayerOnInfo","Nächster Stream gestartet")
-                }
-            }
-            return@OnInfoListener true
-        }
-
-        // TODO: Audio Encodierung bezüglich des Error Stream -Timout -Problems
-        val mimeType = "audio/mp4a-latm"
-        val codec = MediaCodec.createEncoderByType(mimeType)
-        val testBitrate = 128000
-
-        val extractor = MediaExtractor()
-        extractor.setDataSource(uri)
-
-        val trackFormat = currentStation.currentIndex?.let { extractor.getTrackFormat(it) }
-        val sampleRate = trackFormat?.getInteger(MediaFormat.KEY_SAMPLE_RATE)
-        val channelCount = trackFormat?.getInteger(MediaFormat.KEY_CHANNEL_COUNT)
-        val mediaFormat = MediaFormat.createAudioFormat(mimeType, sampleRate?:0, channelCount?:0)
-
-        mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE ,testBitrate)
-        mediaFormat.setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC)
-        codec.configure(mediaFormat,null,null, MediaCodec.CONFIGURE_FLAG_ENCODE)
-        codec.start()
-
-        val inputBuffers = codec.inputBuffers
-        val timeoutUS = 10000000 // 10 Sekunden
-        val inputBufferIndex = codec.dequeueInputBuffer(timeoutUS.toLong())
-        val inputBuffer = inputBuffers[inputBufferIndex]
-        inputBuffer.clear()
-//        inputBuffer.put()
-
-        mediaPlayer!!.setOnInfoListener(onInfoListener)
 
         mediaPlayer!!.setDataSource(requireContext(), uri.toUri())
         mediaPlayer!!.setWakeMode(requireContext(),PowerManager.PARTIAL_WAKE_LOCK)
@@ -445,6 +409,16 @@ class DetailFragment : Fragment() {
         binding.homeImageDetail.setOnClickListener {
             findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToHomeFragment())
         }
+
+
+        // Hier wird die Animation für die Progressbar festgelegt.
+        val progressBar: ProgressBar = view.findViewById(R.id.progressBar_detail)
+        val rotation = ObjectAnimator.ofFloat(progressBar, "rotation", 0f, 360f)
+        rotation.duration = 1000 // Die Dauer der Rotation in Millisekunden
+
+        rotation.repeatCount = ValueAnimator.INFINITE // Unendliche Wiederholung
+
+        rotation.start()
 
         // Damit die VolumeSeekbar die Laustärke regulieren kann definieren wir hier,
         // die Maximale und die aktuelle Lautstärke.

@@ -118,7 +118,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-
         //* hier beobachten wir die Radioliste mit und setzten unserem item Count für die Suchergebnisse
         viewModel.allRadios.observe(viewLifecycleOwner, Observer {
             radioAdapter.submitlist(it)
@@ -176,7 +175,9 @@ class HomeFragment : Fragment() {
                                 .setPositiveButton("Ja") { _,_ ->
                                     activity?.finish()
                                 }
-                                .show() }
+                                .show()
+
+                        }
                         showEndDialog()
                     }
                 }
@@ -217,7 +218,6 @@ class HomeFragment : Fragment() {
                             MaterialAlertDialogBuilder(requireContext())
                                 .setTitle("Beenden")
                                 .setMessage("App wirklich Beenden?")
-                                .setBackground(ContextCompat.getDrawable(requireContext(),R.drawable.gradient_270v4))
                                 .setIcon(R.drawable.ic_baseline_exit_to_app_24)
                                 .setCancelable(true)
                                 .setNegativeButton("Nein") { _,_ ->

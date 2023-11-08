@@ -78,8 +78,6 @@ class Repository(private val api: RadioApiService.UserApi, private val database:
 }
 
 
-
-
 //===============================================================================================================
 // ----- eine weitere Methode zur Lösung für die Funktion "skip & privious" aus der Repository aus -----
 //===============================================================================================================

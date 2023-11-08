@@ -17,7 +17,6 @@ const val BASE_URL = "https://at1.api.radio-browser.info/"
 
 val API_TOKEN = BuildConfig.API_TOKEN
 
-
 private val client:OkHttpClient = OkHttpClient.Builder()
     .addInterceptor { chain ->
         val newRequest: Request = chain.request().newBuilder()

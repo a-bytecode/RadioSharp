@@ -5,12 +5,12 @@
         <item name="popupMenuBackground">@drawable/custom_popup_backround</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryVariant">#000000</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">#FFFFFF</item>
+        <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#FFFFFF</item>
-        <item name="colorSecondaryVariant">#BA49FF</item>
-        <item name="colorOnSecondary">#9900F6</item>
+        <item name="colorSecondary">@color/black</item>
+        <item name="colorSecondaryVariant">@color/black</item>
+        <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/black</item>
         <item name="android:textColor">@color/black</item>

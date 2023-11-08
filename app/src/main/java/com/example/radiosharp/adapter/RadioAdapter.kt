@@ -36,7 +36,9 @@ class RadioAdapter(val context: Context, val defaultText: (text: TextView) -> Un
         val genreName = view.findViewById<TextView>(R.id.genreText)
         val countryName = view.findViewById<TextView>(R.id.countryText)
         val iconImage = view.findViewById<ImageView>(R.id.icon_image_detail)
-        val radioCardView = view.findViewById<CardView>(R.id.radioCardView)
+        val radioCardView = view.findViewById<CardView>(R.id.radioCardView) // Für die Navigation um die Station UUID zu
+    // übergeben und die Unterscheidung ob es aus der FavoritenClass kommt oder aus der RadioClass (OpeningFav).
+
     }
 
 
@@ -46,7 +48,6 @@ class RadioAdapter(val context: Context, val defaultText: (text: TextView) -> Un
         return ItemViewHodler(itemLayout)
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onBindViewHolder(holder: ItemViewHodler, position: Int) {
 
         val radioData: RadioClass = dataset[position]
