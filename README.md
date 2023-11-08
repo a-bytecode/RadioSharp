@@ -10,7 +10,7 @@ It´s a small open source internet radio player written with kotlin
 - LiveData
 * MainViewModel
 + Repository
-- Api Call: "OkHttpClient"
+- Retrofit Service
 * RoomDataBase (SQL)
 + Data Access Object (DAO)
 - Interface

@@ -40,7 +40,9 @@ class FavAdapter(val context: Context, val defaultText: (text: TextView) -> Unit
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHodler {
-        val itemLayout = LayoutInflater.from(parent.context)
+        val itemLayout = LayoutInflater.from(parent.context) // Es ist eine Komponente die dazu verwendet wird eine Brücke zwischen
+            // XML Layout und Kotlin Code zu machen. Zusammengefasst bereitet der Layoutinflater das Layout vor damit XML Dateien
+            // in View Objekte umgewandelt werden können.
             .inflate(R.layout.radio_item, parent, false)
         return ItemViewHodler(itemLayout)
     }
@@ -67,7 +69,8 @@ class FavAdapter(val context: Context, val defaultText: (text: TextView) -> Unit
         defaultText(holder.genreName)
     }
 
-    override fun getItemCount(): Int {
+    override fun getItemCount(): Int { // Hier wird Intern die Anzahl der aktuellen Listenelemente
+        // der RecyclerView gespeist. Damit die RecyclerView weiss wieviel Elemente sie insgesamt beinhaltet.
         return dataset.size
     }
 }

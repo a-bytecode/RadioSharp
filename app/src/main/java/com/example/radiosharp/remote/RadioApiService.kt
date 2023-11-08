@@ -28,13 +28,11 @@ private val client:OkHttpClient = OkHttpClient.Builder()
     private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory())
         .build()
 
-
 private val retrofit = Retrofit.Builder()
     .client(client)
     .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(BASE_URL)
     .build()
-
 
 interface RadioApiService{
 
