@@ -164,7 +164,22 @@ class FavFragment : Fragment() {
                     }
 
                     R.id.pop_up_deleteAll_fav -> {
-                        viewModel.deleteAllFav()
+                        fun showEndDialog() {
+
+                            MaterialAlertDialogBuilder(requireContext())
+                                .setTitle("Favoriten löschen")
+                                .setMessage("Alle Favoriten löschen ?")
+                                .setIcon(R.drawable.ic_baseline_delete_24)
+                                .setCancelable(true)
+                                .setNegativeButton("Nein") { _, _ ->
+                                    findNavController().navigate(FavFragmentDirections.actionFavFragmentSelf())
+                                }
+                                .setPositiveButton("Ja") { _, _ ->
+                                    viewModel.deleteAllFav()
+                                }
+                                .show()
+                        }
+                        showEndDialog()
                     }
 
                     R.id.pop_up_end_home -> {
@@ -175,7 +190,6 @@ class FavFragment : Fragment() {
                                 .setTitle("Beenden")
                                 .setMessage("App wirklich Beenden?")
                                 .setIcon(R.drawable.ic_baseline_exit_to_app_24)
-                                .setBackground(ContextCompat.getDrawable(requireContext(),R.drawable.gradient_270v4))
                                 .setCancelable(true)
                                 .setNegativeButton("Nein") { _, _ ->
                                     findNavController().navigate(FavFragmentDirections.actionFavFragmentSelf())
@@ -214,7 +228,22 @@ class FavFragment : Fragment() {
                     }
 
                     R.id.pop_up_deleteAll_fav -> {
-                        viewModel.deleteAllFav()
+                        fun showEndDialog() {
+
+                            MaterialAlertDialogBuilder(requireContext())
+                                .setTitle("Favoriten löschen")
+                                .setMessage("Alle Favoriten löschen ?")
+                                .setIcon(R.drawable.ic_baseline_delete_24)
+                                .setCancelable(true)
+                                .setNegativeButton("Nein") { _, _ ->
+                                    findNavController().navigate(FavFragmentDirections.actionFavFragmentSelf())
+                                }
+                                .setPositiveButton("Ja") { _, _ ->
+                                    viewModel.deleteAllFav()
+                                }
+                                .show()
+                        }
+                        showEndDialog()
                     }
 
                     R.id.pop_up_end_home -> {
@@ -225,7 +254,6 @@ class FavFragment : Fragment() {
                                 .setTitle("Beenden")
                                 .setMessage("App wirklich Beenden?")
                                 .setIcon(R.drawable.ic_baseline_exit_to_app_24)
-                                .setBackground(ContextCompat.getDrawable(requireContext(),R.drawable.gradient_270v4))
                                 .setCancelable(true)
                                 .setNegativeButton("Nein") { _, _ ->
                                     findNavController().navigate(FavFragmentDirections.actionFavFragmentSelf())
