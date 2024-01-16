@@ -158,7 +158,21 @@ class HomeFragment : Fragment() {
                     }
 
                     R.id.pop_up_deleteAll_home -> {
-                        viewModel.deleteAll()
+                        fun showEndDialog() {
+                            MaterialAlertDialogBuilder(requireContext())
+                                .setTitle("Suchergebnisse löschen")
+                                .setMessage("Alle Suchergebnisse löschen ?")
+                                .setIcon(R.drawable.ic_baseline_delete_24)
+                                .setCancelable(true)
+                                .setNegativeButton("Nein") { _, _ ->
+                                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentSelf())
+                                }
+                                .setPositiveButton("Ja") { _, _ ->
+                                    viewModel.deleteAll()
+                                }
+                                .show()
+                        }
+                        showEndDialog()
                     }
 
                     R.id.pop_up_end_home -> {
@@ -166,7 +180,6 @@ class HomeFragment : Fragment() {
                             MaterialAlertDialogBuilder(requireContext())
                                 .setTitle("Beenden")
                                 .setMessage("App wirklich Beenden?")
-                                .setBackground(ContextCompat.getDrawable(requireContext(),R.drawable.gradient_270v4))
                                 .setIcon(R.drawable.ic_baseline_exit_to_app_24)
                                 .setCancelable(true)
                                 .setNegativeButton("Nein") { _,_ ->
@@ -210,7 +223,21 @@ class HomeFragment : Fragment() {
                     }
 
                     R.id.pop_up_deleteAll_home -> {
-                        viewModel.deleteAll()
+                        fun showEndDialog() {
+                            MaterialAlertDialogBuilder(requireContext())
+                                .setTitle("Suchergebnisse löschen")
+                                .setMessage("Alle Suchergebnisse löschen ?")
+                                .setIcon(R.drawable.ic_baseline_delete_24)
+                                .setCancelable(true)
+                                .setNegativeButton("Nein") { _, _ ->
+                                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentSelf())
+                                }
+                                .setPositiveButton("Ja") { _, _ ->
+                                    viewModel.deleteAll()
+                                }
+                                .show()
+                        }
+                        showEndDialog()
                     }
 
                     R.id.pop_up_end_home -> {
