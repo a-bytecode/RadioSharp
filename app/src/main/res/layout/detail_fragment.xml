@@ -111,10 +111,8 @@
 
                             <Button
                                 android:id="@+id/ok_button_dialog"
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="110dp"
-                                android:layout_marginEnd="110dp"
                                 android:layout_marginBottom="32dp"
                                 android:fontFamily="@font/aldrich"
                                 android:text="OK"
@@ -136,13 +134,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iconCardView_detail">
+            app:layout_constraintStart_toStartOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -166,8 +164,8 @@
                     android:max="100"
                     android:orientation="vertical"
                     android:progress="30"
-                    android:rotation="0"
                     android:progressDrawable="@drawable/seekbar_progress"
+                    android:rotation="0"
                     android:thumb="@drawable/seekbar_thumb"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -179,9 +177,11 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/iconCardView_detail"
             android:layout_width="0dp"
-            android:layout_height="310dp"
+            android:layout_height="0dp"
             android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
             app:cardElevation="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/vol_linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nameCardView_detail">
@@ -249,7 +249,6 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             app:cardElevation="5dp"
-            app:layout_constraintBottom_toTopOf="@+id/iconCardView_detail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -305,12 +304,11 @@
             android:layout_height="100dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="32dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout_Fav_list"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/vol_linearLayout">
+            app:layout_constraintStart_toStartOf="parent">
 
 
             <ImageView

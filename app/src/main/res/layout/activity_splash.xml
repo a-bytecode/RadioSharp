@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_270"
     app:layoutDescription="@xml/activity_splash_scene"
-    tools:context=".SplashActivity">
+    tools:context="com.astro.radiosharp.SplashActivity">
 
 
     <ImageView
