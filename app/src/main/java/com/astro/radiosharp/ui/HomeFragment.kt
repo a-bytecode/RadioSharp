@@ -2,11 +2,19 @@ package com.astro.radiosharp.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.text.Html
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -159,13 +167,41 @@ class HomeFragment : Fragment() {
 
                     R.id.pop_up_deleteAll_home -> {
                         fun showEndDialog() {
+
+                            // *** Custom Spannable Text für Löschen für niedrigere SDK Versionen unter SDK 29 *** //
+                            val titleText = "Suchergebnisse löschen?"
+                            val spannableTitle = SpannableString(titleText)
+                            spannableTitle.setSpan(ForegroundColorSpan(
+                                Color.BLACK
+                            ),
+                                0,
+                                titleText.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                            // *** Custom Message Text für Löschen für niedrigere SDK Versionen unter SDK 29 *** //
+//                            val messageText = "Es werden alle Ergebnisse gelöscht..."
+//                            val spannableMessage = SpannableString(messageText)
+//                            spannableMessage.setSpan(ForegroundColorSpan(
+//                                Color.BLACK
+//                            ),
+//                                0,
+//                                messageText.length,
+//                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+//                            )
+
                             MaterialAlertDialogBuilder(requireContext())
-                                .setTitle("Suchergebnisse löschen")
-                                .setMessage("Alle Suchergebnisse löschen ?")
+                                .setTitle(titleText)
+//                                .setMessage(messageText)
                                 .setIcon(R.drawable.ic_baseline_delete_24)
+                                .setBackground(ContextCompat.
+                                getDrawable(requireContext(),
+                                    R.drawable.custom_popup_backround)
+                                )
                                 .setCancelable(true)
                                 .setNegativeButton("Nein") { _, _ ->
-                                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentSelf())
+                                    findNavController().navigate(
+                                        HomeFragmentDirections.actionHomeFragmentSelf())
                                 }
                                 .setPositiveButton("Ja") { _, _ ->
                                     viewModel.deleteAll()
@@ -177,19 +213,46 @@ class HomeFragment : Fragment() {
 
                     R.id.pop_up_end_home -> {
                         fun showEndDialog() {
+
+                            // *** Custom Spannable Text für App Beenden für niedrigere SDK Versionen unter SDK 29 *** //
+                            val titleText = "App wirklich Beenden?"
+                            val spannableTitle = SpannableString(titleText)
+                            spannableTitle.setSpan(ForegroundColorSpan(
+                                Color.BLACK
+                            ),
+                                0,
+                                titleText.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                            // *** Custom Message Text für App Beenden für niedrigere SDK Versionen unter SDK 29 *** //
+                            val messageText = "Die Anwendung wird Heruntergefahren..."
+                            val spannableMessage = SpannableString(messageText)
+                            spannableMessage.setSpan(ForegroundColorSpan(
+                                Color.BLACK
+                            ),
+                                0,
+                                messageText.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
                             MaterialAlertDialogBuilder(requireContext())
-                                .setTitle("Beenden")
-                                .setMessage("App wirklich Beenden?")
+                                .setTitle(titleText)
+                                .setMessage(messageText)
                                 .setIcon(R.drawable.ic_baseline_exit_to_app_24)
+                                .setBackground(ContextCompat.getDrawable(requireContext(),
+                                    R.drawable.custom_popup_backround)
+                                )
                                 .setCancelable(true)
                                 .setNegativeButton("Nein") { _,_ ->
-                                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentSelf())
+                                    findNavController().navigate(
+                                        HomeFragmentDirections.actionHomeFragmentSelf()
+                                    )
                                 }
                                 .setPositiveButton("Ja") { _,_ ->
                                     activity?.finish()
                                 }
                                 .show()
-
                         }
                         showEndDialog()
                     }
@@ -219,18 +282,48 @@ class HomeFragment : Fragment() {
 
 
                     R.id.pop_up_fav_home -> {
-                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToFavFragment())
+                        findNavController().navigate(
+                            HomeFragmentDirections.actionHomeFragmentToFavFragment()
+                        )
                     }
 
                     R.id.pop_up_deleteAll_home -> {
                         fun showEndDialog() {
+
+                            // *** Custom Spannable Text für Löschen *** //
+                            val titleText = "Alle Suchergebnisse löschen?"
+                            val spannableTitle = SpannableString(titleText)
+                            spannableTitle.setSpan(ForegroundColorSpan(
+                                Color.BLACK
+                            ),
+                                0,
+                                titleText.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                            // *** Custom Message Text für Löschen *** //
+//                            val messageText = "Vorsicht es werden alle Suchergebnisse gelöscht..."
+//                            val spannableMessage = SpannableString(messageText)
+//                            spannableMessage.setSpan(ForegroundColorSpan(
+//                                Color.BLACK
+//                            ),
+//                                0,
+//                                messageText.length,
+//                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+//                            )
+
                             MaterialAlertDialogBuilder(requireContext())
-                                .setTitle("Suchergebnisse löschen")
-                                .setMessage("Alle Suchergebnisse löschen ?")
+                                .setTitle(spannableTitle)
+//                                .setMessage(messageText)
                                 .setIcon(R.drawable.ic_baseline_delete_24)
+                                .setBackground(ContextCompat.getDrawable(
+                                    requireContext(),R.drawable.custom_popup_backround)
+                                )
                                 .setCancelable(true)
                                 .setNegativeButton("Nein") { _, _ ->
-                                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentSelf())
+                                    findNavController().navigate(
+                                        HomeFragmentDirections.actionHomeFragmentSelf()
+                                    )
                                 }
                                 .setPositiveButton("Ja") { _, _ ->
                                     viewModel.deleteAll()
@@ -242,18 +335,47 @@ class HomeFragment : Fragment() {
 
                     R.id.pop_up_end_home -> {
                         fun showEndDialog() {
+
+                            // *** Custom Spannable Text für App Beenden *** //
+                            val titleText = "App wirklich Beenden?"
+                            val spannableTitle = SpannableString(titleText)
+                            spannableTitle.setSpan(ForegroundColorSpan(
+                                Color.BLACK
+                            ),
+                                0,
+                                titleText.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                            // *** Custom Message Text für App Beenden *** //
+                            val messageText = "Die Anwendung wird Heruntergefahren..."
+                            val spannableMessage = SpannableString(messageText)
+                            spannableMessage.setSpan(ForegroundColorSpan(
+                                Color.BLACK
+                            ),
+                                0,
+                                messageText.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
                             MaterialAlertDialogBuilder(requireContext())
-                                .setTitle("Beenden")
-                                .setMessage("App wirklich Beenden?")
+                                .setTitle(spannableTitle)
+                                .setMessage(spannableMessage)
                                 .setIcon(R.drawable.ic_baseline_exit_to_app_24)
+                                .setBackground(ContextCompat.getDrawable(requireContext(),
+                                    R.drawable.custom_popup_backround)
+                                )
                                 .setCancelable(true)
-                                .setNegativeButton("Nein") { _,_ ->
-                                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentSelf())
+                                .setNegativeButton("Nein") { _, _ ->
+                                    findNavController().navigate(
+                                        HomeFragmentDirections.actionHomeFragmentSelf()
+                                    )
                                 }
-                                .setPositiveButton("Ja") { _,_ ->
+                                .setPositiveButton("Ja") { _, _ ->
                                     activity?.finish()
                                 }
-                                .show() }
+                                .show()
+                        }
                         showEndDialog()
                     }
                 }

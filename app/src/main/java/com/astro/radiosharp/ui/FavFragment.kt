@@ -1,7 +1,12 @@
 package com.astro.radiosharp.ui
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
@@ -10,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -165,10 +171,23 @@ class FavFragment : Fragment() {
                     R.id.pop_up_deleteAll_fav -> {
                         fun showEndDialog() {
 
+                            // *** Custom Spannable Text für Fav-Löschen für niedrigere SDK Versionen unter SDK 29 *** //
+                            val titleText = "Alle Favoriten löschen?"
+                            val spannableTitle = SpannableString(titleText)
+                            spannableTitle.setSpan(
+                                ForegroundColorSpan(
+                                Color.BLACK
+                            ),
+                                0,
+                                titleText.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
                             MaterialAlertDialogBuilder(requireContext())
-                                .setTitle("Favoriten löschen")
-                                .setMessage("Alle Favoriten löschen ?")
+                                .setTitle(titleText)
                                 .setIcon(R.drawable.ic_baseline_delete_24)
+                                .setBackground(ContextCompat.getDrawable(requireContext(),
+                                    R.drawable.custom_popup_backround))
                                 .setCancelable(true)
                                 .setNegativeButton("Nein") { _, _ ->
                                     findNavController().navigate(FavFragmentDirections.actionFavFragmentSelf())
@@ -185,13 +204,26 @@ class FavFragment : Fragment() {
 
                         fun showEndDialog() {
 
+                            // *** Custom Spannable Text für App beenden für niedrigere SDK Versionen unter SDK 29 *** //
+                            val titleText = "App wirklich Beenden?"
+                            val spannableTitle = SpannableString(titleText)
+                            spannableTitle.setSpan(
+                                ForegroundColorSpan(
+                                    Color.BLACK
+                                ),
+                                0,
+                                titleText.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
                             MaterialAlertDialogBuilder(requireContext())
-                                .setTitle("Beenden")
-                                .setMessage("App wirklich Beenden?")
+                                .setTitle(titleText)
                                 .setIcon(R.drawable.ic_baseline_exit_to_app_24)
                                 .setCancelable(true)
                                 .setNegativeButton("Nein") { _, _ ->
-                                    findNavController().navigate(FavFragmentDirections.actionFavFragmentSelf())
+                                    findNavController().navigate(
+                                        FavFragmentDirections.actionFavFragmentSelf()
+                                    )
                                 }
                                 .setPositiveButton("Ja") { _, _ ->
                                     activity?.finish()
@@ -229,13 +261,30 @@ class FavFragment : Fragment() {
                     R.id.pop_up_deleteAll_fav -> {
                         fun showEndDialog() {
 
+                            // *** Custom Spannable Text für Fav-Löschen *** //
+                            val titleText = "Alle Favoriten löschen?"
+                            val spannableTitle = SpannableString(titleText)
+                            spannableTitle.setSpan(
+                                ForegroundColorSpan(
+                                    Color.BLACK
+                                ),
+                                0,
+                                titleText.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
                             MaterialAlertDialogBuilder(requireContext())
-                                .setTitle("Favoriten löschen")
-                                .setMessage("Alle Favoriten löschen ?")
+                                .setTitle(titleText)
                                 .setIcon(R.drawable.ic_baseline_delete_24)
                                 .setCancelable(true)
+                                .setBackground(ContextCompat.
+                                getDrawable(requireContext(),
+                                    R.drawable.custom_popup_backround)
+                                )
                                 .setNegativeButton("Nein") { _, _ ->
-                                    findNavController().navigate(FavFragmentDirections.actionFavFragmentSelf())
+                                    findNavController().navigate(
+                                        FavFragmentDirections.actionFavFragmentSelf()
+                                    )
                                 }
                                 .setPositiveButton("Ja") { _, _ ->
                                     viewModel.deleteAllFav()
@@ -249,13 +298,30 @@ class FavFragment : Fragment() {
 
                         fun showEndDialog() {
 
+                            // *** Custom Spannable Text für App beenden *** //
+                            val titleText = "App wirklich Beenden?"
+                            val spannableTitle = SpannableString(titleText)
+                            spannableTitle.setSpan(
+                                ForegroundColorSpan(
+                                    Color.BLACK
+                                ),
+                                0,
+                                titleText.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
                             MaterialAlertDialogBuilder(requireContext())
-                                .setTitle("Beenden")
-                                .setMessage("App wirklich Beenden?")
+                                .setTitle(titleText)
                                 .setIcon(R.drawable.ic_baseline_exit_to_app_24)
+                                .setBackground(ContextCompat.
+                                getDrawable(requireContext(),
+                                    R.drawable.custom_popup_backround)
+                                )
                                 .setCancelable(true)
                                 .setNegativeButton("Nein") { _, _ ->
-                                    findNavController().navigate(FavFragmentDirections.actionFavFragmentSelf())
+                                    findNavController().navigate(
+                                        FavFragmentDirections.actionFavFragmentSelf()
+                                    )
                                 }
                                 .setPositiveButton("Ja") { _, _ ->
                                     activity?.finish()
