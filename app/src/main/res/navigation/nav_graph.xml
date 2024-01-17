@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.radiosharp.ui.HomeFragment"
+        android:name="com.astro.radiosharp.ui.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_detailFragment"
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.radiosharp.ui.DetailFragment"
+        android:name="com.astro.radiosharp.ui.DetailFragment"
         android:label="DetailFragment" >
         <action
             android:id="@+id/action_detailFragment_to_homeFragment"
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/favFragment"
-        android:name="com.example.radiosharp.ui.FavFragment"
+        android:name="com.astro.radiosharp.ui.FavFragment"
         android:label="FavFragment" >
         <action
             android:id="@+id/action_favFragment_to_detailFragment"
@@ -55,7 +55,7 @@
     </fragment>
     <activity
         android:id="@+id/splashActivity"
-        android:name="com.example.radiosharp.SplashActivity"
+        android:name="com.astro.radiosharp.SplashActivity"
         android:label="activity_splash"
         tools:layout="@layout/activity_splash" />
 </navigation>

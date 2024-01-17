@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.radiosharp'
+    namespace 'com.astro.radiosharp'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.radiosharp"
+        applicationId "com.astro.radiosharp"
         minSdk 28
         targetSdk 33
         versionCode 1
@@ -25,13 +25,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
-        debug {
-            def keystorePropertiesFile = rootProject.file("keystore.properties")
-            def keystoreProperties = new Properties()
-            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
-            buildConfigField "String", "API_TOKEN", keystoreProperties["API_TOKEN"]
-        }
+//        debug {
+//            def keystorePropertiesFile = rootProject.file("keystore.properties")
+//            def keystoreProperties = new Properties()
+//            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+//
+//            buildConfigField "String", "API_TOKEN", keystoreProperties["API_TOKEN"]
+//        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
