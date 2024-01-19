@@ -1,5 +1,6 @@
 package com.astro.radiosharp.ui
 
+import CustomDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
@@ -15,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -36,6 +38,8 @@ class FavFragment : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
 
+    private lateinit var customDialog : CustomDialog
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,6 +59,7 @@ class FavFragment : Fragment() {
         val favAdapter = FavAdapter(requireContext(), viewModel::fillText)
 
         binding.radioRecyclerViewFav.adapter = favAdapter
+
 
         viewModel.favRadios.observe(viewLifecycleOwner, Observer {
             favAdapter.submitlist(it)
@@ -152,6 +157,9 @@ class FavFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     fun showPopUp(view: View) {
+
+        customDialog = CustomDialog(requireContext(),requireActivity())
+
         // Überprüfung der Android Version (SDK_INT) Verallgemeinert die Handy SDK
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q){ // Wir Übeprüfen ob die aktuelle Mobile Version kleiner ist als Android 10
 
@@ -169,68 +177,28 @@ class FavFragment : Fragment() {
                     }
 
                     R.id.pop_up_deleteAll_fav -> {
-                        fun showEndDialog() {
 
-                            // *** Custom Spannable Text für Fav-Löschen für niedrigere SDK Versionen unter SDK 29 *** //
-                            val titleText = "Alle Favoriten löschen?"
-                            val spannableTitle = SpannableString(titleText)
-                            spannableTitle.setSpan(
-                                ForegroundColorSpan(
-                                Color.BLACK
-                            ),
-                                0,
-                                titleText.length,
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
+                        // *** Custom Dialog für Fav löschen für niedrigere SDK Versionen unter SDK 29 *** //
+                        customDialog.showDialog()
 
-                            MaterialAlertDialogBuilder(requireContext())
-                                .setTitle(titleText)
-                                .setIcon(R.drawable.ic_baseline_delete_24)
-                                .setBackground(ContextCompat.getDrawable(requireContext(),
-                                    R.drawable.custom_popup_backround))
-                                .setCancelable(true)
-                                .setNegativeButton("Nein") { _, _ ->
-                                    findNavController().navigate(FavFragmentDirections.actionFavFragmentSelf())
-                                }
-                                .setPositiveButton("Ja") { _, _ ->
-                                    viewModel.deleteAllFav()
-                                }
-                                .show()
-                        }
-                        showEndDialog()
+                        customDialog.setTextDialog("Favoriten wirklich löschen?")
+
+                        customDialog.setIcon(R.drawable.ic_baseline_delete_24)
+
+                        customDialog.setAnswerYesAction { viewModel.deleteAllFav() }
+
                     }
 
                     R.id.pop_up_end_home -> {
 
-                        fun showEndDialog() {
+                        // *** Custom Dialog für App beenden für niedrigere SDK Versionen unter SDK 29 *** //
+                        customDialog.showDialog()
 
-                            // *** Custom Spannable Text für App beenden für niedrigere SDK Versionen unter SDK 29 *** //
-                            val titleText = "App wirklich Beenden?"
-                            val spannableTitle = SpannableString(titleText)
-                            spannableTitle.setSpan(
-                                ForegroundColorSpan(
-                                    Color.BLACK
-                                ),
-                                0,
-                                titleText.length,
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
+                        customDialog.setTextDialog("App wirklich Beenden?")
 
-                            MaterialAlertDialogBuilder(requireContext())
-                                .setTitle(titleText)
-                                .setIcon(R.drawable.ic_baseline_exit_to_app_24)
-                                .setCancelable(true)
-                                .setNegativeButton("Nein") { _, _ ->
-                                    findNavController().navigate(
-                                        FavFragmentDirections.actionFavFragmentSelf()
-                                    )
-                                }
-                                .setPositiveButton("Ja") { _, _ ->
-                                    activity?.finish()
-                                }
-                                .show()
-                        }
-                        showEndDialog()
+                        customDialog.setIcon(R.drawable.ic_baseline_exit_to_app_24)
+
+                        customDialog.doINeedExitApp = true
                     }
                 }
                 true
@@ -259,76 +227,28 @@ class FavFragment : Fragment() {
                     }
 
                     R.id.pop_up_deleteAll_fav -> {
-                        fun showEndDialog() {
 
-                            // *** Custom Spannable Text für Fav-Löschen *** //
-                            val titleText = "Alle Favoriten löschen?"
-                            val spannableTitle = SpannableString(titleText)
-                            spannableTitle.setSpan(
-                                ForegroundColorSpan(
-                                    Color.BLACK
-                                ),
-                                0,
-                                titleText.length,
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
+                        // *** Custom Dialog für Fav löschen für SDK 29 *** //
+                        customDialog.showDialog()
 
-                            MaterialAlertDialogBuilder(requireContext())
-                                .setTitle(titleText)
-                                .setIcon(R.drawable.ic_baseline_delete_24)
-                                .setCancelable(true)
-                                .setBackground(ContextCompat.
-                                getDrawable(requireContext(),
-                                    R.drawable.custom_popup_backround)
-                                )
-                                .setNegativeButton("Nein") { _, _ ->
-                                    findNavController().navigate(
-                                        FavFragmentDirections.actionFavFragmentSelf()
-                                    )
-                                }
-                                .setPositiveButton("Ja") { _, _ ->
-                                    viewModel.deleteAllFav()
-                                }
-                                .show()
-                        }
-                        showEndDialog()
+                        customDialog.setTextDialog("Favoriten wirklich löschen?")
+
+                        customDialog.setIcon(R.drawable.ic_baseline_delete_24)
+
+                        customDialog.setAnswerYesAction { viewModel.deleteAllFav() }
+
                     }
 
                     R.id.pop_up_end_home -> {
 
-                        fun showEndDialog() {
+                        // *** Custom Dialog für App beenden für SDK 29 *** //
+                        customDialog.showDialog()
 
-                            // *** Custom Spannable Text für App beenden *** //
-                            val titleText = "App wirklich Beenden?"
-                            val spannableTitle = SpannableString(titleText)
-                            spannableTitle.setSpan(
-                                ForegroundColorSpan(
-                                    Color.BLACK
-                                ),
-                                0,
-                                titleText.length,
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
+                        customDialog.setTextDialog("App wirklich Beenden?")
 
-                            MaterialAlertDialogBuilder(requireContext())
-                                .setTitle(titleText)
-                                .setIcon(R.drawable.ic_baseline_exit_to_app_24)
-                                .setBackground(ContextCompat.
-                                getDrawable(requireContext(),
-                                    R.drawable.custom_popup_backround)
-                                )
-                                .setCancelable(true)
-                                .setNegativeButton("Nein") { _, _ ->
-                                    findNavController().navigate(
-                                        FavFragmentDirections.actionFavFragmentSelf()
-                                    )
-                                }
-                                .setPositiveButton("Ja") { _, _ ->
-                                    activity?.finish()
-                                }
-                                .show()
-                        }
-                        showEndDialog()
+                        customDialog.setIcon(R.drawable.ic_baseline_exit_to_app_24)
+
+                        customDialog.doINeedExitApp = true
                     }
                 }
                 true

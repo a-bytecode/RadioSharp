@@ -2,8 +2,6 @@
     <!-- Base application theme. -->
     <style name="Theme.RadioSharp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-
-        <item name="popupMenuBackground">@drawable/custom_popup_backround</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryVariant">@color/black</item>
