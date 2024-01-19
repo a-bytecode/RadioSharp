@@ -1,5 +1,6 @@
 package com.astro.radiosharp.ui
 
+import CustomDialog
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -35,6 +36,9 @@ class HomeFragment : Fragment() {
     private lateinit var binding: HomeFragmentBinding
 
     private val viewModel: MainViewModel by activityViewModels()
+
+    private lateinit var customDialog : CustomDialog
+
 
     override fun registerForContextMenu(view: View) {
         super.registerForContextMenu(view.findViewById(R.id.favList_image_fav))
@@ -151,6 +155,9 @@ class HomeFragment : Fragment() {
     //* in der Funktion "showPopUp" inflaten wir das Popup Menu und setzten verschiedene output Bedingungen
     @RequiresApi(Build.VERSION_CODES.Q)
     fun showPopUp(view: View) {
+
+        customDialog = CustomDialog(requireContext(),requireActivity())
+
         // Überprüfung der Android Version (SDK_INT) Verallgemeinert die Handy SDK
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q){
             val wrapper = ContextThemeWrapper(requireContext(),R.style.popupMenuStyle)
@@ -166,95 +173,27 @@ class HomeFragment : Fragment() {
                     }
 
                     R.id.pop_up_deleteAll_home -> {
-                        fun showEndDialog() {
 
-                            // *** Custom Spannable Text für Löschen für niedrigere SDK Versionen unter SDK 29 *** //
-                            val titleText = "Suchergebnisse löschen?"
-                            val spannableTitle = SpannableString(titleText)
-                            spannableTitle.setSpan(ForegroundColorSpan(
-                                Color.BLACK
-                            ),
-                                0,
-                                titleText.length,
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
+                        // *** Custom Dialog für Fav löschen für niedrigere SDK Versionen unter SDK 29 *** //
+                        customDialog.showDialog()
 
-                            // *** Custom Message Text für Löschen für niedrigere SDK Versionen unter SDK 29 *** //
-//                            val messageText = "Es werden alle Ergebnisse gelöscht..."
-//                            val spannableMessage = SpannableString(messageText)
-//                            spannableMessage.setSpan(ForegroundColorSpan(
-//                                Color.BLACK
-//                            ),
-//                                0,
-//                                messageText.length,
-//                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-//                            )
+                        customDialog.setTextDialog("Suchergebnisse löschen?")
 
-                            MaterialAlertDialogBuilder(requireContext())
-                                .setTitle(titleText)
-//                                .setMessage(messageText)
-                                .setIcon(R.drawable.ic_baseline_delete_24)
-                                .setBackground(ContextCompat.
-                                getDrawable(requireContext(),
-                                    R.drawable.custom_popup_backround)
-                                )
-                                .setCancelable(true)
-                                .setNegativeButton("Nein") { _, _ ->
-                                    findNavController().navigate(
-                                        HomeFragmentDirections.actionHomeFragmentSelf())
-                                }
-                                .setPositiveButton("Ja") { _, _ ->
-                                    viewModel.deleteAll()
-                                }
-                                .show()
-                        }
-                        showEndDialog()
+                        customDialog.setIcon(R.drawable.ic_baseline_delete_24)
+
+                        customDialog.setAnswerYesAction { viewModel.deleteAll() }
                     }
 
                     R.id.pop_up_end_home -> {
-                        fun showEndDialog() {
 
-                            // *** Custom Spannable Text für App Beenden für niedrigere SDK Versionen unter SDK 29 *** //
-                            val titleText = "App wirklich Beenden?"
-                            val spannableTitle = SpannableString(titleText)
-                            spannableTitle.setSpan(ForegroundColorSpan(
-                                Color.BLACK
-                            ),
-                                0,
-                                titleText.length,
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
+                        // *** Custom Dialog für App beenden für niedrigere SDK Versionen unter SDK 29 *** //
+                        customDialog.showDialog()
 
-                            // *** Custom Message Text für App Beenden für niedrigere SDK Versionen unter SDK 29 *** //
-                            val messageText = "Die Anwendung wird Heruntergefahren..."
-                            val spannableMessage = SpannableString(messageText)
-                            spannableMessage.setSpan(ForegroundColorSpan(
-                                Color.BLACK
-                            ),
-                                0,
-                                messageText.length,
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
+                        customDialog.setTextDialog("App wirklich Beenden?")
 
-                            MaterialAlertDialogBuilder(requireContext())
-                                .setTitle(titleText)
-                                .setMessage(messageText)
-                                .setIcon(R.drawable.ic_baseline_exit_to_app_24)
-                                .setBackground(ContextCompat.getDrawable(requireContext(),
-                                    R.drawable.custom_popup_backround)
-                                )
-                                .setCancelable(true)
-                                .setNegativeButton("Nein") { _,_ ->
-                                    findNavController().navigate(
-                                        HomeFragmentDirections.actionHomeFragmentSelf()
-                                    )
-                                }
-                                .setPositiveButton("Ja") { _,_ ->
-                                    activity?.finish()
-                                }
-                                .show()
-                        }
-                        showEndDialog()
+                        customDialog.setIcon(R.drawable.ic_baseline_delete_24)
+
+                        customDialog.doINeedExitApp = true
                     }
                 }
                 true
@@ -288,95 +227,27 @@ class HomeFragment : Fragment() {
                     }
 
                     R.id.pop_up_deleteAll_home -> {
-                        fun showEndDialog() {
 
-                            // *** Custom Spannable Text für Löschen *** //
-                            val titleText = "Alle Suchergebnisse löschen?"
-                            val spannableTitle = SpannableString(titleText)
-                            spannableTitle.setSpan(ForegroundColorSpan(
-                                Color.BLACK
-                            ),
-                                0,
-                                titleText.length,
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
+                        // *** Custom Dialog für Suchergebnisse löschen für SDK 29 *** //
+                        customDialog.showDialog()
 
-                            // *** Custom Message Text für Löschen *** //
-//                            val messageText = "Vorsicht es werden alle Suchergebnisse gelöscht..."
-//                            val spannableMessage = SpannableString(messageText)
-//                            spannableMessage.setSpan(ForegroundColorSpan(
-//                                Color.BLACK
-//                            ),
-//                                0,
-//                                messageText.length,
-//                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-//                            )
+                        customDialog.setTextDialog("Suchergebnisse löschen?")
 
-                            MaterialAlertDialogBuilder(requireContext())
-                                .setTitle(spannableTitle)
-//                                .setMessage(messageText)
-                                .setIcon(R.drawable.ic_baseline_delete_24)
-                                .setBackground(ContextCompat.getDrawable(
-                                    requireContext(),R.drawable.custom_popup_backround)
-                                )
-                                .setCancelable(true)
-                                .setNegativeButton("Nein") { _, _ ->
-                                    findNavController().navigate(
-                                        HomeFragmentDirections.actionHomeFragmentSelf()
-                                    )
-                                }
-                                .setPositiveButton("Ja") { _, _ ->
-                                    viewModel.deleteAll()
-                                }
-                                .show()
-                        }
-                        showEndDialog()
+                        customDialog.setIcon(R.drawable.ic_baseline_delete_24)
+
+                        customDialog.setAnswerYesAction { viewModel.deleteAll() }
                     }
 
                     R.id.pop_up_end_home -> {
-                        fun showEndDialog() {
 
-                            // *** Custom Spannable Text für App Beenden *** //
-                            val titleText = "App wirklich Beenden?"
-                            val spannableTitle = SpannableString(titleText)
-                            spannableTitle.setSpan(ForegroundColorSpan(
-                                Color.BLACK
-                            ),
-                                0,
-                                titleText.length,
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
+                        // *** Custom Dialog für App beenden für SDK 29 *** //
+                        customDialog.showDialog()
 
-                            // *** Custom Message Text für App Beenden *** //
-                            val messageText = "Die Anwendung wird Heruntergefahren..."
-                            val spannableMessage = SpannableString(messageText)
-                            spannableMessage.setSpan(ForegroundColorSpan(
-                                Color.BLACK
-                            ),
-                                0,
-                                messageText.length,
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
+                        customDialog.setTextDialog("App wirklich Beenden?")
 
-                            MaterialAlertDialogBuilder(requireContext())
-                                .setTitle(spannableTitle)
-                                .setMessage(spannableMessage)
-                                .setIcon(R.drawable.ic_baseline_exit_to_app_24)
-                                .setBackground(ContextCompat.getDrawable(requireContext(),
-                                    R.drawable.custom_popup_backround)
-                                )
-                                .setCancelable(true)
-                                .setNegativeButton("Nein") { _, _ ->
-                                    findNavController().navigate(
-                                        HomeFragmentDirections.actionHomeFragmentSelf()
-                                    )
-                                }
-                                .setPositiveButton("Ja") { _, _ ->
-                                    activity?.finish()
-                                }
-                                .show()
-                        }
-                        showEndDialog()
+                        customDialog.setIcon(R.drawable.ic_baseline_exit_to_app_24)
+
+                        customDialog.doINeedExitApp = true
                     }
                 }
                 true
