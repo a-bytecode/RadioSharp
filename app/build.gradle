@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'androidx.navigation.safeargs.kotlin'
-    id 'kotlin-kapt'//Navigation
+    id 'kotlin-kapt'
 }
 
 android {
@@ -25,14 +25,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
-//        debug {
-//            def keystorePropertiesFile = rootProject.file("keystore.properties")
-//            def keystoreProperties = new Properties()
-//            keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-//
-//            buildConfigField "String", "API_TOKEN", keystoreProperties["API_TOKEN"]
-//        }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

@@ -128,7 +128,7 @@
                 <TextView
                     android:id="@+id/headline_textView"
                     android:layout_width="0dp"
-                    android:layout_height="52dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="32dp"
                     android:fontFamily="@font/fugaz_one"
                     android:text="RadioSharp"
@@ -147,6 +147,7 @@
                     android:layout_height="50dp"
                     android:layout_marginStart="8dp"
                     android:onClick="showPopup"
+                    android:contentDescription="Menü öffnen"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

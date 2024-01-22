@@ -13,6 +13,8 @@ import android.media.MediaPlayer
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiManager.WifiLock
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.PowerManager
 import android.os.PowerManager.WakeLock
 import android.util.Log
@@ -202,6 +204,7 @@ class DetailFragment : Fragment() {
         mediaPlayer = MediaPlayer().apply {
             binding.playImageDetail.visibility = View.GONE
             binding.progressBarDetail.visibility = View.VISIBLE
+
             setAudioAttributes(
                 AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -225,6 +228,7 @@ class DetailFragment : Fragment() {
 
         //OnPreparedListener wird ausgelöst um das Abspielen tatsächlich zu starten.
         mediaPlayer!!.setOnPreparedListener {
+
             binding.progressBarDetail.visibility = View.GONE
             binding.playImageDetail.visibility = View.VISIBLE
 
@@ -238,6 +242,12 @@ class DetailFragment : Fragment() {
                 binding.playImageDetail.visibility = View.GONE
                 binding.stopImageDetail.visibility = View.VISIBLE
             }
+        }
+
+        mediaPlayer!!.setOnErrorListener { _, _, _ ->
+            viewModel.showToast(
+                "${currentStation.radioUrl} ist nicht erreichbar.", requireContext())
+            return@setOnErrorListener true
         }
 
         //Visualizer prüft ob die permissions "Granted" sind und gibt bei der Wiedergabe des
@@ -357,6 +367,7 @@ class DetailFragment : Fragment() {
                 DetailFragmentDirections.actionDetailFragmentSelf(currentStation.previousStation, openingFav = openingFav)
             )
         }
+
         binding.favListImageDetail.setOnClickListener {
             findNavController().navigate(DetailFragmentDirections.actionDetailFragmentToFavFragment())
         }
