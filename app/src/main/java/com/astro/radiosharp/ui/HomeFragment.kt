@@ -191,7 +191,7 @@ class HomeFragment : Fragment() {
 
                         customDialog.setTextDialog("App wirklich Beenden?")
 
-                        customDialog.setIcon(R.drawable.ic_baseline_delete_24)
+                        customDialog.setIcon(R.drawable.ic_baseline_exit_to_app_24)
 
                         customDialog.doINeedExitApp = true
                     }
