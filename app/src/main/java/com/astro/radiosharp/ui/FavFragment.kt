@@ -1,13 +1,8 @@
 package com.astro.radiosharp.ui
 
 import CustomDialog
-import android.content.Context
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
@@ -16,8 +11,6 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -29,7 +22,6 @@ import com.astro.radiosharp.R
 import com.astro.radiosharp.adapter.FavAdapter
 import com.astro.radiosharp.databinding.FavFragmentBinding
 import com.astro.radiosharp.model.FavClass
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 
 class FavFragment : Fragment() {
@@ -56,7 +48,10 @@ class FavFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val favAdapter = FavAdapter(requireContext(), viewModel::fillText)
+        val favAdapter = FavAdapter(requireContext(),
+            viewModel::fillText,
+            viewModel
+        )
 
         binding.radioRecyclerViewFav.adapter = favAdapter
 

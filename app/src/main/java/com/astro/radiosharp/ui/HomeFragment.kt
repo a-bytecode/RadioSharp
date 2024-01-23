@@ -3,19 +3,11 @@ package com.astro.radiosharp.ui
 import CustomDialog
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.text.Html
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.PopupMenu
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -28,7 +20,6 @@ import com.astro.radiosharp.MainViewModel
 import com.astro.radiosharp.R
 import com.astro.radiosharp.adapter.RadioAdapter
 import com.astro.radiosharp.databinding.HomeFragmentBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class HomeFragment : Fragment() {
 
@@ -73,7 +64,8 @@ class HomeFragment : Fragment() {
 
         //* initializierung bei des RadioAdapters
 
-        val radioAdapter = RadioAdapter(requireContext(),viewModel::fillText)
+        val radioAdapter = RadioAdapter(requireContext(),
+            viewModel::fillText,viewModel)
 
         binding.radioRecyclerView.adapter = radioAdapter
 
