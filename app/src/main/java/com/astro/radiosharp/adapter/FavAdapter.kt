@@ -13,12 +13,15 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.astro.radiosharp.MainViewModel
 import com.bumptech.glide.Glide
 import com.astro.radiosharp.R
 import com.astro.radiosharp.model.FavClass
 import com.astro.radiosharp.ui.FavFragmentDirections
 
-class FavAdapter(val context: Context, val defaultText: (text: TextView) -> Unit) :
+class FavAdapter(val context: Context,
+                 val defaultText: (text: TextView) -> Unit,
+                 val viewModel: MainViewModel) :
     RecyclerView.Adapter<FavAdapter.ItemViewHodler>() {
 
 
@@ -52,9 +55,9 @@ class FavAdapter(val context: Context, val defaultText: (text: TextView) -> Unit
 
         val radioData: FavClass = dataset[position]
 
-        holder.radioName.text = radioData.name
+        holder.radioName.text = viewModel.limitTextTo50Chars(radioData.name)
         holder.countryName.text = radioData.country
-        holder.genreName.text = radioData.tags
+        holder.genreName.text = viewModel.limitTextTo50Chars(radioData.tags)
         holder.radioCardView.setOnClickListener {
             holder.itemView.findNavController()
                 .navigate(FavFragmentDirections.actionFavFragmentToDetailFragment(radioData.stationuuid,

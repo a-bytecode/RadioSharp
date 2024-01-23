@@ -99,7 +99,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 )
                 .show()
         }
+    }
 
+    fun limitTextTo50Chars(text: String): String {
+        return if (text.length > 50) {
+            text.substring(0, 47) + "..."
+        } else {
+            text
+        }
     }
 
     fun fillText(text: TextView) {
