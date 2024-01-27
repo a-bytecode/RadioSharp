@@ -107,10 +107,17 @@ class FavFragment : Fragment() {
                     viewModel.favRadios.value!![viewHolder.adapterPosition]
                 val position = viewHolder.adapterPosition
 
-                if (viewModel.favRadios.value != null) {
+                val updatedList = viewModel.favRadios.value?.toMutableList()
 
-                    viewModel.favRadios.value?.removeAt(position)
-                    viewModel.removeFav(
+                updatedList?.removeAt(position)
+
+                viewModel.favRadios.value = updatedList
+
+                viewModel.removeFav(deletedCourse)
+
+                favAdapter.notifyItemRemoved(position)
+
+                viewModel.removeFav(
                         FavClass(
                             deletedCourse.stationuuid,
                             deletedCourse.country,
@@ -122,7 +129,6 @@ class FavFragment : Fragment() {
                             deletedCourse.previousStation
                         )
                     )
-                    favAdapter.notifyItemRemoved(viewHolder.adapterPosition)
 
                     Snackbar.make(
                         binding.radioRecyclerViewFav,
@@ -143,8 +149,6 @@ class FavFragment : Fragment() {
                     Log.d("PositionLog", "$position")
                     Log.d("DeletedCourseLog_Name", "${deletedCourse.name}")
                     Log.d("DeletedCourseLog_UID", "${deletedCourse.stationuuid}")
-
-                }
             }
         }).attachToRecyclerView(binding.radioRecyclerViewFav)
 
