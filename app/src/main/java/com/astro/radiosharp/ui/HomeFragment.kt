@@ -2,11 +2,15 @@ package com.astro.radiosharp.ui
 
 import CustomDialog
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.*
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
@@ -20,6 +24,7 @@ import com.astro.radiosharp.MainViewModel
 import com.astro.radiosharp.R
 import com.astro.radiosharp.adapter.RadioAdapter
 import com.astro.radiosharp.databinding.HomeFragmentBinding
+import java.security.Key
 
 class HomeFragment : Fragment() {
 
@@ -133,6 +138,24 @@ class HomeFragment : Fragment() {
             }
             Log.d("HomeFragment","$it")
         })
+
+        // **** Text Input Eingabe über die UI Tastatur **** //
+        binding.inputSearchText.inputType = InputType.TYPE_CLASS_TEXT
+        binding.inputSearchText.imeOptions = EditorInfo.IME_ACTION_SEARCH
+        val inputMethodManager = requireContext().getSystemService(
+            Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        binding.inputSearchText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
+                viewModel.buttonAnimator(binding.searchButton)
+                viewModel.loadText(binding.inputSearchText, requireContext(), binding.errortextHome)
+
+                inputMethodManager.hideSoftInputFromWindow(binding.inputSearchText.windowToken, 0)
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
 
         binding.searchButton.setOnClickListener {
             viewModel.buttonAnimator(binding.searchButton)
