@@ -245,6 +245,7 @@ class DetailFragment : Fragment() {
         mediaPlayer!!.setOnErrorListener { _, _, _ ->
             viewModel.showToast(
                 "${currentStation.radioUrl} ist nicht erreichbar.", requireContext())
+            Log.d("RadioURLError", currentStation.radioUrl)
             return@setOnErrorListener true
         }
 

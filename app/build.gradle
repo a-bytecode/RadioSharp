@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace 'com.astro.radiosharp'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.astro.radiosharp"
         minSdk 28
-        targetSdk 33
-        versionCode 9
-        versionName "1.0.9"
+        targetSdk 34
+        versionCode 10
+        versionName "1.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,10 +38,9 @@ android {
         dataBinding true
     }
 }
-
 dependencies {
-
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10"
+    implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -60,12 +59,13 @@ dependencies {
     //ImageLoader Coil
     implementation("io.coil-kt:coil:2.2.2")
     //Glide
-    implementation 'com.github.bumptech.glide:glide:4.14.2'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    kapt 'com.github.bumptech.glide:compiler:4.12.0'
     //Room Dependencies
-    implementation "androidx.room:room-runtime:2.4.3"
-    kapt "androidx.room:room-compiler:2.4.3"
-    implementation "androidx.room:room-ktx:2.4.3"
+    implementation "androidx.room:room-runtime:2.6.1"
+    kapt "androidx.room:room-compiler:2.6.1"
+    implementation "androidx.room:room-ktx:2.6.1"
     //Visualizer
     implementation 'io.github.gautamchibde:audiovisualizer:2.2.5'
     //MotionLayout
