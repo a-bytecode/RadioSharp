@@ -195,7 +195,6 @@ class HomeFragment : Fragment() {
                         customDialog.setTextDialog("Suchergebnisse löschen?")
 
                         customDialog.setIcon(R.drawable.ic_baseline_delete_24)
-
                         customDialog.setAnswerYesAction { viewModel.deleteAll() }
                     }
 

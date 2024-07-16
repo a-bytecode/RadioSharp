@@ -12,7 +12,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 
-const val BASE_URL = "https://at1.api.radio-browser.info/"
+const val BASE_URL = "https://de1.api.radio-browser.info/"
 
 private val client:OkHttpClient = OkHttpClient.Builder()
     .addInterceptor { chain ->

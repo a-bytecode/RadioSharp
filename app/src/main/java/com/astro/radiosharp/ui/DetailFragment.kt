@@ -13,8 +13,6 @@ import android.media.MediaPlayer
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiManager.WifiLock
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.os.PowerManager
 import android.os.PowerManager.WakeLock
 import android.util.Log
@@ -247,6 +245,7 @@ class DetailFragment : Fragment() {
         mediaPlayer!!.setOnErrorListener { _, _, _ ->
             viewModel.showToast(
                 "${currentStation.radioUrl} ist nicht erreichbar.", requireContext())
+            Log.d("RadioURLError", currentStation.radioUrl)
             return@setOnErrorListener true
         }
 
