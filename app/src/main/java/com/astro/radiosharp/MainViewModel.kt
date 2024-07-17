@@ -3,6 +3,10 @@ package com.astro.radiosharp
 import android.animation.ObjectAnimator
 import android.app.Application
 import android.content.Context
+import android.media.AudioAttributes
+import android.media.MediaPlayer
+import android.net.Uri
+import android.os.PowerManager
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -153,6 +157,25 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun showToast(message: String, context: Context) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun resetMediaPlayer(uri: Uri, mediaPlayer: MediaPlayer, context: Context) {
+        mediaPlayer.reset() // Setzt den MediaPlayer zurück
+
+        mediaPlayer.setAudioAttributes(
+            AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .build()
+        )
+
+        mediaPlayer.setDataSource(context, uri)
+        mediaPlayer.setWakeMode(context, PowerManager.PARTIAL_WAKE_LOCK)
+        mediaPlayer.prepareAsync() // .prepareAsync() bereitet die Mediendatei asynchron vor
+        // Dann hier noch play
+        mediaPlayer.setOnPreparedListener {
+            mediaPlayer.start() // Spielt den MediaPlayer direkt wieder ab!
+        }
     }
 }
 
