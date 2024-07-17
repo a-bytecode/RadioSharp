@@ -236,7 +236,6 @@ class DetailFragment : Fragment() {
                 wakeLock.acquire(60*60*1000L /*60 minutes*/)
                 Log.d("WAKELOCK","WAKELOCK: ${wakeLock.isHeld}")
                 play()
-
                 binding.playImageDetail.visibility = View.GONE
                 binding.stopImageDetail.visibility = View.VISIBLE
             }
@@ -246,6 +245,7 @@ class DetailFragment : Fragment() {
             viewModel.showToast(
                 "${currentStation.radioUrl} ist nicht erreichbar.", requireContext())
             Log.d("RadioURLError", currentStation.radioUrl)
+            viewModel.resetMediaPlayer(uri.toUri(), mediaPlayer!!,requireContext())
             return@setOnErrorListener true
         }
 
